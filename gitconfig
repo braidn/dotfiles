@@ -1,6 +1,6 @@
 [user]
-	name = Braden Douglass
-	email = ping@bradendouglass.com
+	name = Braden
+	email = braden.douglass@gmail.com
 [color]
 	ui = true
 	
@@ -40,3 +40,6 @@
    ls = ls-files
 [github]
    user = bradendouglass
+    token = bb01b9fc8fc6a0c32da3eee96da8031f
+[core]
+	excludesfile = /Users/Griff/.gitignore

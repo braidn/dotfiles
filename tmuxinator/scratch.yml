@@ -1,0 +1,7 @@
+# ~/.tmuxinator/scratch.yml
+# you can make as many tabs as you wish...
+
+project_name: scratch
+project_root: /Users/colossus/Dropbox/Scratch/
+tabs:
+  - root: #drop in root
