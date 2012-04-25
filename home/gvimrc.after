@@ -1,7 +1,0 @@
-set guioptions-=T 
-
-set relativenumber
-
-" Font and size
-set guifont=Meslo\ LG\ M\ DZ:h12
-
