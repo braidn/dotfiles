@@ -1,0 +1,8 @@
+# ~/.tmuxinator/wiki.yml
+# you can make as many tabs as you wish...
+
+project_name: wiki
+project_root: ~/Dropbox/wiki-content
+tabs:
+  - wikiFiles: #empty
+  - wikiServer: ~/Dropbox/wiki/run.ru
