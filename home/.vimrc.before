@@ -15,13 +15,13 @@ set ttyfast
 
 " Leader Mapping
 nmap <leader>y :YRShow<cr>
-nnoremap <leader>u :GundoToggle<cr>
+nnoremap <leader>u :Histwin<cr>
 nmap <leader>rn :set relativenumber<cr>
 nmap <Leader>n :NERDTreeToggle<CR>
 map <Leader>rm :Rmodel 
 map <Leader>rv :Rview 
 map <Leader>rc :Rcontroller 
-nnoremap <leader>mv :silent !open -a Marked.app '%:p'<cr>
+nnoremap <leader>md :silent !open -a Marked.app '%:p'<cr>
 
 " Vimux stuff
 " Prompt for a command to run
