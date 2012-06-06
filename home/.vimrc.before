@@ -81,7 +81,7 @@ let g:Powerline_symbols = 'unicode'
 
 " When dealing with special file types
 au BufRead,BufNewFile jquery.*.js set ft=javascript syntax=jquery
-autocmd BufNewFile,BufRead *.quicktask setf quicktask
+let g:slime_target = "tmux"
 
 call janus#disable_plugin('syntastic')
 call janus#disable_plugin('buffergator')
