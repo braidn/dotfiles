@@ -1,7 +1,7 @@
 "Color stuff
 syntax enable
 colorscheme solarized
-call togglebg#map("<F5>")
+call togglebg#map("<F1>")
 set t_Co=256
 
 "Remapping
