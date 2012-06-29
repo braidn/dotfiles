@@ -74,10 +74,6 @@ nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
 
-syntax enable
-let g:solarized_termtrans = 1
-colorscheme solarized
-togglebg#maps("<F5>")
 
 " Save on focus lost = textmate-stylez
 au FocusLost * :wa
@@ -92,4 +88,5 @@ au BufRead,BufNewFile jquery.*.js set ft=javascript syntax=jquery
 let g:slime_target = "tmux"
 
 call janus#disable_plugin('syntastic')
+call janus#disable_plugin('gundo')
 call janus#disable_plugin('buffergator')
