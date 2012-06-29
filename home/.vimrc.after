@@ -2,7 +2,7 @@
 syntax enable
 let g:solarized_termtrans = 1
 colorscheme solarized
-togglebg#maps("<F5>")
+map togglebg#maps("<F5>")
 set t_Co=256
 
 "Remapping
