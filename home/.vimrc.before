@@ -21,7 +21,10 @@ nmap <Leader>n :NERDTreeToggle<CR>
 map <Leader>rm :Rmodel 
 map <Leader>rv :Rview 
 map <Leader>rc :Rcontroller 
-nnoremap <leader>md :silent !open -a Marked.app '%:p'<cr>
+
+" Marked.app stuff
+command! Marked silent !open -a "Marked.app" "%:p"
+nmap <silent> <leader>md :Marked<CR>\|:redraw!<CR>
 
 " Vimux stuff
 " Prompt for a command to run
