@@ -76,6 +76,14 @@ defaults write com.apple.dock tilesize -int 1
 # Hack to slow the Dock animation down so we never are on it long enough to show
 defaults write com.apple.dock autohide-time-modifier -int 100
 
+# puts the dock on the bottom of the screen
+# other values are left and right
+defaults write com.apple.dock orientation -string bottom
+
+# puts the dock on the left side
+# other values are center and end
+defaults write com.apple.dock pinning -string start
+
 # Enable Safari’s debug menu
 defaults write com.apple.Safari IncludeInternalDebugMenu -bool true
 
