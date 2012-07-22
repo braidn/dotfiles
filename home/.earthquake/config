@@ -1,0 +1,9 @@
+
+Earthquake.config[:token] = '7853172-Avd6jKpmM4Bu2Af5RIsW04W99DIWt80cR7IYOn8MFr'
+Earthquake.config[:secret] = '9aNpI2AmfemlCXz1QmJ0c4ogcgGYMzbJ52CgUd24'
+
+Earthquake.config[:color] = {
+  :info => 34
+}
+
+Earthquake.config[:recent_count] = 100
