@@ -80,8 +80,7 @@ au FocusLost * :wa
 
 " 0
 " Font and size
-set guifont=Meslo:h12
-let g:Powerline_symbols = 'unicode'
+set guifont=Meslo\ for\ Powerline:h12
 
 " When dealing with special file types
 au BufRead,BufNewFile jquery.*.js set ft=javascript syntax=jquery
