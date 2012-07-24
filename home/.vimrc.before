@@ -52,7 +52,7 @@ nmap <D-0> g^
 
 
 " Key remaps
-let g:ctrlp_map = '<Leader>t'
+let g:ctrlp_map = '<Leader>p'
 nnoremap <Leader>b :CtrlPBuffer<CR>
 nnoremap <CR> :noh<CR><CR>
 nnoremap ; :
