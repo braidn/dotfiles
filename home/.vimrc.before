@@ -39,7 +39,7 @@ nmap <silent> <leader>md :Marked<CR>\|:redraw!<CR>
  map <Leader>rs :InterruptVimTmuxRunner<CR>
 
 " Turbux Window
-map <leader>wt :let g:VimuxUseNearestPane = 
+map <leader>tb :let g:VimuxUseNearestPane = 
 
 
 vmap <D-j> gj
