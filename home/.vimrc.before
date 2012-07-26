@@ -38,6 +38,9 @@ nmap <silent> <leader>md :Marked<CR>\|:redraw!<CR>
 " " Interrupt any command running in the runner pane
  map <Leader>rs :InterruptVimTmuxRunner<CR>
 
+" Turbux Window
+map <leader>tb :let g:VimuxUseNearestPane = 
+
 
 vmap <D-j> gj
 vmap <D-k> gk
