@@ -134,3 +134,6 @@ defaults write com.apple.TimeMachine DoNotOfferNewDisksForBackup -bool true
 
 # Disable smart quotes as it’s annoying for code tweets
 defaults write com.twitter.twitter-mac AutomaticQuoteSubstitutionEnabled -bool false
+
+# Disable the Searchlight icon (ML-L)
+sudo chmod 600 /System/Library/CoreServices/Search.bundle/Contents/MacOS/Search
