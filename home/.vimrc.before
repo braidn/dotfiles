@@ -40,6 +40,11 @@ nmap <silent> <leader>md :Marked<CR>\|:redraw!<CR>
 
 " Turbux Window
 map <leader>tb :let g:VimuxUseNearestPane = 
+" Turbx Mapping
+let g:no_turbux_mappings = 1
+map <leader>m <Plug>SendTestToTmux
+map <leader>M <Plug>SendFocusedTestToTmux
+
 
 
 vmap <D-j> gj
