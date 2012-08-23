@@ -94,5 +94,12 @@ set guifont=Meslo\ for\ Powerline:h12
 au BufRead,BufNewFile jquery.*.js set ft=javascript syntax=jquery
 let g:slime_target = "tmux"
 
+" Some changes to dwm because tiling is awesome but this is Vim, not Emacs
+map <leader>nw :call DWM_New()<CR>
+map <leader>cw :call DWM_Close()<CR>
+map <leader>fw :call DWM_Focus()<CR>
+map <leader>fu :call DWM_Full()<CR>
+
+"" Disabled plugins from Janus
 call janus#disable_plugin('gundo')
 call janus#disable_plugin('buffergator')
