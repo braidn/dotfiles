@@ -5,4 +5,4 @@ project_name: wiki
 project_root: ~/Dropbox/wiki-content
 tabs:
   - wikiFiles: #empty
-  - wikiServer: ~/Dropbox/wiki/run.ru
+  - wikiServer: gollum
