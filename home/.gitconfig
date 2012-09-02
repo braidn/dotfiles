@@ -1,45 +1,45 @@
 [user]
-	name = Braden
-	email = braden.douglass@gmail.com
+  name = Braden
+  email = braden.douglass@gmail.com
 [color]
-	ui = true
-	
+  ui = true
+
 [color "diff"]
-	whitespace = red reverse
+  whitespace = red reverse
 [color "branch"]
-	current = yellow reverse
-	local = yellow
-	remote = green
+  current = yellow reverse
+  local = yellow
+  remote = green
 [color "diff"]
-	meta = yellow bold
-	frag = magenta bold
-	old = red bold
-	new = green bold
+  meta = yellow bold
+  frag = magenta bold
+  old = red bold
+  new = green bold
 [color "status"]
-	added = yellow
-	changed = green
-	untracked = cyan
+  added = yellow
+  changed = green
+  untracked = cyan
 [alias]
-   aa = add --all
-   ai = add --interactive
-   changes = diff --name-status -r
-   st = status
-   ct = commit
-   ctm = commit -m
-   br = branch
-   co = checkout
-   df = diff
-   ds = diff --staged
-   wd = diff --color-words
-   irb = rebase --interactive
-   cp = cherry-pick -s
-   rh = reset --hard
-   lg = log -p
-   lol = log --graph --decorate --pretty=oneline --abbrev-commit
-   lola = log --graph --decorate --pretty=oneline --abbrev-commit --all
-   ls = ls-files
+  aa = add --all
+  ai = add --interactive
+  changes = diff --name-status -r
+  st = status
+  ct = commit
+  ctm = commit -m
+  br = branch
+  co = checkout
+  df = diff
+  ds = diff --staged
+  wd = diff --color-words
+  irb = rebase --interactive
+  cp = cherry-pick -s
+  rh = reset --hard
+  lg = log -p
+  lol = log --graph --decorate --pretty=oneline --abbrev-commit
+  lola = log --graph --decorate --pretty=oneline --abbrev-commit --all
+  ls = ls-files
 [github]
-   user = bradendouglass
-    token = bb01b9fc8fc6a0c32da3eee96da8031f
+  user = bradendouglass
+  token = bb01b9fc8fc6a0c32da3eee96da8031f
 [core]
-	excludesfile = /Users/Griff/.gitignore
+  excludesfile = /Users/Griff/.gitignore
