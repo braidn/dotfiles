@@ -92,9 +92,7 @@ set guifont=Meslo\ for\ Powerline:h12
 
 " When dealing with special file types
 au BufRead,BufNewFile jquery.*.js set ft=javascript syntax=jquery
-au BufRead,BufNewFile *.md set ft=vimwiki
-au BufRead,BufNewFile *.markdown set ft=vimwiki
-au BufRead,BufNewFile *.mdown set ft=vimwiki
+let g:vimwiki_ext2syntax = {'.md': 'markdown', '.markdown': 'markdown', '.mdown': 'markdown'}
 let g:slime_target = "tmux"
 
 " Some changes to dwm because tiling is awesome but this is Vim, not Emacs
