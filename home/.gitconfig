@@ -43,3 +43,5 @@
   token = bb01b9fc8fc6a0c32da3eee96da8031f
 [core]
   excludesfile = /Users/Griff/.gitignore
+[credential]
+	helper = osxkeychain
