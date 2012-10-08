@@ -1,5 +1,5 @@
 project_name: Card-Orders
-project_root: /Users/cannonball/Dropbox/Code/Clients/EDM/Card-Orders
+project_root: ~/Dropbox/Code/Clients/EDM/Card-Orders
 tabs:
   - editor:
       layout: main-vertical

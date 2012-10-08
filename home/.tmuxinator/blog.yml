@@ -1,0 +1,8 @@
+project_name: blog
+project_root: ~/Dropbox/Blogs/nestaBacon/content/pages
+tabs:
+  - editor:
+      layout: 158d,204x51,0,0{112x51,0,0,91x51,113,0}
+      panes:
+        -
+        _
