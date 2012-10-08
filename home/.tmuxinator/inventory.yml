@@ -1,11 +1,11 @@
 project_name: inventory
 project_root: ~/Dropbox/Code/Clients/EDM/inventory
 tabs:
-  - editor:
+  - editor: 
       layout: 158d,204x51,0,0{112x51,0,0,91x51,113,0}
       panes:
-        - vim
-        - .bin/cucumber
+        - vim.
+        - 
   - console: rails c
   - server: rails s
   - logs: multitail -i log/development.log

@@ -2,11 +2,10 @@ project_name: Card-Orders
 project_root: ~/Dropbox/Code/Clients/EDM/Card-Orders
 tabs:
   - editor:
-      layout: main-vertical
+      layout: 158d,204x51,0,0{112x51,0,0,91x51,113,0}
       panes:
-        - vim
-        - .bin/cucumber
-        - top
+        - vim .
+        - 
   - database: rails db
   - server: rails s
   - logs: tail -f logs/development.log
