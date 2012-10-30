@@ -23,7 +23,7 @@
   aa = add --all
   ai = add --interactive
   changes = diff --name-status -r
-  st = status
+  st = status -sb
   ct = commit
   ctm = commit -m
   br = branch

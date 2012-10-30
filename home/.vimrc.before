@@ -1,5 +1,4 @@
 " Random personal settings
-let mapleader=","
 set smartindent
 
 set encoding=utf-8
@@ -14,10 +13,10 @@ set cursorline
 set ttyfast
 
 " Leader Mapping
+let mapleader = ","
 nmap <leader>y :YRShow<cr>
 nnoremap <leader>u :Histwin<cr>
 nmap <leader>rn :set relativenumber<cr>
-nmap <Leader>n :NERDTreeToggle<CR>
 map <Leader>rm :Rmodel 
 map <Leader>rv :Rview 
 map <Leader>rc :Rcontroller 
@@ -100,6 +99,11 @@ map <leader>nw :call DWM_New()<CR>
 map <leader>cw :call DWM_Close()<CR>
 map <leader>fw :call DWM_Focus()<CR>
 map <leader>fu :call DWM_Full()<CR>
+
+" Nerd Tree jazz
+let NERDTreeShowLineNumbers=1
+let NERDTreeWinPos='right'
+nmap <Leader>n :NERDTreeToggle<CR>
 
 "" Disabled plugins from Janus
 call janus#disable_plugin('gundo')
