@@ -2,7 +2,7 @@
 # you can make as many tabs as you wish...
 
 project_name: wiki
-project_root: ~/Dropbox/wiki-content
+project_root: ~/Dropbox/Wiki
 tabs:
   - wikiFiles: #empty
   - wikiServer: gollum
