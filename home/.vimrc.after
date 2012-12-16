@@ -1,14 +1,7 @@
 "Color stuff
 syntax enable
-colorscheme solarized
+let g:solarized_termcolors=256
+set background=dark
+color solarized
 call togglebg#map("<F1>")
 set t_Co=256
-
-"Remapping
-if has("gui_macvim")
-  nunmap <D-t>
-  iunmap <D-t>
-else
-  nunmap <C-t>
-  iunmap <C-t>
-endif

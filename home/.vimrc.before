@@ -1,6 +1,5 @@
 " Random personal settings
 set smartindent
-
 set encoding=utf-8
 set nocompatible
 set laststatus=2
@@ -90,6 +89,7 @@ au FocusLost * :wa
 " 0
 " Font and size
 set guifont=Meslo\ for\ Powerline:h12
+let g:Powerline_symbols = 'fancy'
 
 " When dealing with special file types
 au BufRead,BufNewFile jquery.*.js set ft=javascript syntax=jquery
