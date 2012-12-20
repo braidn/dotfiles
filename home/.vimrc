@@ -247,6 +247,7 @@ endif
 " Key remaps
 let g:ctrlp_map = '<Leader>p'
 nnoremap <Leader>b :CtrlPBuffer<CR>
+autocmd filetype php let g:AutoPairsMapCR = 0
 "nnoremap <CR> :noh<CR><CR>
 nnoremap ; :
 nnoremap <up> <nop>
