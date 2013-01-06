@@ -39,8 +39,9 @@
   lola = log --graph --decorate --pretty=oneline --abbrev-commit --all
   ls = ls-files
 [github]
-  user = bradendouglass
-  token = bb01b9fc8fc6a0c32da3eee96da8031f
+	user = bradendouglass
+  ;token = bb01b9fc8fc6a0c32da3eee96da8031f
+	password = !security find-generic-password -gs github.password -w | tr -d '\n'
 [core]
   excludesfile = /Users/Griff/.gitignore
 [difftool "sourcetree"]

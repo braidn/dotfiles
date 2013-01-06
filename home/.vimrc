@@ -12,7 +12,7 @@ Bundle 'gmarik/vundle'
 Bundle 'ChrisYip/Better-CSS-Syntax-for-Vim'
 Bundle 'kien/ctrlp.vim'
 Bundle 'mattn/gist-vim'
-Bundle 'amirh/HTML-AutoCloseTag'
+"Bundle 'amirh/HTML-AutoCloseTag'
 Bundle 'Shougo/neocomplcache'
 Bundle 'Shougo/neosnippet'
 Bundle 'scrooloose/nerdtree'
@@ -55,6 +55,9 @@ Bundle 'benmills/vimux'
 Bundle 'sjl/vitality.vim'
 Bundle 'vim-scripts/YankRing.vim'
 Bundle 'mattn/zencoding-vim'
+Bundle 'mattn/webapi-vim'
+Bundle 'mattn/gist-vim'
+Bundle 'nono/vim-handlebars'
 
 
 filetype plugin indent on
@@ -84,7 +87,6 @@ set ttyfast
 set shiftwidth=2
 set tabstop=2
 set softtabstop=2
-set spell                       " spell checking on
 set incsearch                   " find as you type search
 set pastetoggle=<F12>           " pastetoggle (sane indentation on pastes)
 set hlsearch                    " highlight search terms
@@ -137,7 +139,7 @@ nmap <leader>tn :NeoComplCacheToggle<cr>
 nnoremap - :Switch<cr>
 
 " PIV 
-let g:DisableAutoPHPFolding = 0
+let g:DisableAutoPHPFolding = 1
 let g:PIVAutoClose = 0
 
 " Nerd Tree jazz
@@ -154,8 +156,6 @@ nmap <Leader>a:: :Tabularize /:\zs<CR>
 vmap <Leader>a:: :Tabularize /:\zs<CR>
 nmap <Leader>a, :Tabularize /,<CR>
 vmap <Leader>a, :Tabularize /,<CR>
-nmap <Leader>a<Bar> :Tabularize /<Bar><CR>
-vmap <Leader>a<Bar> :Tabularize /<Bar><CR>
 
 "Some shit for Neocomplcache
 
@@ -244,10 +244,11 @@ if has('conceal')
 endif
 
 
-" Key remaps
+
+
+""Key remaps
 let g:ctrlp_map = '<Leader>p'
 nnoremap <Leader>b :CtrlPBuffer<CR>
-autocmd filetype php let g:AutoPairsMapCR = 0
 "nnoremap <CR> :noh<CR><CR>
 nnoremap ; :
 nnoremap <up> <nop>
