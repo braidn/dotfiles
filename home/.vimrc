@@ -58,6 +58,7 @@ Bundle 'mattn/zencoding-vim'
 Bundle 'mattn/webapi-vim'
 Bundle 'mattn/gist-vim'
 Bundle 'nono/vim-handlebars'
+Bundle 'itspriddle/vim-marked'
 
 
 filetype plugin indent on
