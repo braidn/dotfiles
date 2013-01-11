@@ -102,6 +102,7 @@ nnoremap <silent> <leader>tt :TagbarToggle<CR>
 map <Leader>rm :Rmodel 
 map <Leader>rv :Rview 
 map <Leader>rc :Rcontroller 
+nmap <Leader>cc :set cc=80<CR>
 
 
 " Fugitive 
