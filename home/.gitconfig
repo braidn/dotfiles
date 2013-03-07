@@ -44,6 +44,7 @@
 	password = !security find-generic-password -gs github.password -w | tr -d '\n'
 [core]
   excludesfile = /Users/Griff/.gitignore
+	whitespace = cr-at-eol
 [difftool "sourcetree"]
 	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
 	path = 

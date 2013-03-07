@@ -10,6 +10,7 @@ Bundle 'gmarik/vundle'
 
 ""MINE!
 Bundle 'ChrisYip/Better-CSS-Syntax-for-Vim'
+Bundle "mileszs/ack.vim"
 Bundle 'kien/ctrlp.vim'
 Bundle 'mattn/gist-vim'
 "Bundle 'amirh/HTML-AutoCloseTag'
@@ -28,7 +29,7 @@ Bundle 'flazz/vim-colorschemes'
 Bundle 'tpope/vim-cucumber'
 Bundle 'Lokaltog/vim-easymotion'
 Bundle 'tpope/vim-fugitive'
-Bundle 'nathanaelkane/vim-indent-guides'
+Bundle 'Yggdroot/indentLine'
 Bundle 'pangloss/vim-javascript'
 Bundle 'leshill/vim-json'
 Bundle 'briancollins/vim-jst'
@@ -59,6 +60,7 @@ Bundle 'mattn/webapi-vim'
 Bundle 'mattn/gist-vim'
 Bundle 'nono/vim-handlebars'
 Bundle 'itspriddle/vim-marked'
+Bundle 'kchmck/vim-coffee-script'
 
 
 filetype plugin indent on
@@ -80,6 +82,7 @@ set backspace=indent,eol,start
 set laststatus=2
 set t_Co=256
 set showmode
+set autochdir
 set showcmd
 set hidden
 set visualbell
@@ -96,13 +99,15 @@ set hidden                      " allow buffer switching without saving
 " Leader Mapping
 let mapleader = ","
 nmap <silent> <leader>\ :nohlsearch<CR>
+let g:yankring_history_dir = '~/.vim/tmp'
 nmap <leader>y :YRShow<cr>
 nnoremap <leader>u :GundoToggle<cr>
 nnoremap <silent> <leader>tt :TagbarToggle<CR>
 map <Leader>rm :Rmodel 
 map <Leader>rv :Rview 
 map <Leader>rc :Rcontroller 
-nmap <Leader>cc :set cc=80<CR>
+map <leader>? :Ack
+nmap <Leader>sl :set cc=80<CR>
 
 
 " Fugitive 
@@ -113,9 +118,9 @@ nnoremap <silent> <leader>gb :Gblame<CR>
 nnoremap <silent> <leader>gl :Glog<CR>
 nnoremap <silent> <leader>gp :Git push<CR>
 
-" Marked.app stuff
-command! Marked silent !open -a "Marked.app" "%:p"
-nmap <silent> <leader>md :Marked<CR>\|:redraw!<CR>
+"Indent Lines
+hi Conceal ctermfg=red ctermbg=NONE
+nnoremap <leader>S :Ack!<space>
 
 " Vimux stuff
 " Prompt for a command to run
