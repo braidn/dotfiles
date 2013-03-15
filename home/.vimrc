@@ -61,6 +61,7 @@ Bundle 'mattn/gist-vim'
 Bundle 'nono/vim-handlebars'
 Bundle 'itspriddle/vim-marked'
 Bundle 'kchmck/vim-coffee-script'
+Bundle 'airblade/vim-gitgutter' 
 
 
 filetype plugin indent on
@@ -196,7 +197,7 @@ let g:neocomplcache_enable_camel_case_completion = 1
 let g:neocomplcache_enable_smart_case = 1
 let g:neocomplcache_enable_underbar_completion = 1
 let g:neocomplcache_enable_auto_delimiter = 1
-let g:neocomplcache_max_list = 15
+let g:neocomplcache_max_list = 7
 let g:neocomplcache_force_overwrite_completefunc = 1
 
 " SuperTab like snippets behavior.
