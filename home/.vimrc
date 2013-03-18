@@ -14,8 +14,6 @@ Bundle "mileszs/ack.vim"
 Bundle 'kien/ctrlp.vim'
 Bundle 'mattn/gist-vim'
 "Bundle 'amirh/HTML-AutoCloseTag'
-Bundle 'Shougo/neocomplcache'
-Bundle 'Shougo/neosnippet'
 Bundle 'scrooloose/nerdtree'
 Bundle 'scrooloose/nerdcommenter'
 Bundle 'spf13/PIV'
@@ -62,6 +60,8 @@ Bundle 'nono/vim-handlebars'
 Bundle 'itspriddle/vim-marked'
 Bundle 'kchmck/vim-coffee-script'
 Bundle 'airblade/vim-gitgutter' 
+Bundle 'ervandew/supertab'
+Bundle 'MarcWeber/ultisnips'
 
 
 filetype plugin indent on
@@ -96,6 +96,8 @@ set incsearch                   " find as you type search
 set pastetoggle=<F12>           " pastetoggle (sane indentation on pastes)
 set hlsearch                    " highlight search terms
 set hidden                      " allow buffer switching without saving
+set noswapfile
+set nobackup
 
 " Leader Mapping
 let mapleader = ","
@@ -121,7 +123,6 @@ nnoremap <silent> <leader>gp :Git push<CR>
 
 "Indent Lines
 hi Conceal ctermfg=red ctermbg=NONE
-nnoremap <leader>S :Ack!<space>
 
 " Vimux stuff
 " Prompt for a command to run
@@ -167,66 +168,22 @@ vmap <Leader>a, :Tabularize /,<CR>
 
 "Some shit for Neocomplcache
 
-" OmniComplete 
-if has("autocmd") && exists("+omnifunc")
-  autocmd Filetype *
-        \if &omnifunc == "" |
-        \setlocal omnifunc=syntaxcomplete#Complete |
-        \endif
-endif
+" OmniComplete Supertab and UltraSnips
+set omnifunc=syntaxcomplete#Complete
+" Ultisnips directory for extra snipps
+let g:UltiSnips = {}
+let g:UltiSnips.InterfaceFlavour = "SnipMate"
+let g:UltiSnips.ListSnippets = "<c-a>"
+let g:UltiSnips.ExpandTrigger="<tab>"
+let g:UltiSnips.JumpForwardTrigger="<tab>"
+let g:UltiSnips.snipmate_ft_filter = {
+			\ 'default' : {'filetypes': ["FILETYPE", "_"] },
+			\ 'html'    : {'filetypes': ["html", "javascript", "_"] },
+			\ 'cpp'    : {'filetypes': [] },
+			\ }
 
-hi Pmenu  guifg=#000000 guibg=#F8F8F8 ctermfg=black ctermbg=Lightgray
-hi PmenuSbar  guifg=#8A95A7 guibg=#F8F8F8 gui=NONE ctermfg=darkcyan ctermbg=lightgray cterm=NONE
-hi PmenuThumb  guifg=#F8F8F8 guibg=#8A95A7 gui=NONE ctermfg=lightgray ctermbg=darkcyan cterm=NONE
 
-" some convenient mappings
-inoremap <expr> <Esc>      pumvisible() ? "\<C-e>" : "\<Esc>"
-"inoremap <expr> <CR>       pumvisible() ? "\<C-y>" : "\<CR>"
-inoremap <expr> <Down>     pumvisible() ? "\<C-n>" : "\<Down>"
-inoremap <expr> <Up>       pumvisible() ? "\<C-p>" : "\<Up>"
-inoremap <expr> <C-d>      pumvisible() ? "\<PageDown>\<C-p>\<C-n>" : "\<C-d>"
-inoremap <expr> <C-u>      pumvisible() ? "\<PageUp>\<C-p>\<C-n>" : "\<C-u>"
-
-" automatically open and close the popup menu / preview window
-au CursorMovedI,InsertLeave * if pumvisible() == 0|silent! pclose|endif
-set completeopt=menu,preview,longest
-
-let g:acp_enableAtStartup = 0
-let g:neocomplcache_enable_at_startup = 1
-let g:neocomplcache_enable_camel_case_completion = 1
-let g:neocomplcache_enable_smart_case = 1
-let g:neocomplcache_enable_underbar_completion = 1
-let g:neocomplcache_enable_auto_delimiter = 1
-let g:neocomplcache_max_list = 7
-let g:neocomplcache_force_overwrite_completefunc = 1
-
-" SuperTab like snippets behavior.
-imap <silent><expr><TAB> neosnippet#expandable() ?
-      \ "\<Plug>(neosnippet_expand_or_jump)" : (pumvisible() ?
-      \ "\<C-e>" : "\<TAB>")
-smap <TAB> <Right><Plug>(neosnippet_jump_or_expand)
-
-" Define dictionary.
-let g:neocomplcache_dictionary_filetype_lists = {
-      \ 'default' : '',
-      \ 'vimshell' : $HOME.'/.vimshell_hist',
-      \ 'scheme' : $HOME.'/.gosh_completions'
-      \ }
-
-" Define keyword.
-if !exists('g:neocomplcache_keyword_patterns')
-  let g:neocomplcache_keyword_patterns = {}
-endif
-let g:neocomplcache_keyword_patterns._ = '\h\w*'
-
-" Plugin key-mappings.
-imap <C-a> <Plug>(neosnippet_expand_or_jump)
-smap <C-a> <Plug>(neosnippet_expand_or_jump)
-inoremap <expr><C-g> neocomplcache#undo_completion()
-inoremap <expr><C-l> neocomplcache#complete_common_string()
-inoremap <expr><C-y> neocomplcache#close_popup()
-
-" Enable omni completion.
+ "Enable omni completion.
 autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
 autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
 autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
@@ -234,25 +191,10 @@ autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
 autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
 
-" Enable heavy omni completion.
-if !exists('g:neocomplcache_omni_patterns')
-  let g:neocomplcache_omni_patterns = {}
-endif
-let g:neocomplcache_omni_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
-let g:neocomplcache_omni_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
-let g:neocomplcache_omni_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
-let g:neocomplcache_omni_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
-let g:neocomplcache_omni_patterns.ruby = '[^. *\t]\.\h\w*\|\h\w*::'
-
-" use honza's snippets
-let g:neosnippet#snippets_directory='~/.vim/bundle/snipmate-snippets/snippets'
 
 if has('conceal')
   set conceallevel=2 concealcursor=i
 endif
-
-
-
 
 ""Key remaps
 let g:ctrlp_map = '<Leader>p'

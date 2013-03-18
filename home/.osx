@@ -96,7 +96,7 @@ defaults write com.apple.dock showhidden -bool true
 defaults write com.apple.dock tilesize -int 1
 
 # Hack to slow the Dock animation down so we never are on it long enough to show
-defaults write com.apple.dock autohide-time-modifier -int 100
+defaults write com.apple.dock autohide-time-modifier -int 400
 
 # puts the dock on the bottom of the screen
 # other values are left and right
