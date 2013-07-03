@@ -1,6 +1,6 @@
 [user]
-  name = Braden
-  email = braden.douglass@gmail.com
+	name = Braden
+	email = braden.douglass@gmail.com
 [color]
   ui = true
 
@@ -35,21 +35,25 @@
   cp = cherry-pick -s
   rh = reset --hard
   lg = log -p
+	pl = pull
+	ph = push
   lol = log --graph --decorate --pretty=oneline --abbrev-commit
   lola = log --graph --decorate --pretty=oneline --abbrev-commit --all
   ls = ls-files
+	dt = difftool
+	lgl = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
 [github]
 	user = bradendouglass
   ;token = bb01b9fc8fc6a0c32da3eee96da8031f
 	password = !security find-generic-password -gs github.password -w | tr -d '\n'
 [core]
-  excludesfile = /Users/Griff/.gitignore
-	whitespace = cr-at-eol
-[difftool "sourcetree"]
-	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
-	path = 
-[mergetool "sourcetree"]
-	cmd = /Applications/SourceTree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
-	trustExitCode = true
+	excludesfile = /Users/cannonball/.gitignore_global
+	whitespace=fix,tab-in-indent,trailing-space,cr-at-eol
+	autocrlf = input
+	safecrlf = warn
 [credential]
 	helper = osxkeychain
+[diff]
+	tool = vimdiff
+[difftool]
+	prompt = false

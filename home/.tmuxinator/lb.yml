@@ -1,0 +1,6 @@
+project_name: lb
+project_root: ~/Code/work/lb-dev
+tabs:
+  - editor: cd public_html && vim .
+  - server: vagrant up
+  - tools: cd public_html && guard

@@ -10,36 +10,28 @@ Bundle 'gmarik/vundle'
 
 ""MINE!
 Bundle 'ChrisYip/Better-CSS-Syntax-for-Vim'
-Bundle "mileszs/ack.vim"
 Bundle 'kien/ctrlp.vim'
 Bundle 'mattn/gist-vim'
-"Bundle 'amirh/HTML-AutoCloseTag'
 Bundle 'scrooloose/nerdtree'
 Bundle 'scrooloose/nerdcommenter'
-Bundle 'spf13/PIV'
 Bundle 'vim-scripts/Puppet-Syntax-Highlighting'
-Bundle 'honza/snipmate-snippets'
 Bundle 'scrooloose/syntastic'
 Bundle 'godlygeek/tabular'
 Bundle 'MarcWeber/vim-addon-mw-utils'
 Bundle 'altercation/vim-colors-solarized'
-Bundle 'flazz/vim-colorschemes'
 Bundle 'tpope/vim-cucumber'
 Bundle 'Lokaltog/vim-easymotion'
-Bundle 'tpope/vim-fugitive'
 Bundle 'Yggdroot/indentLine'
 Bundle 'pangloss/vim-javascript'
 Bundle 'leshill/vim-json'
 Bundle 'briancollins/vim-jst'
 Bundle 'groenewege/vim-less'
 Bundle 'tpope/vim-markdown'
-Bundle 'jistr/vim-nerdtree-tabs'
 Bundle 'Lokaltog/vim-powerline'
 Bundle 'tpope/vim-rails'
 Bundle 'tpope/vim-surround'
 Bundle 'tpope/vim-endwise'
 Bundle 'tomtom/tlib_vim'
-Bundle 'chrisbra/NrrwRgn'
 Bundle 'wusher/apidock.vim'
 Bundle 'jiangmiao/auto-pairs'
 Bundle 'sjl/gundo.vim'
@@ -48,7 +40,6 @@ Bundle 'AndrewRadev/switch.vim'
 Bundle 'tpope/vim-haml'
 Bundle 'tpope/vim-repeat'
 Bundle 'ecomba/vim-ruby-refactoring'
-Bundle 'bbommarito/vim-slim'
 Bundle 'jgdavey/vim-turbux'
 Bundle 'benmills/vimux'
 Bundle 'sjl/vitality.vim'
@@ -59,9 +50,16 @@ Bundle 'mattn/gist-vim'
 Bundle 'nono/vim-handlebars'
 Bundle 'itspriddle/vim-marked'
 Bundle 'kchmck/vim-coffee-script'
-Bundle 'airblade/vim-gitgutter' 
+Bundle 'airblade/vim-gitgutter'
 Bundle 'ervandew/supertab'
 Bundle 'MarcWeber/ultisnips'
+Bundle 'vim-scripts/matchit.zip'
+Bundle 'digitaltoad/vim-jade.git'
+Bundle 'slim-template/vim-slim'
+Bundle 'honza/vim-snippets'
+Bundle 'tpope/vim-fugitive'
+Bundle 'Floobits/vim-floobits'
+Bundle 'christoomey/vim-tmux-navigator'
 
 
 filetype plugin indent on
@@ -96,24 +94,47 @@ set incsearch                   " find as you type search
 set pastetoggle=<F12>           " pastetoggle (sane indentation on pastes)
 set hlsearch                    " highlight search terms
 set hidden                      " allow buffer switching without saving
-set noswapfile
 set nobackup
+set nowb
+set noswapfile
+set wildmenu
+set wildmode=longest:full,full
+set synmaxcol=200
+set splitbelow
+set splitright
+set nowrap
+set ttimeoutlen=100
+
+"Yank into OS X, might require reattach-to-user clipboard"
+noremap <leader>c "*y
+noremap <leader>cy "*Y
+
+"Preserve indentations from pasteboard
+noremap <leader>p :set paste<CR>:put  *<CR>:set nopaste<CR>
 
 " Leader Mapping
 let mapleader = ","
 nmap <silent> <leader>\ :nohlsearch<CR>
 let g:yankring_history_dir = '~/.vim/tmp'
+let g:gitgutter_enabled = 0
 nmap <leader>y :YRShow<cr>
 nnoremap <leader>u :GundoToggle<cr>
 nnoremap <silent> <leader>tt :TagbarToggle<CR>
-map <Leader>rm :Rmodel 
-map <Leader>rv :Rview 
-map <Leader>rc :Rcontroller 
-map <leader>? :Ack
+map <Leader>rm :Rmodel
+map <Leader>rv :Rview
+map <Leader>rc :Rcontroller
 nmap <Leader>sl :set cc=80<CR>
+nnoremap <leader>gg :GitGutterToggle<cr>
+nnoremap <leader>= :Tab/
+nnoremap <leader>tw :set textwidth=80<cr>
 
+" I gots the SpLITZ
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-K> <C-W><C-K>
+nnoremap <C-L> <C-W><C-L>
+nnoremap <C-H> <C-W><C-H>
 
-" Fugitive 
+"Fugitive bindings
 nnoremap <silent> <leader>gs :Gstatus<CR>
 nnoremap <silent> <leader>gd :Gdiff<CR>
 nnoremap <silent> <leader>gc :Gcommit<CR>
@@ -137,7 +158,7 @@ hi Conceal ctermfg=red ctermbg=NONE
  map <Leader>rs :InterruptVimTmuxRunner<CR>
 
 " Turbux Window
-map <leader>tb :let g:VimuxUseNearestPane = 
+map <leader>tb :let g:VimuxUseNearestPane =
 " Turbx Mapping
 let g:no_turbux_mappings = 1
 map <leader>m <Plug>SendTestToTmux
@@ -147,16 +168,16 @@ nmap <leader>tn :NeoComplCacheToggle<cr>
 "Switch
 nnoremap - :Switch<cr>
 
-" PIV 
+" PIV
 let g:DisableAutoPHPFolding = 1
 let g:PIVAutoClose = 0
 
 " Nerd Tree jazz
 let NERDTreeShowLineNumbers=1
 let NERDTreeWinPos='right'
-nmap <Leader>n :NERDTreeTabsToggle<CR>
+nmap <Leader>n :NERDTreeToggle<CR>
 
-" Tabularize 
+" Tabularize
 nmap <Leader>a= :Tabularize /=<CR>
 vmap <Leader>a= :Tabularize /=<CR>
 nmap <Leader>a: :Tabularize /:<CR>
@@ -172,13 +193,13 @@ vmap <Leader>a, :Tabularize /,<CR>
 set omnifunc=syntaxcomplete#Complete
 " Ultisnips directory for extra snipps
 let g:UltiSnips = {}
-let g:UltiSnips.InterfaceFlavour = "SnipMate"
 let g:UltiSnips.ListSnippets = "<c-a>"
 let g:UltiSnips.ExpandTrigger="<tab>"
 let g:UltiSnips.JumpForwardTrigger="<tab>"
 let g:UltiSnips.snipmate_ft_filter = {
 			\ 'default' : {'filetypes': ["FILETYPE", "_"] },
 			\ 'html'    : {'filetypes': ["html", "javascript", "_"] },
+			\ 'php'    : {'filetypes': ["html", "php", "_"] },
 			\ 'cpp'    : {'filetypes': [] },
 			\ }
 
