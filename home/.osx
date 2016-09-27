@@ -1,7 +1,13 @@
+# Ask for the administrator password upfront
+sudo -v
+
+# Keep-alive: update existing `sudo` time stamp until `.osx` has finished
+while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
+
 # Set computer name
-scutil --set ComputerName "cannonball"
-scutil --set HostName "cannonball"
-scutil --set LocalHostName "cannonball"
+sudo scutil --set ComputerName "cannonball"
+sudo scutil --set HostName "cannonball"
+sudo scutil --set LocalHostName "cannonball"
 
 # Disable the “Are you sure you want to open this application?” dialog
 defaults write com.apple.LaunchServices LSQuarantine -bool false
@@ -28,11 +34,13 @@ defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode -bool true
 # Expand print panel by default
 defaults write NSGlobalDomain PMPrintingExpandedStateForPrint -bool true
 
+# Reveal IP address, hostname, OS version, etc. when clicking the clock
+# in the login window
+sudo defaults write /Library/Preferences/com.apple.loginwindow AdminHostInfo HostName
+
 # Disable the “Are you sure you want to open this application?” dialog
 defaults write com.apple.LaunchServices LSQuarantine -bool false
 
-# Disable Resume system-wide
-defaults write NSGlobalDomain NSQuitAlwaysKeepsWindows -bool false
 
 # Trackpad: swipe between pages with three fingers
 defaults write NSGlobalDomain AppleEnableSwipeNavigateWithScrolls -bool true
@@ -89,22 +97,22 @@ unset file
 # Speed up Mission Control animations
 defaults write com.apple.dock expose-animation-duration -float 0.1
 
+# Avoid creating .DS_Store files on network volumes
+defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
+
+# Disable Dashboard
+defaults write com.apple.dashboard mcx-disabled -bool true
+
+# Don’t show Dashboard as a Space
+defaults write com.apple.dock dashboard-in-overlay -bool true
+
+# Don’t automatically rearrange Spaces based on most recent use
+defaults write com.apple.dock mru-spaces -bool false
+
 # Make Dock icons of hidden applications translucent
 defaults write com.apple.dock showhidden -bool true
 
-# Make Dock super small
-defaults write com.apple.dock tilesize -int 1
-
-# Hack to slow the Dock animation down so we never are on it long enough to show
-defaults write com.apple.dock autohide-time-modifier -int 400
-
-# puts the dock on the bottom of the screen
-# other values are left and right
-defaults write com.apple.dock orientation -string bottom
-
-# puts the dock on the left side
-# other values are center and end
-defaults write com.apple.dock pinning -string start
+##Dock Hiding Managed Through Boxen::OSX
 
 # Hide Safari’s bookmarks bar by default
 defaults write com.apple.Safari ShowFavoritesBar -bool false
@@ -120,11 +128,6 @@ defaults write com.apple.Safari "com.apple.Safari.ContentPageGroupIdentifier.Web
 # Add a context menu item for showing the Web Inspector in web views
 defaults write NSGlobalDomain WebKitDeveloperExtras -bool true
 
-# Disable the Ping sidebar in iTunes
-defaults write com.apple.iTunes disablePingSidebar -bool true
-
-# Disable all the other Ping stuff in iTunes
-defaults write com.apple.iTunes disablePing -bool true
 
 # Enable the debug menu in Disk Utility
 defaults write com.apple.DiskUtility DUDebugMenuEnabled -bool true

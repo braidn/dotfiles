@@ -1,0 +1,7 @@
+project_name: tark
+project_root: ~/src/tarkett
+windows:
+  - vim: vim .
+  - server: #noop
+  - logs: xtail log/
+  - mongo: #mongod --dbpath /opt/boxen/data/mongodb/db -port 17017

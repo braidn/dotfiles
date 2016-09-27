@@ -1,0 +1,6 @@
+project_name: prbl
+project_root: ~/src/purible
+windows:
+  - vim:
+  - server:
+  - logs: xtail log/

@@ -1,0 +1,6 @@
+project_name: rfrm
+project_root: ~/src/reformation
+windows:
+  - logs: xtail log/
+  - server: be rails s -p 1234
+  - vim:

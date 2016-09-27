@@ -1,0 +1,8 @@
+# ~/.tmuxinator/wiki.yml
+# you can make as many tabs as you wish...
+
+project_name: slds_conf
+project_root: ~/src/solidus_conf_talk
+windows:
+  - server: #empty
+  - editor:

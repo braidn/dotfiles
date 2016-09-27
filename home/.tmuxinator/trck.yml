@@ -1,0 +1,6 @@
+project_name: trck
+project_root: ~/src/tracksmith
+windows:
+  - vim:
+  - server:
+  - logs: xtail log/

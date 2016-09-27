@@ -1,7 +1,0 @@
-"Color stuff
-syntax enable
-let g:solarized_termcolors=256
-set background=dark
-color solarized
-call togglebg#map("<F1>")
-set t_Co=256

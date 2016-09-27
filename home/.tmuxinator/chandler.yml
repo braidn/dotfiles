@@ -1,8 +1,0 @@
-project_name: chandler
-project_root: ~/Code/work/casehandler/
-tabs:
-  - editor: vim . 
-  - console: cd rails-side/ && rails c
-  - dlogs: multitail -i rails-side/log/development.log
-  - tlogs: multitail -i rails-side/log/test.log
-  - phpServer: cd php-dev/ && vagrant up

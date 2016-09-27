@@ -1,0 +1,6 @@
+project_name: lola
+project_root: ~/src/lola
+windows:
+  - logs: xtail ./log
+  - server:
+  - editor:

@@ -1,0 +1,7 @@
+project_name: dinr
+project_root: ~/src/dinr
+windows:
+  - editor: vim .
+  - console: rails c
+  - server:
+  - tlogs: multitail -i log/test.log

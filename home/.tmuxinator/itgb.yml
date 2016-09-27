@@ -1,0 +1,6 @@
+project_name: itgb
+project_root: ~/src/itg-contentful
+windows:
+  - vim:
+  - server: #noop
+  - logs: xtail log/

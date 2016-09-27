@@ -2,7 +2,7 @@
 # you can make as many tabs as you wish...
 
 project_name: wiki
-project_root: ~/Code/Wiki
-tabs:
+project_root: ~/wiki
+windows:
   - wikiFiles: #empty
-  - wikiServer: gollum
+  - wikiServer:

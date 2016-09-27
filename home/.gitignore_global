@@ -1,0 +1,62 @@
+[user]
+	name = Braden
+	email = braden.douglass@gmail.com
+[color]
+  ui = true
+
+[color "diff"]
+  whitespace = red reverse
+[color "branch"]
+  current = yellow reverse
+  local = yellow
+  remote = green
+[color "diff"]
+  meta = yellow bold
+  frag = magenta bold
+  old = red bold
+  new = green bold
+[color "status"]
+  added = yellow
+  changed = green
+  untracked = cyan
+[alias]
+  aa = add --all
+  ai = add --interactive
+  changes = diff --name-status -r
+  st = status -sb
+  ct = commit
+  ctm = commit -m
+  br = branch
+  co = checkout
+  df = diff
+  ds = diff --staged
+  wd = diff --color-words
+  irb = rebase --interactive
+  cp = cherry-pick -s
+  rh = reset --hard
+  lg = log -p
+	pl = pull
+	ph = push
+  lol = log --graph --decorate --pretty=oneline --abbrev-commit
+  lola = log --graph --decorate --pretty=oneline --abbrev-commit --all
+  ls = ls-files
+	dt = difftool
+	lgl = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+[github]
+	user = bradendouglass
+  ;token = bb01b9fc8fc6a0c32da3eee96da8031f
+	password = !security find-generic-password -gs github.password -w | tr -d '\n'
+[core]
+	excludesfile = /opt/boxen/config/git/gitignore
+	whitespace=fix,tab-in-indent,trailing-space,cr-at-eol
+	autocrlf = input
+	safecrlf = warn
+[credential]
+	helper = /opt/boxen/bin/boxen-git-credential
+[diff]
+	tool = vimdiff
+[difftool]
+	prompt = false
+
+[hub]
+protocol = https

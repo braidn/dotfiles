@@ -1,0 +1,9 @@
+# ~/.tmuxinator/scratch.yml
+# you can make as many tabs as you wish...
+
+name: qtly
+root: ~/src/quarterly/
+windows:
+  - editor: nv .
+  - server:
+  - dlogs: xtail log

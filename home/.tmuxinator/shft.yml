@@ -1,0 +1,8 @@
+# ~/.tmuxinator/scratch.yml
+# you can make as many tabs as you wish...
+
+name: shft
+root: ~/src/shift/
+windows:
+  - editor: vim .
+  - grunt: cd website/ && grunt serve

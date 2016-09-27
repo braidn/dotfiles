@@ -1,0 +1,4 @@
+project_name: sprg
+project_root: ~/src/sprangular
+windows:
+  - vim:

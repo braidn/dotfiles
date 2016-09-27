@@ -1,0 +1,7 @@
+project_name: guru
+project_root: ~/src/gurubikes/
+windows:
+  - editor: vim .
+  - git: gitsh
+  - console: rails c
+  - server: rails s
