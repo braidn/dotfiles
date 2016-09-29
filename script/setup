@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+#
+# Dotfiles installer
+
+SRCDIR="$HOME/src"
+
+if [[ ! -d "$SRCDIR" ]]; then
+  mkdir "$SRCDIR"
+fi
+
+cd "$SRCDIR"
+
+gem install homesick
+
+homesick clone braidn/dotfiles
+homesick symlink dotfiles
