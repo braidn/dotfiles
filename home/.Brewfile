@@ -1,9 +1,6 @@
 cask_args appdir: '/Applications'
-tap 'caskroom/cask'
-tap "homebrew/services"
 tap "osx-cross/arm"
 tap "osx-cross/avr"
-tap 'homebrew/bundle'
 
 brew "ctags"
 brew "git"
