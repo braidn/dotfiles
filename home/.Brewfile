@@ -22,7 +22,7 @@ brew "qt"
 brew "libyaml" # should come after openssl
 brew "chruby"
 brew "nodenv"
-brew "ruby-build"
+brew "ruby-install"
 brew "node-build"
 
 brew "arm-gcc-bin"
