@@ -11,7 +11,7 @@ fi
 
 cd "$DOTFILES"
 
-gem install homesick
+sudo gem install homesick
 homesick symlink dotfiles
 
 if [[ ! -d "$HOME/.zprezto" ]]; then
