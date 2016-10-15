@@ -21,13 +21,4 @@ homesick symlink dotfiles
 cd "$HOME"
 rm -rf "$DOTFILES"
 
-if [[ ! -d "$HOME/.zprezto" ]]; then
-  git clone --recursive https://github.com/sorin-ionescu/prezto.git "$HOME/.zprezto"
-
-  setopt EXTENDED_GLOB
-  for rcfile in "${ZDOTDIR:-$HOME}"/.zprezto/runcoms/^README.md(.N); do
-    ln -s "$rcfile" "${ZDOTDIR:-$HOME}/.${rcfile:t}"
-  done
-fi
-
 fi
