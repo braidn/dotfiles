@@ -3,16 +3,15 @@
 # Dotfiles installer
 
 SRCDIR="$HOME/src"
+DOTFILES="$HOME/.dotfiles"
 
 if [[ ! -d "$SRCDIR" ]]; then
   mkdir "$SRCDIR"
 fi
 
-cd "$SRCDIR"
+cd "$DOTFILES"
 
 gem install homesick
-
-homesick clone braidn/dotfiles
 homesick symlink dotfiles
 
 if [[ ! -d "$HOME/.zprezto" ]]; then
