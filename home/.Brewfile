@@ -17,7 +17,6 @@ brew "neovim/neovim/neovim"
 brew "heroku-toolbelt"
 brew "hub"
 brew "imagemagick"
-brew "qt"
 
 brew "libyaml" # should come after openssl
 brew "chruby"
