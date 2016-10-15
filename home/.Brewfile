@@ -1,6 +1,8 @@
 cask_args appdir: '/Applications'
 tap "osx-cross/arm"
 tap "osx-cross/avr"
+tap "neovim/neovim"
+tap "caskroom/versions"
 
 brew "ctags"
 brew "git"
