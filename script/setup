@@ -5,8 +5,6 @@ SRCDIR="$HOME/src"
 DOTFILES="$HOME/.dotfiles"
 HOMESICK="$HOME/.homesick"
 
-if [[ ! -d "$HOMESICK" ]]; then
-
 if [[ ! -d "$SRCDIR" ]]; then
   mkdir "$SRCDIR"
 fi
@@ -20,5 +18,3 @@ homesick symlink dotfiles
 
 cd "$HOME"
 rm -rf "$DOTFILES"
-
-fi
