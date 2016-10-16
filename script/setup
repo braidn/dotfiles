@@ -4,11 +4,20 @@
 SRCDIR="$HOME/src"
 DOTFILES="$HOME/.dotfiles"
 HOMESICK="$HOME/.homesick"
+CONFIGDIR="$HOME/.config"
 
+# SRC Files for projects
 if [[ ! -d "$SRCDIR" ]]; then
   mkdir "$SRCDIR"
 fi
 
+# Config Dir for NeoVim
+if [[ ! -d "$CONFIGDIR" ]]; then
+  curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs \
+    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+fi
+
+# Build Dotfiles
 cd "$DOTFILES"
 
 sudo gem install homesick
@@ -17,4 +26,6 @@ homesick clone braidn/dotfiles
 homesick symlink dotfiles
 
 cd "$HOME"
+
+# Keep Homesick dir but remove dotfiles dir
 rm -rf "$DOTFILES"
