@@ -2,7 +2,6 @@
 # you can make as many tabs as you wish...
 
 project_name: wiki
-project_root: ~/wiki
+project_root: ~/src/wiki
 windows:
-  - wikiFiles: #empty
-  - wikiServer:
+  - server: bundle exec gollum --h1-title --no-live-preview

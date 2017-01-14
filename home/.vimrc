@@ -17,7 +17,6 @@ Plug 'mattn/webapi-vim'
 Plug 'benekastah/neomake'
 Plug 'justinmk/vim-sneak'
 Plug 'Yggdroot/indentLine'
-Plug 'marijnh/tern_for_vim', { 'do': 'npm install' }
 Plug 'othree/yajs.vim', { 'for': 'javascript' }
 Plug 'tpope/vim-rails', { 'for': 'ruby' }
 Plug 'tpope/vim-surround'
@@ -45,17 +44,27 @@ Plug 'luochen1990/rainbow'
 Plug 'itspriddle/vim-marked'
 Plug 'christoomey/vim-tmux-runner'
 Plug 'sheerun/vim-polyglot'
+Plug 'ludovicchabant/vim-gutentags'
 
 ""Will you make the cut
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'malkomalko/projections.vim'
-Plug 'xolox/vim-easytags'
 Plug 'xolox/vim-misc'
 Plug 'tommcdo/vim-lion'
 Plug 'elmcast/elm-vim', { 'for': 'elm' }
-
-""Additional syntax
 Plug 'posva/vim-vue', { 'for': 'vue' }
+
+"" Deoplete
+function! DoRemote(arg)
+  UpdateRemotePlugins
+endfunction
+Plug 'Shougo/deoplete.nvim', { 'do': function('DoRemote') }
+Plug 'fishbullet/deoplete-ruby'
+Plug 'carlitux/deoplete-ternjs'
+Plug 'mhartington/deoplete-typescript'
+
+Plug 'ternjs/tern_for_vim', { 'do': 'npm install && npm install -g tern' }
+Plug 'Quramy/tsuquyomi', { 'do': 'npm install -g typescript' }
 
 
 ""Unite
@@ -229,9 +238,8 @@ hi Conceal ctermfg=red ctermbg=NONE
 tnoremap <Leader><ESC> <C-\><C-n>
 
 " Testing
-
-let test#strategy = "vtr"
-nmap <silent> ,t :TestFile<CR>
+let test#ruby#rspec#executable = 'dcr web bundle exec rspec'
+let g:test#strategy = 'vtr'
 
 "Switch
 nnoremap - :Switch<cr>
@@ -272,6 +280,27 @@ let g:vim_markdown_conceal = 0
 
 let g:neomake_javascript_enabled_makers = ['eslint']
 let g:neomake_ruby_enabled_makers  = ['rubocop', 'mri']
+
+"Deoplete
+let g:deoplete#enable_at_startup = 1
+let g:deoplete#enable_ignore_case = 1
+let g:deoplete#enable_smart_case = 1
+let g:deoplete#enable_camel_case = 1
+let g:deoplete#enable_refresh_always = 1
+let g:deoplete#max_abbr_width = 0
+let g:deoplete#max_menu_width = 0
+let g:deoplete#sources#tss#javascript_support = 1
+let g:deoplete#omni#input_patterns = get(g:,'deoplete#omni#input_patterns',{})
+call deoplete#custom#set('_', 'matchers', ['matcher_full_fuzzy'])
+
+"JS
+let g:tern_request_timeout = 1
+let g:tern_request_timeout = 6000
+let g:tern#command = ["tern"]
+let g:tern#arguments = ["--persistent"]
+let g:tsuquyomi_javascript_support = 1
+let g:tsuquyomi_auto_open = 1
+let g:tsuquyomi_disable_quickfix = 1
 
 "Unite
 nnoremap <Leader>p :Unite buffer file_rec/async:!<cr>
@@ -320,13 +349,6 @@ if has('nvim')
   set termguicolors
   let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
 endif
-
-"Ctags
-let g:easytags_auto_highlight = 0
-let g:easytags_on_cursorhold = 0 " disabled because it causes a recursive tag generation
-let g:easytags_dynamic_files = 0
-let g:easytags_suppress_ctags_warning = 1
-set cpoptions+=d
 
 "Unite Grep
 let g:unite_source_grep_max_candidates = 200

@@ -1,0 +1,13 @@
+# ~/.tmuxinator/scratch.yml
+# you can make as many tabs as you wish...
+
+project_name: gjuc
+project_root: ~/src/gjuc-ecom
+windows:
+  - logs: xtail log
+  - docker: # run docker commands
+      layout: main-vertical
+      panes:
+        - dockerRun
+        - dockerUp
+  - root: # drop in root

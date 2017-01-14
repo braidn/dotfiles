@@ -76,5 +76,12 @@ tool = vimdiff
 [difftool]
 prompt = false
 
+[diff "gpg"]
+  textconv = dotgpg unsafe_cat
+
+[merge "gpg"]
+  name = dotgpg merge driver
+  driver = "dotgpg merge %O %A %B"
+
 [push]
   default = simple
