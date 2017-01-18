@@ -3,8 +3,9 @@ tap "osx-cross/arm"
 tap "osx-cross/avr"
 tap "neovim/neovim"
 tap "caskroom/versions"
+tap universal-ctags/universal-ctags
 
-brew "ctags"
+brew "--HEAD universal-ctags"
 brew "git"
 brew "direnv"
 brew "openssl"
@@ -19,6 +20,7 @@ brew "neovim/neovim/neovim"
 brew "heroku-toolbelt"
 brew "hub"
 brew "imagemagick"
+brew "htop"
 
 brew "libyaml" # should come after openssl
 brew "chruby"
