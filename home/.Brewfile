@@ -57,6 +57,7 @@ cask "dash"
 cask "paw"
 cask "screenhero"
 cask "spotify"
+cask "teensy"
 
 cask "chromium"
 cask "google-chrome-canary"
