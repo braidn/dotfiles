@@ -4,7 +4,7 @@ tap "PX4/homebrew-px4" #arm-none-eabi toolchain
 tap "osx-cross/avr"
 tap "neovim/neovim"
 tap "caskroom/versions"
-tap universal-ctags/universal-ctags
+tap "universal-ctags/universal-ctags"
 
 brew "--HEAD universal-ctags"
 brew "git"
