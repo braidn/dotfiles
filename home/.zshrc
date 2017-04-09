@@ -9,8 +9,7 @@ export LC_ALL=en_US.UTF-8
 export DISABLE_SPRING=1
 export SSL_CERT_FILE=/usr/local/etc/openssl/cert.pem
 export CLICOLOR=1
-export NODENV_ROOT=/opt/nodenv
-export NODENV_VERSION=6.9.1
+# export BUNDLE_GITHUB__HTTPS=true
 PS1="$PS1"'$([ -n "$TMUX"  ] && tmux setenv TMUXPWD_$(tmux display -p "#D" | tr -d %) "$PWD")'
 # export SSL_CERT_FILE=/opt/boxen/homebrew/etc/openssl/certs/ca_bundle.pem
 # tmuxinator scripts for saving specific tmux setups and projects
@@ -77,13 +76,17 @@ alias de="dcr web bundle exec"
 alias elm='docker run -it --rm -v "$(pwd):/code" -w "/code" -e "HOME=/tmp" -u $UID:$GID -p 8000:8000 codesimple/elm:0.18'
 alias crystal='docker run -it --rm -v "$(pwd):/code" -w "/code" -p 3000:3000 --entrypoint crystal crystallang/crystal'
 alias shards='docker run -it --rm -v "$(pwd):/code" -w "/code" --entrypoint shards crystallang/crystal'
-alias nodesh='docker run -it --rm -v "$(pwd):/code" -w "/code" mhart/alpine-node-auto sh'
-#Chruby
+alias dnode='docker run -it --rm -v "$(pwd):/code" -w "/code" mhart/alpine-node sh'
+alias druby='docker run -it --rm -v "$(pwd):/src/repo" -w "/src/repo" braidn/ruby-full-stack:2.3.1 sh'
+#Rubys
 source /usr/local/opt/chruby/share/chruby/chruby.sh
 source /usr/local/share/chruby/auto.sh
 chruby 2.3.0
 RUBIES=(/opt/rubies/*)
 export RUBIES
+#Nodes
+export NODENV_ROOT=/opt/nodenv
+export NODENV_VERSION=7.4.0
 
 #Functions
 

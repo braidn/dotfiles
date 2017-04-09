@@ -1,6 +1,0 @@
-project_name: holr
-project_root: ~/src/hollar
-windows:
-  - logs: xtail log/
-  - server: rserv -p 1234
-  - vim:

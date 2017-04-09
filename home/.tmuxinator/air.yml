@@ -1,9 +1,0 @@
-# ~/.tmuxinator/scratch.yml
-# you can make as many tabs as you wish...
-
-name: airw
-root: ~/src/airware/
-windows:
-  - editor: 
-  - server: 
-  - logs: xtail log/

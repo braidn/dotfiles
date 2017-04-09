@@ -1,0 +1,7 @@
+# ~/.tmuxinator/wiki.yml
+# you can make as many tabs as you wish...
+
+project_name: play
+project_root: ~/src/
+windows:
+  - fun1: 

@@ -218,10 +218,7 @@ nnoremap <Leader>rv :Rview
 nnoremap <Leader>rc :Rcontroller
 nnoremap <Leader>sl :set cc=80<CR>
 nnoremap <leader>tw :set textwidth=80<cr>
-nnoremap ; :
-nnoremap : ;
-vnoremap ; :
-vnoremap : ;
+nnoremap <leader>twd :let g:test#transformation = 'docker'<cr>
 
 "Fugitive bindings
 nnoremap <silent> <leader>gs :Gstatus<CR>
@@ -238,7 +235,13 @@ hi Conceal ctermfg=red ctermbg=NONE
 tnoremap <Leader><ESC> <C-\><C-n>
 
 " Testing
-let test#ruby#rspec#executable = 'dcr web bundle exec rspec'
+nnoremap <Leader>tn :TestNearest<cr>
+nnoremap <Leader>tf :TestFile<cr>
+function! DockerTransform(cmd) abort
+  return 'docker-compose run web'.a:cmd
+endfunction
+
+let g:test#custom_transformations = {'docker': function('DockerTransform')}
 let g:test#strategy = 'vtr'
 
 "Switch
@@ -258,17 +261,13 @@ let g:tmuxline_preset = {
       \'z' : '#(tmux-mem-cpu-load 2)',}
 
 ""Key remaps
-" nnoremap <up> <nop>
-" nnoremap <down> <nop>
-" nnoremap <left> <nop>
-" nnoremap <right> <nop>
-" inoremap <up> <nop>
-" inoremap <down> <nop>
-" inoremap <left> <nop>
-" inoremap <right> <nop>
 inoremap jj <ESC>
+nnoremap ; :
+nnoremap : ;
+vnoremap ; :
+vnoremap : ;
 
-" When dealing with special file types
+" FT Specific
 au BufRead,BufNewFile jquery.*.js set ft=javascript syntax=jquery
 au BufRead,BufNewFile *.rabl set ft=ruby
 
@@ -278,8 +277,10 @@ autocmd FileType markdown let b:dispatch = 'octodown %'
 let g:vim_markdown_folding_disabled = 1
 let g:vim_markdown_conceal = 0
 
-let g:neomake_javascript_enabled_makers = ['eslint']
+let g:neomake_javascript_enabled_makers = ['standard', 'jshint']
+let g:neomake_jsx_enabled_makers = ['standard']
 let g:neomake_ruby_enabled_makers  = ['rubocop', 'mri']
+let g:neomake_slim_enabled_makers  = ['slimlint']
 
 "Deoplete
 let g:deoplete#enable_at_startup = 1

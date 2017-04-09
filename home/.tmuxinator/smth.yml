@@ -1,6 +1,0 @@
-project_name: smth
-project_root: ~/src/smartthings
-windows:
-  - vim:
-  - server:
-  - logs: xtail log/
