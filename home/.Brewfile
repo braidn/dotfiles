@@ -6,7 +6,6 @@ tap "neovim/neovim"
 tap "caskroom/versions"
 tap "universal-ctags/universal-ctags"
 
-brew "--HEAD universal-ctags"
 brew "git"
 brew "direnv"
 brew "openssl"
