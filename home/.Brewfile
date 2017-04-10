@@ -21,6 +21,8 @@ brew "heroku-toolbelt"
 brew "hub"
 brew "imagemagick"
 brew "htop"
+brew "fasd"
+brew "python3"
 
 brew "libyaml" # should come after openssl
 brew "chruby"
