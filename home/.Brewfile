@@ -31,7 +31,7 @@ brew "node-build"
 brew "arm-gcc-bin"
 brew "avr-binutils"
 brew "avr-gcc"
-brew link avr-gcc
+brew link "avr-gcc"
 brew "avr-libc"
 brew "dfu-util"
 brew "dfu-programmer"
