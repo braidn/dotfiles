@@ -31,7 +31,7 @@ brew "node-build"
 brew "arm-gcc-bin"
 brew "avr-binutils"
 brew "avr-gcc"
-brew link "avr-gcc"
+#brew "avr-gcc" this needs to have avr-gcc linked before installing
 brew "avr-libc"
 brew "dfu-util"
 brew "dfu-programmer"
