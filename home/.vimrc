@@ -45,6 +45,7 @@ Plug 'itspriddle/vim-marked'
 Plug 'christoomey/vim-tmux-runner'
 Plug 'sheerun/vim-polyglot'
 Plug 'ludovicchabant/vim-gutentags'
+Plug 'othree/jspc.vim'
 
 ""Will you make the cut
 Plug 'AndrewRadev/splitjoin.vim'
@@ -291,14 +292,33 @@ let g:deoplete#enable_refresh_always = 1
 let g:deoplete#max_abbr_width = 0
 let g:deoplete#max_menu_width = 0
 let g:deoplete#sources#tss#javascript_support = 1
-let g:deoplete#omni#input_patterns = get(g:,'deoplete#omni#input_patterns',{})
+if !exists('g:deoplete#omni#functions')
+  let g:deoplete#omni#functions = {}
+  let g:deoplete#omni#functions.ruby = 'rubycomplete#Complete'
+  let g:deoplete#omni#functions.css = 'csscomplete#CompleteCSS'
+  let g:deoplete#omni#functions.html = 'htmlcomplete#CompleteTags'
+  let g:deoplete#omni#functions.markdown = 'htmlcomplete#CompleteTags'
+  let g:deoplete#omni#functions.python = 'pythoncomplete#Complete'
+  let g:deoplete#omni#functions.ruby = 'rubycomplete#Complete'
+  let g:deoplete#omni#functions.eruby = 'rubycomplete#Complete'
+  let g:deoplete#omni#functions.javascript = 'jspc#omni'
+  let g:deoplete#omni#functions.jsx = 'jspc#omni'
+  if exists('g:plugs["tern_for_vim"]')
+    let g:tern_request_timeout = 1
+    let g:tern_request_timeout = 6000
+    let g:tern#command = ["tern"]
+    let g:tern#arguments = ["--persistent"]
+    let g:tern_show_argument_hints = 'on_hold'
+    let g:tern_show_signature_in_pum = 1
+    let g:deoplete#omni#functions.javascript = ['tern#Complete','jspc#omni']
+    let g:deoplete#omni#functions.jsx = ['tern#Complete','jspc#omni']
+  endif
+endif
+" let g:deoplete#omni#input_patterns = get(g:,'deoplete#omni#input_patterns',{})
 call deoplete#custom#set('_', 'matchers', ['matcher_full_fuzzy'])
+autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
 
 "JS
-let g:tern_request_timeout = 1
-let g:tern_request_timeout = 6000
-let g:tern#command = ["tern"]
-let g:tern#arguments = ["--persistent"]
 let g:tsuquyomi_javascript_support = 1
 let g:tsuquyomi_auto_open = 1
 let g:tsuquyomi_disable_quickfix = 1

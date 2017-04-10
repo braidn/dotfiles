@@ -5,3 +5,4 @@ project_name: wiki
 project_root: ~/src/wiki
 windows:
   - server: bundle exec gollum --h1-title --no-live-preview
+  - betterment: ../betterment
