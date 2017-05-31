@@ -1,7 +1,4 @@
 cask_args appdir: '/Applications'
-tap "osx-cross/arm"
-tap "PX4/homebrew-px4" #arm-none-eabi toolchain
-tap "osx-cross/avr"
 tap "neovim/neovim"
 tap "caskroom/versions"
 tap "universal-ctags/universal-ctags"
@@ -23,6 +20,12 @@ brew "imagemagick"
 brew "htop"
 brew "fasd"
 brew "python3"
+brew "heroku"
+brew "readline"
+brew "redis"
+brew "postgresql"
+brew "python3"
+brew "xtail"
 
 brew "libyaml" # should come after openssl
 brew "chruby"
@@ -30,10 +33,6 @@ brew "nodenv"
 brew "ruby-install"
 brew "node-build"
 
-brew "arm-gcc-bin"
-brew "avr-binutils"
-brew "avr-gcc"
-#brew "avr-libc" this needs to have avr-gcc linked before installing
 brew "dfu-util"
 brew "dfu-programmer"
 
