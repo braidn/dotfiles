@@ -2,6 +2,6 @@
 # you can make as many tabs as you wish...
 
 project_name: blog
-project_root: ~/Code/blogz/content/pages
+project_root: ~/src/blrg
 windows:
   - root: #drop in root

@@ -9,16 +9,8 @@ export LC_ALL=en_US.UTF-8
 export DISABLE_SPRING=1
 export SSL_CERT_FILE=/usr/local/etc/openssl/cert.pem
 export CLICOLOR=1
-# export BUNDLE_GITHUB__HTTPS=true
+export HOMEBREW_NO_AUTO_UPDATE=1
 PS1="$PS1"'$([ -n "$TMUX"  ] && tmux setenv TMUXPWD_$(tmux display -p "#D" | tr -d %) "$PWD")'
-# export SSL_CERT_FILE=/opt/boxen/homebrew/etc/openssl/certs/ca_bundle.pem
-# tmuxinator scripts for saving specific tmux setups and projects
-# qfc for quick file completion on
-[ -f /opt/boxen/env.sh  ] && source /opt/boxen/env.sh
-
-. `brew --prefix`/etc/profile.d/z.sh
-
-
 if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
   source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 fi
@@ -81,7 +73,7 @@ alias druby='docker run -it --rm -v "$(pwd):/src/repo" -w "/src/repo" braidn/rub
 #Rubys
 source /usr/local/opt/chruby/share/chruby/chruby.sh
 source /usr/local/share/chruby/auto.sh
-chruby 2.3.0
+chruby 2.3.1
 RUBIES=(/opt/rubies/*)
 export RUBIES
 #Nodes

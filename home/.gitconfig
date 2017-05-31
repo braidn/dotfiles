@@ -1,6 +1,7 @@
 [user]
 name = Braden
-email = braden.douglass@gmail.com
+email = me@braidn.com
+	signingkey = 645EBE7F455DC93E57246ECF3639A77A05A11F11
 
 [color]
 ui = true
@@ -50,7 +51,10 @@ lol = log --graph --decorate --pretty=oneline --abbrev-commit
 lola = log --graph --decorate --pretty=oneline --abbrev-commit --all
 ls = ls-files
 dt = difftool
+glog = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'
 lgl = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+stash-all = stash save --include-untracked
+
 
 [github]
 user = braidn
@@ -69,6 +73,9 @@ protocol = https
 [credential]
 	helper = osxkeychain
 
+[commit]
+	gpgsign = true
+
 [diff]
 tool = vimdiff
 
@@ -84,3 +91,5 @@ prompt = false
 
 [push]
   default = simple
+[gpg]
+	program = gpg2

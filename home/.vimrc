@@ -56,10 +56,7 @@ Plug 'elmcast/elm-vim', { 'for': 'elm' }
 Plug 'posva/vim-vue', { 'for': 'vue' }
 
 "" Deoplete
-function! DoRemote(arg)
-  UpdateRemotePlugins
-endfunction
-Plug 'Shougo/deoplete.nvim', { 'do': function('DoRemote') }
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'fishbullet/deoplete-ruby'
 Plug 'carlitux/deoplete-ternjs'
 Plug 'mhartington/deoplete-typescript'
@@ -278,7 +275,7 @@ autocmd FileType markdown let b:dispatch = 'octodown %'
 let g:vim_markdown_folding_disabled = 1
 let g:vim_markdown_conceal = 0
 
-let g:neomake_javascript_enabled_makers = ['standard', 'jshint']
+let g:neomake_javascript_enabled_makers = ['standard']
 let g:neomake_jsx_enabled_makers = ['standard']
 let g:neomake_ruby_enabled_makers  = ['rubocop', 'mri']
 let g:neomake_slim_enabled_makers  = ['slimlint']
