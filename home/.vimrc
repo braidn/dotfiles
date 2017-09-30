@@ -18,6 +18,7 @@ Plug 'benekastah/neomake'
 Plug 'justinmk/vim-sneak'
 Plug 'Yggdroot/indentLine'
 Plug 'othree/yajs.vim', { 'for': 'javascript' }
+Plug 'HerringtonDarkholme/yats.vim', { 'for': 'typescript' }
 Plug 'tpope/vim-rails', { 'for': 'ruby' }
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-endwise'
@@ -53,16 +54,16 @@ Plug 'malkomalko/projections.vim'
 Plug 'xolox/vim-misc'
 Plug 'tommcdo/vim-lion'
 Plug 'elmcast/elm-vim', { 'for': 'elm' }
-Plug 'posva/vim-vue', { 'for': 'vue' }
 
 "" Deoplete
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-Plug 'fishbullet/deoplete-ruby'
-Plug 'carlitux/deoplete-ternjs'
+Plug 'fishbullet/deoplete-ruby', { 'do': 'gem install neovimm' }
+Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern' }
 Plug 'mhartington/deoplete-typescript'
 
 Plug 'ternjs/tern_for_vim', { 'do': 'npm install && npm install -g tern' }
 Plug 'Quramy/tsuquyomi', { 'do': 'npm install -g typescript' }
+Plug 'ujihisa/neco-look'
 
 
 ""Unite
@@ -200,6 +201,7 @@ set nowrap
 set ttimeoutlen=100
 set complete+=kspell
 let g:python3_host_prog = '/usr/local/bin/python3'
+let g:sneak#s_next = 1
 
 "Yank into OS X, might require reattach-to-user clipboard"
 noremap <leader>y "*y
@@ -274,6 +276,9 @@ autocmd FileType markdown let b:dispatch = 'octodown %'
 
 let g:vim_markdown_folding_disabled = 1
 let g:vim_markdown_conceal = 0
+let g:elm_format_autosave = 1
+let g:elm_make_output_file = "elm.js"
+let g:elm_make_show_warnings = 0
 
 let g:neomake_javascript_enabled_makers = ['standard']
 let g:neomake_jsx_enabled_makers = ['standard']
@@ -289,12 +294,18 @@ let g:deoplete#enable_refresh_always = 1
 let g:deoplete#max_abbr_width = 0
 let g:deoplete#max_menu_width = 0
 let g:deoplete#sources#tss#javascript_support = 1
+let g:deoplete#sources#ternjs#filetypes = [
+      \ 'jsx',
+      \ 'javascript.jsx',
+      \ ]
+let g:deoplete#sources#ternjs#types = 1
+let g:deoplete#sources = {}
+let g:deoplete#sources.markdown = ['buffer', 'look']
 if !exists('g:deoplete#omni#functions')
   let g:deoplete#omni#functions = {}
   let g:deoplete#omni#functions.ruby = 'rubycomplete#Complete'
   let g:deoplete#omni#functions.css = 'csscomplete#CompleteCSS'
   let g:deoplete#omni#functions.html = 'htmlcomplete#CompleteTags'
-  let g:deoplete#omni#functions.markdown = 'htmlcomplete#CompleteTags'
   let g:deoplete#omni#functions.python = 'pythoncomplete#Complete'
   let g:deoplete#omni#functions.ruby = 'rubycomplete#Complete'
   let g:deoplete#omni#functions.eruby = 'rubycomplete#Complete'

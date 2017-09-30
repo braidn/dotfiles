@@ -4,4 +4,5 @@
 project_name: glos
 project_root: ~/src/glos
 windows:
-  - root: #drop in root
+  - logs: xtail log
+  - editor: nv

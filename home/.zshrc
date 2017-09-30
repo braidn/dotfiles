@@ -6,7 +6,7 @@ export GOPATH=$HOME/src/play/go
 # perl warnings
 export LC_CTYPE=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
-export DISABLE_SPRING=1
+# export DISABLE_SPRING=1
 export SSL_CERT_FILE=/usr/local/etc/openssl/cert.pem
 export CLICOLOR=1
 export HOMEBREW_NO_AUTO_UPDATE=1
@@ -25,6 +25,9 @@ alias bu="bundle update"
 alias bi="bundle install"
 alias bip="bundle install --path=.bundle"
 alias bis="bundle install --binstubs"
+#Yarn
+alias yga='yarn global add --global-folder=`nodenv prefix`'
+alias ygr='yarn global remove --global-folder=`nodenv prefix`'
 #System
 alias flushcache="sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder;"
 alias g="git"
@@ -78,7 +81,6 @@ RUBIES=(/opt/rubies/*)
 export RUBIES
 #Nodes
 export NODENV_ROOT=/opt/nodenv
-export NODENV_VERSION=7.4.0
 
 #Functions
 
@@ -110,3 +112,10 @@ eval "$(direnv hook zsh)"
 
 # added by travis gem
 [ -f /Users/braidn/.travis/travis.sh ] && source /Users/braidn/.travis/travis.sh
+
+# tabtab source for serverless package
+# uninstall by removing these lines or running `tabtab uninstall serverless`
+[[ -f /Users/braidn/src/play/typescript/serverless-ts/node_modules/tabtab/.completions/serverless.zsh ]] && . /Users/braidn/src/play/typescript/serverless-ts/node_modules/tabtab/.completions/serverless.zsh
+# tabtab source for sls package
+# uninstall by removing these lines or running `tabtab uninstall sls`
+[[ -f /Users/braidn/src/play/typescript/serverless-ts/node_modules/tabtab/.completions/sls.zsh ]] && . /Users/braidn/src/play/typescript/serverless-ts/node_modules/tabtab/.completions/sls.zsh

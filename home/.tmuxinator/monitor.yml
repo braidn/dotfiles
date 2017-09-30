@@ -1,0 +1,5 @@
+name: monitor
+root: ~/
+
+windows:
+  - process: htop
