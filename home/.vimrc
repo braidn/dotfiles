@@ -57,8 +57,8 @@ Plug 'elmcast/elm-vim', { 'for': 'elm' }
 
 "" Deoplete
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-Plug 'fishbullet/deoplete-ruby', { 'do': 'gem install neovimm' }
-Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern' }
+Plug 'fishbullet/deoplete-ruby'
+Plug 'carlitux/deoplete-ternjs'
 Plug 'mhartington/deoplete-typescript'
 
 Plug 'ternjs/tern_for_vim', { 'do': 'npm install && npm install -g tern' }
