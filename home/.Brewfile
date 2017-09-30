@@ -32,7 +32,7 @@ brew "httpie"
 brew "yarn"
 brew "phantomjs"
 brew "pinentry-mac"
-brew "universal-ctags"
+# brew "universal-ctags" this is required but head only
 
 
 brew "libyaml" # should come after openssl
