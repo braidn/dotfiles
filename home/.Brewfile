@@ -68,6 +68,8 @@ cask "teensy"
 cask "karabiner-elements"
 cask "alfred"
 cask "slack-beta"
+cask "keybase"
+cask "riot"
 
 cask "chromium"
 cask "google-chrome-canary"
