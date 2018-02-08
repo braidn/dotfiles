@@ -2,7 +2,7 @@
 # you can make as many tabs as you wish...
 
 project_name: gpos
-project_root: ~/src/glos-pos
+project_root: ~/src/gpos
 windows:
-  - server: # drop in root
-  - editor:
+  - server: xtail log
+  - editor: nv

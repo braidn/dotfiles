@@ -45,8 +45,9 @@ Plug 'luochen1990/rainbow'
 Plug 'itspriddle/vim-marked'
 Plug 'christoomey/vim-tmux-runner'
 Plug 'sheerun/vim-polyglot'
-Plug 'ludovicchabant/vim-gutentags'
+Plug 'jsfaint/gen_tags.vim'
 Plug 'othree/jspc.vim'
+Plug 'Shougo/denite.nvim', { 'do': ':UpdateRemotePlugins' }
 
 ""Will you make the cut
 Plug 'AndrewRadev/splitjoin.vim'
@@ -54,38 +55,33 @@ Plug 'malkomalko/projections.vim'
 Plug 'xolox/vim-misc'
 Plug 'tommcdo/vim-lion'
 Plug 'elmcast/elm-vim', { 'for': 'elm' }
+Plug 'reasonml-editor/vim-reason-plus'
 
 "" Deoplete
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-Plug 'fishbullet/deoplete-ruby'
-Plug 'carlitux/deoplete-ternjs'
-Plug 'mhartington/deoplete-typescript'
+Plug 'carlitux/deoplete-ternjs', { 'for': ['javascript', 'javascript.jsx'] }
+Plug 'mhartington/deoplete-typescript', { 'for': 'typescript' }
+Plug 'autozimu/LanguageClient-neovim', {
+    \ 'branch': 'next',
+    \ 'do': 'bash install.sh',
+    \ }
+Plug 'fishbullet/deoplete-ruby', { 'for': ['ruby', 'erubis'] }
 
 Plug 'ternjs/tern_for_vim', { 'do': 'npm install && npm install -g tern' }
-Plug 'Quramy/tsuquyomi', { 'do': 'npm install -g typescript' }
-Plug 'ujihisa/neco-look'
-
-
-""Unite
-Plug 'Shougo/unite.vim'
-Plug 'Shougo/unite-outline'
-Plug 'tsukkee/unite-tag'
-Plug 'osyo-manga/unite-quickfix'
-Plug 'critiqjo/unite-fasd.vim'
-Plug 'rhysd/unite-redpen.vim', { 'for': 'liquid' }
-Plug 'Shougo/vimfiler.vim'
-
-""Snippets
-Plug 'MarcWeber/vim-addon-mw-utils'
-Plug 'garbas/vim-snipmate'
-Plug 'tomtom/tlib_vim'
-Plug 'honza/vim-snippets'
+Plug 'Quramy/tsuquyomi', { 'do': 'npm install -g typescript', 'for': 'typescript' }
+Plug 'ujihisa/neco-look', { 'for': ['gitcommit', 'markdown'] }
+Plug 'Shougo/neosnippet.vim'
+Plug 'Shougo/neosnippet-snippets'
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 
 call plug#end()            " required
 filetype plugin indent on
 
+if exists('g:loaded_lightline')
+  call denite#custom#option('default', 'statusline', v:true)
+endif
+
 let g:lightline = {
-      \ 'colorscheme': 'wombat',
+      \ 'colorscheme': 'powerline',
       \ 'active': {
       \   'left': [ [ 'mode', 'paste'  ], [ 'fugitive', 'filename'  ] ],
       \   'right': [ [ 'lineinfo'  ], ['percent'], [ 'fileformat', 'fileencoding', 'filetype'  ]  ]
@@ -101,7 +97,6 @@ let g:lightline = {
       \ 'subseparator': { 'left': '|', 'right': '|'  }
       \ }
 
-
 function! MyModified()
   return &ft =~ 'help' ? '' : &modified ? '+' : &modifiable ? '' : '-'
 endfunction
@@ -112,10 +107,7 @@ endfunction
 
 function! MyFilename()
   let fname = expand('%:t')
-  return fname == 'ControlP' ? g:lightline.ctrlp_item :
-        \ &ft == 'vimfiler' ? vimfiler#get_status_string() :
-        \ &ft == 'unite' ? unite#get_status_string() :
-        \ &ft == 'vimshell' ? vimshell#get_status_string() :
+  return fname == 'vimshell' ? vimshell#get_status_string() :
         \ ('' != MyReadonly() ? MyReadonly() . ' ' : '') .
         \ ('' != fname ? fname : '[No Name]') .
         \ ('' != MyModified() ? ' ' . MyModified() : '')
@@ -124,7 +116,7 @@ endfunction
 function! MyFugitive()
   try
     if expand('%:t') !~? 'Tagbar\|Gundo\|NERD' && &ft !~? 'vimfiler' && exists('*fugitive#head')
-      let mark = ''  " edit here for cool mark
+      let mark = '' 
       let _ = fugitive#head()
       return strlen(_) ? mark._ : ''
     endif
@@ -148,15 +140,11 @@ endfunction
 function! MyMode()
   let fname = expand('%:t')
   return fname == '__Tagbar__' ? 'Tagbar' :
-        \ &ft == 'unite' ? 'Unite' :
-        \ &ft == 'vimfiler' ? 'VimFiler' :
+        \ &ft == 'denite' ? 'Denite' :
         \ &ft == 'vimshell' ? 'VimShell' :
         \ winwidth(0) > 60 ? lightline#mode() : ''
 endfunction
 
-let g:unite_force_overwrite_statusline = 0
-let g:vimfiler_force_overwrite_statusline = 0
-let g:vimshell_force_overwrite_statusline = 0
 let g:rainbow_active = 1
 
 "Color stuff
@@ -203,6 +191,12 @@ set complete+=kspell
 let g:python3_host_prog = '/usr/local/bin/python3'
 let g:sneak#s_next = 1
 
+"Netrw
+let g:netrw_liststyle=3
+let g:netrw_chgwin=2
+let g:netrw_winsize=22
+let g:netrw_bufsettings = 'noma nomod nu nobl nowrap ro'
+
 "Yank into OS X, might require reattach-to-user clipboard"
 noremap <leader>y "*y
 noremap <leader>yy "*Y
@@ -238,7 +232,7 @@ tnoremap <Leader><ESC> <C-\><C-n>
 nnoremap <Leader>tn :TestNearest<cr>
 nnoremap <Leader>tf :TestFile<cr>
 function! DockerTransform(cmd) abort
-  return 'docker-compose run web'.a:cmd
+  return 'dcr test '.a:cmd
 endfunction
 
 let g:test#custom_transformations = {'docker': function('DockerTransform')}
@@ -277,11 +271,11 @@ autocmd FileType markdown let b:dispatch = 'octodown %'
 let g:vim_markdown_folding_disabled = 1
 let g:vim_markdown_conceal = 0
 let g:elm_format_autosave = 1
-let g:elm_make_output_file = "elm.js"
+let g:elm_make_output_file = "./dist/elm.js"
 let g:elm_make_show_warnings = 0
 
-let g:neomake_javascript_enabled_makers = ['standard']
-let g:neomake_jsx_enabled_makers = ['standard']
+let g:neomake_javascript_enabled_makers = ['eslint']
+let g:neomake_jsx_enabled_makers = ['eslint']
 let g:neomake_ruby_enabled_makers  = ['rubocop', 'mri']
 let g:neomake_slim_enabled_makers  = ['slimlint']
 
@@ -291,6 +285,7 @@ let g:deoplete#enable_ignore_case = 1
 let g:deoplete#enable_smart_case = 1
 let g:deoplete#enable_camel_case = 1
 let g:deoplete#enable_refresh_always = 1
+let g:deoplete#file#enable_buffer_path = 1
 let g:deoplete#max_abbr_width = 0
 let g:deoplete#max_menu_width = 0
 let g:deoplete#sources#tss#javascript_support = 1
@@ -301,12 +296,13 @@ let g:deoplete#sources#ternjs#filetypes = [
 let g:deoplete#sources#ternjs#types = 1
 let g:deoplete#sources = {}
 let g:deoplete#sources.markdown = ['buffer', 'look']
+let g:deoplete#ignore_sources = {}
+let g:deoplete#ignore_sources.ruby = ['look']
 if !exists('g:deoplete#omni#functions')
   let g:deoplete#omni#functions = {}
   let g:deoplete#omni#functions.ruby = 'rubycomplete#Complete'
   let g:deoplete#omni#functions.css = 'csscomplete#CompleteCSS'
   let g:deoplete#omni#functions.html = 'htmlcomplete#CompleteTags'
-  let g:deoplete#omni#functions.python = 'pythoncomplete#Complete'
   let g:deoplete#omni#functions.ruby = 'rubycomplete#Complete'
   let g:deoplete#omni#functions.eruby = 'rubycomplete#Complete'
   let g:deoplete#omni#functions.javascript = 'jspc#omni'
@@ -326,36 +322,50 @@ endif
 call deoplete#custom#set('_', 'matchers', ['matcher_full_fuzzy'])
 autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
 
+imap <C-k> <Plug>(neosnippet_expand_or_jump)
+smap <C-k> <Plug>(neosnippet_expand_or_jump)
+xmap <C-k> <Plug>(neosnippet_expand_target)
+
+if has('conceal')
+  set conceallevel=2 concealcursor=niv
+endif
+
 "JS
 let g:tsuquyomi_javascript_support = 1
 let g:tsuquyomi_auto_open = 1
 let g:tsuquyomi_disable_quickfix = 1
 
-"Unite
-nnoremap <Leader>p :Unite buffer file_rec/async:!<cr>
-nnoremap <Leader>/ :Unite grep<cr>
-nnoremap <Leader>s :Unite -quick-match buffer<cr>
-nnoremap <Leader>o :Unite -vertical -winwidth=35 outline<cr>
-nnoremap <Leader>qf :Unite -no-quit -direction=botright quickfix<cr>
-nnoremap <Leader>ll :Unite -no-quit -direction=botright location_list<cr>
-
-call unite#filters#matcher_default#use(['matcher_fuzzy'])
-call unite#filters#sorter_default#use(['sorter_rank'])
-call unite#custom#source('grep', 'ignore_globs', ['./.git/*', './.bundle/*', './node_modules/**', './app/bower_components/**', './app/images/**', './dist/**'])
-call unite#custom#source('file_rec/async', 'ignore_globs', ['./.git/**', './.bundle/**', './node_modules/**', './app/bower_components/**', './app/images/**', './dist/**'])
-let g:unite_fasd#fasd_path = '/usr/local/bin/fasd'
-let g:unite_source_history_yank_enable = 1
-let g:unite_enable_ignore_case = 1
-let g:unite_enable_smart_case = 1
-let g:unite_prompt = "➤ "
-let g:unite_source_rec_async_command =
-  \ ['ag', '--follow', '--nocolor', '--nogroup',
-  \  '--hidden', '-g', '']
-let g:vimfiler_as_default_explorer = 1
-
-call vimfiler#custom#profile('default', 'context', {
-      \ 'safe' : 0,
+call denite#custom#option('default', {
+      \ 'prompt': '❯'
       \ })
+
+call denite#custom#var('file_rec', 'command',
+      \ ['rg', '--files', '--glob', ''])
+call denite#custom#var('grep', 'command', ['rg'])
+call denite#custom#var('grep', 'default_opts',
+      \ ['--hidden', '--vimgrep', '--no-heading', '-S'])
+call denite#custom#var('grep', 'recursive_opts', [])
+call denite#custom#var('grep', 'pattern_opt', ['--regexp'])
+call denite#custom#var('grep', 'separator', ['--'])
+call denite#custom#var('grep', 'final_opts', [])
+call denite#custom#map('insert', '<Esc>', '<denite:enter_mode:normal>',
+      \'noremap')
+call denite#custom#map('normal', '<Esc>', '<NOP>',
+      \'noremap')
+call denite#custom#map('insert', '<C-v>', '<denite:do_action:vsplit>',
+      \'noremap')
+call denite#custom#map('normal', '<C-v>', '<denite:do_action:vsplit>',
+      \'noremap')
+call denite#custom#map('normal', 'dw', '<denite:delete_word_after_caret>',
+      \'noremap')
+
+nnoremap <leader>p :<C-u>Denite file_rec -mode=normal<CR>
+nnoremap <leader>s :<C-u>Denite buffer -mode=normal<CR>
+nnoremap <leader>d :<C-u>DeniteBufferDir file_rec<CR>
+nnoremap <leader>/ :<C-u>Denite grep:. -mode=normal<CR>
+nnoremap <leader># :<C-u>DeniteCursorWord grep:. -mode=normal<CR>
+
+hi link deniteMatchedChar Special
 
 autocmd! BufWritePost * Neomake
 
@@ -374,38 +384,23 @@ nnoremap <silent> <c-k> :TmuxNavigateUp<cr>
 nnoremap <silent> <c-l> :TmuxNavigateRight<cr>
 nmap <silent> ,vk :VtrKillRunner<CR>
 
+set hidden
+
+let g:LanguageClient_serverCommands = {
+    \ 'rust': ['rustup', 'run', 'stable', 'rls'],
+    \ 'javascript': ['javascript-typescript-stdio'],
+    \ 'javascript.jsx': ['javascript-typescript-stdio'],
+    \ 'reason': ['ocaml-language-server', '--stdio'],
+    \ 'ocaml': ['ocaml-language-server', '--stdio'],
+    \ }
+
+nnoremap <silent> lch :call LanguageClient_textDocument_hover()<CR>
+nnoremap <silent> lcd :call LanguageClient_textDocument_definition()<CR>
+nnoremap <silent> lcr :call LanguageClient_textDocument_rename()<CR>
+
 if has('nvim')
   set termguicolors
   let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
-endif
-
-"Unite Grep
-let g:unite_source_grep_max_candidates = 200
-if executable('ag')
-  " Use ag in unite grep source.
-  let g:unite_source_grep_command = 'ag'
-  let g:unite_source_grep_default_opts =
-        \ '-i --vimgrep --hidden --ignore ' .
-        \ '''.hg'' --ignore ''.svn'' --ignore ''.git'' --ignore ''.bzr'''
-  let g:unite_source_grep_recursive_opt = ''
-elseif executable('pt')
-  " Use pt in unite grep source.
-  " https://github.com/monochromegane/the_platinum_searcher
-  let g:unite_source_grep_command = 'pt'
-  let g:unite_source_grep_default_opts = '--nogroup --nocolor'
-  let g:unite_source_grep_recursive_opt = ''
-elseif executable('ack-grep')
-  " Use ack in unite grep source.
-  let g:unite_source_grep_command = 'ack-grep'
-  let g:unite_source_grep_default_opts =
-        \ '-i --no-heading --no-color -k -H'
-  let g:unite_source_grep_recursive_opt = ''
-elseif executable('jvgrep')
-  " For jvgrep.
-  let g:unite_source_grep_command = 'jvgrep'
-  let g:unite_source_grep_default_opts =
-        \ '-i --exclude ''\.(git|svn|hg|bzr)'''
-  let g:unite_source_grep_recursive_opt = '-R'
 endif
 
 function! s:RevealInFinder()
