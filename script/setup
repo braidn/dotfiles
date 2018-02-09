@@ -6,6 +6,7 @@ DOTFILES="$HOME/.dotfiles"
 HOMESICK="$HOME/.homesick"
 CONFIGDIR="$HOME/.config"
 TMUXDIR="$HOME/.tmux"
+PREZTODIR="$HOME/.zprezto"
 
 # SRC Files for projects
 if [[ ! -d "$SRCDIR" ]]; then
@@ -23,6 +24,16 @@ if [[ ! -d "$TMUXDIR/plugins" ]]; then
   git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 fi
 
+# Change shell to zsh
+if [[ ! -d "$PREZTODIR" ]]; then
+  zsh && git clone --recursive https://github.com/sorin-ionescu/prezto.git "${ZDOTDIR:-$HOME}/.zprezto"
+  setopt EXTENDED_GLOB
+  for rcfile in "${ZDOTDIR:-$HOME}"/.zprezto/runcoms/^README.md(.N); do
+    ln -s "$rcfile" "${ZDOTDIR:-$HOME}/.${rcfile:t}"
+  done
+  chsh -s /bin/zsh
+fi
+
 # Build Dotfiles
 cd "$DOTFILES"
 
@@ -35,3 +46,11 @@ cd "$HOME"
 
 # Keep Homesick dir but remove dotfiles dir
 rm -rf "$DOTFILES"
+
+# Hide Dock To Left
+defaults write com.apple.dock pinning -string start \
+&& write com.apple.dock static-only -bool TRUE \
+&& write com.apple.dock autohide -bool TRUE \
+&& defaults write com.apple.dock autohide-delay -float 100 \
+&& defaults write com.apple.dock autohide-time-modifier -float 100 \
+&& killall Dock
