@@ -1,9 +1,13 @@
-###Dot Files Me Baby
+### Dot Files Me Baby
 
 Not the most beautiful package of dotfiles but none the less a spartan,
 almost minamalist shot in the arm. Let it _grow_
 
 Also  built for Techpickles [Homesick][1] gem.
+
+### Requirements From Previous Computer
+
+1. Rsync information from the local gitconfig over to new computer
 
 ### Reqirements
 
