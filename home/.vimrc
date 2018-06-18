@@ -24,7 +24,7 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-endwise'
 Plug 'jiangmiao/auto-pairs'
 Plug 'AndrewRadev/switch.vim'
-Plug 'lambdalisue/gina.vim'
+Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-repeat'
 Plug 'janko-m/vim-test'
 Plug 'mattn/emmet-vim'
@@ -119,7 +119,7 @@ function! MyGitstatus()
   try
     if expand('%:t') !~? 'Tagbar\|Gundo\|NERD' && &ft !~? 'vimfiler'
       let mark = '' 
-      let _ = gina#component#status#preset()
+      let _ = fugitive#head()
       return strlen(_) ? mark._ : ''
     endif
   catch
@@ -239,13 +239,14 @@ map <silent> <leader>2 :diffget 2<CR>
 map <silent> <leader>3 :diffget 3<CR>
 map <silent> <leader>4 :diffget 4<CR>
 
-"Gina bindings
-nnoremap <silent> <leader>gs :Gina status -s<CR>
-nnoremap <silent> <leader>gd :Gina diff<CR>
-nnoremap <silent> <leader>gc :Gina commit --verbose<CR>
-nnoremap <silent> <leader>gb :Gina blame<CR>
-nnoremap <silent> <leader>gl :Gina log<CR>
-nnoremap <silent> <leader>gw :Gina write<CR>
+"Git bindings
+nnoremap <silent> <leader>gs :Gstatus<CR>
+nnoremap <silent> <leader>gd :Gdiff<CR>
+nnoremap <silent> <leader>gc :Gcommit<CR>
+nnoremap <silent> <leader>gb :Gblame<CR>
+nnoremap <silent> <leader>gl :Glog<CR>
+nnoremap <silent> <leader>gp :Git push<CR>
+nnoremap <silent> <leader>gw :Gwrite!<CR>
 
 "Indent Lines
 hi Conceal ctermfg=red ctermbg=NONE
@@ -290,7 +291,6 @@ au BufRead,BufNewFile jquery.*.js set ft=javascript syntax=jquery
 au BufRead,BufNewFile *.rabl set ft=ruby
 
 autocmd Filetype gitcommit setlocal spell textwidth=72
-autocmd Filetype gina-commit setlocal spell textwidth=72
 autocmd FileType markdown let b:dispatch = 'octodown %'
 
 let g:vim_markdown_folding_disabled = 1
