@@ -1,0 +1,7 @@
+# ~/.tmuxinator/scratch.yml
+# you can make as many tabs as you wish...
+
+project_name: ptrn
+project_root: ~/src/pttrns-v4
+windows:
+  - editor: nv

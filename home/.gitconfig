@@ -79,5 +79,10 @@ prompt = false
   name = dotgpg merge driver
   driver = "dotgpg merge %O %A %B"
 
+[merge]
+    tool = vimdiff
+    conflictstyle = diff3
+
 [push]
   default = simple
+

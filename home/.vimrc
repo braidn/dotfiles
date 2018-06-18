@@ -24,10 +24,10 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-endwise'
 Plug 'jiangmiao/auto-pairs'
 Plug 'AndrewRadev/switch.vim'
+Plug 'lambdalisue/gina.vim'
 Plug 'tpope/vim-repeat'
 Plug 'janko-m/vim-test'
 Plug 'mattn/emmet-vim'
-Plug 'tpope/vim-fugitive'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'b3niup/numbers.vim'
 Plug 'itchyny/lightline.vim'
@@ -48,6 +48,7 @@ Plug 'sheerun/vim-polyglot'
 Plug 'jsfaint/gen_tags.vim'
 Plug 'othree/jspc.vim'
 Plug 'Shougo/denite.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'honza/vim-snippets'
 
 ""Will you make the cut
 Plug 'AndrewRadev/splitjoin.vim'
@@ -56,6 +57,7 @@ Plug 'xolox/vim-misc'
 Plug 'tommcdo/vim-lion'
 Plug 'elmcast/elm-vim', { 'for': 'elm' }
 Plug 'reasonml-editor/vim-reason-plus'
+Plug 'sbdchd/neoformat'
 
 "" Deoplete
 Plug 'carlitux/deoplete-ternjs', { 'for': ['javascript', 'javascript.jsx'] }
@@ -83,11 +85,11 @@ endif
 let g:lightline = {
       \ 'colorscheme': 'powerline',
       \ 'active': {
-      \   'left': [ [ 'mode', 'paste'  ], [ 'fugitive', 'filename'  ] ],
+      \   'left': [ [ 'mode', 'paste'  ], [ 'gitstatus', 'filename'  ] ],
       \   'right': [ [ 'lineinfo'  ], ['percent'], [ 'fileformat', 'fileencoding', 'filetype'  ]  ]
       \ },
       \ 'component_function': {
-      \   'fugitive': 'MyFugitive',
+      \   'gitstatus': 'MyGitstatus',
       \   'filename': 'MyFilename',
       \   'fileformat': 'MyFileformat',
       \   'filetype': 'MyFiletype',
@@ -113,11 +115,11 @@ function! MyFilename()
         \ ('' != MyModified() ? ' ' . MyModified() : '')
 endfunction
 
-function! MyFugitive()
+function! MyGitstatus()
   try
-    if expand('%:t') !~? 'Tagbar\|Gundo\|NERD' && &ft !~? 'vimfiler' && exists('*fugitive#head')
+    if expand('%:t') !~? 'Tagbar\|Gundo\|NERD' && &ft !~? 'vimfiler'
       let mark = '' 
-      let _ = fugitive#head()
+      let _ = gina#component#status#preset()
       return strlen(_) ? mark._ : ''
     endif
   catch
@@ -144,6 +146,23 @@ function! MyMode()
         \ &ft == 'vimshell' ? 'VimShell' :
         \ winwidth(0) > 60 ? lightline#mode() : ''
 endfunction
+
+augroup NeoformatAutoFormat
+    autocmd!
+    autocmd FileType javascript setlocal formatprg=prettier\
+          \--stdin\
+          \--print-width\ 80\
+          \--single-quote\
+          \--no-semi
+    autocmd FileType javascript.jsx setlocal formatprg=prettier\
+          \--stdin\
+          \--print-width\ 80\
+          \--no-semi
+    autocmd BufWritePre *.js undojoin | Neoformat
+    autocmd BufWritePre *.jsx undojoin | Neoformat
+augroup END
+let g:neoformat_only_msg_on_error = 1
+
 
 let g:rainbow_active = 1
 
@@ -213,15 +232,20 @@ nnoremap <Leader>rc :Rcontroller
 nnoremap <Leader>sl :set cc=80<CR>
 nnoremap <leader>tw :set textwidth=80<cr>
 nnoremap <leader>twd :let g:test#transformation = 'docker'<cr>
+nnoremap <leader>ft :Neoformat<cr>
 
-"Fugitive bindings
-nnoremap <silent> <leader>gs :Gstatus<CR>
-nnoremap <silent> <leader>gd :Gdiff<CR>
-nnoremap <silent> <leader>gc :Gcommit<CR>
-nnoremap <silent> <leader>gb :Gblame<CR>
-nnoremap <silent> <leader>gl :Glog<CR>
-nnoremap <silent> <leader>gp :Git push<CR>
-nnoremap <silent> <leader>gw :Gwrite!<CR>
+" Vim Diff
+map <silent> <leader>2 :diffget 2<CR>
+map <silent> <leader>3 :diffget 3<CR>
+map <silent> <leader>4 :diffget 4<CR>
+
+"Gina bindings
+nnoremap <silent> <leader>gs :Gina status -s<CR>
+nnoremap <silent> <leader>gd :Gina diff<CR>
+nnoremap <silent> <leader>gc :Gina commit --verbose<CR>
+nnoremap <silent> <leader>gb :Gina blame<CR>
+nnoremap <silent> <leader>gl :Gina log<CR>
+nnoremap <silent> <leader>gw :Gina write<CR>
 
 "Indent Lines
 hi Conceal ctermfg=red ctermbg=NONE
@@ -266,6 +290,7 @@ au BufRead,BufNewFile jquery.*.js set ft=javascript syntax=jquery
 au BufRead,BufNewFile *.rabl set ft=ruby
 
 autocmd Filetype gitcommit setlocal spell textwidth=72
+autocmd Filetype gina-commit setlocal spell textwidth=72
 autocmd FileType markdown let b:dispatch = 'octodown %'
 
 let g:vim_markdown_folding_disabled = 1
@@ -273,11 +298,11 @@ let g:vim_markdown_conceal = 0
 let g:elm_format_autosave = 1
 let g:elm_make_output_file = "./dist/elm.js"
 let g:elm_make_show_warnings = 0
-
 let g:neomake_javascript_enabled_makers = ['eslint']
 let g:neomake_jsx_enabled_makers = ['eslint']
 let g:neomake_ruby_enabled_makers  = ['rubocop', 'mri']
 let g:neomake_slim_enabled_makers  = ['slimlint']
+let g:neomake_javascript_eslint_exe = $PWD .'/node_modules/.bin/eslint'
 
 "Deoplete
 let g:deoplete#enable_at_startup = 1
@@ -319,12 +344,15 @@ if !exists('g:deoplete#omni#functions')
   endif
 endif
 " let g:deoplete#omni#input_patterns = get(g:,'deoplete#omni#input_patterns',{})
-call deoplete#custom#set('_', 'matchers', ['matcher_full_fuzzy'])
+call deoplete#custom#source('_', 'matchers', ['matcher_full_fuzzy'])
 autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
 
 imap <C-k> <Plug>(neosnippet_expand_or_jump)
 smap <C-k> <Plug>(neosnippet_expand_or_jump)
 xmap <C-k> <Plug>(neosnippet_expand_target)
+
+let g:neosnippet#enable_snipmate_compatibility = 1
+let g:neosnippet#snippets_directory='~/.vim/plugged/vim-snippets/snippets'
 
 if has('conceal')
   set conceallevel=2 concealcursor=niv
