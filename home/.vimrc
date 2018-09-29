@@ -14,7 +14,6 @@ Plug 'morhetz/gruvbox'
 Plug 'Shougo/vimproc.vim', { 'do': 'make -f make_mac.mak' }
 Plug 'mattn/gist-vim'
 Plug 'mattn/webapi-vim'
-Plug 'benekastah/neomake'
 Plug 'justinmk/vim-sneak'
 Plug 'Yggdroot/indentLine'
 Plug 'othree/yajs.vim', { 'for': 'javascript' }
@@ -49,6 +48,10 @@ Plug 'jsfaint/gen_tags.vim'
 Plug 'othree/jspc.vim'
 Plug 'Shougo/denite.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'honza/vim-snippets'
+Plug 'keith/swift.vim', { 'for': 'swift' }
+Plug 'kballard/vim-swift', { 'for': 'swift' }
+Plug 'dafufer/nvim-cm-swift-completer', { 'for': 'swift' }
+
 
 ""Will you make the cut
 Plug 'AndrewRadev/splitjoin.vim'
@@ -57,23 +60,20 @@ Plug 'xolox/vim-misc'
 Plug 'tommcdo/vim-lion'
 Plug 'elmcast/elm-vim', { 'for': 'elm' }
 Plug 'reasonml-editor/vim-reason-plus'
-Plug 'sbdchd/neoformat'
-
-"" Deoplete
-Plug 'carlitux/deoplete-ternjs', { 'for': ['javascript', 'javascript.jsx'] }
-Plug 'mhartington/deoplete-typescript', { 'for': 'typescript' }
+Plug 'w0rp/ale'
+Plug 'othree/csscomplete.vim'
+Plug 'othree/html5.vim'
 Plug 'autozimu/LanguageClient-neovim', {
     \ 'branch': 'next',
     \ 'do': 'bash install.sh',
     \ }
-Plug 'fishbullet/deoplete-ruby', { 'for': ['ruby', 'erubis'] }
-
-Plug 'ternjs/tern_for_vim', { 'do': 'npm install && npm install -g tern' }
-Plug 'Quramy/tsuquyomi', { 'do': 'npm install -g typescript', 'for': 'typescript' }
-Plug 'ujihisa/neco-look', { 'for': ['gitcommit', 'markdown'] }
-Plug 'Shougo/neosnippet.vim'
-Plug 'Shougo/neosnippet-snippets'
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'ncm2/ncm2'
+Plug 'Shougo/defx.nvim', { 'do': ':UpdateRemotePlugins' }
+" ncm2 requires nvim-yarp
+Plug 'roxma/nvim-yarp'
+Plug 'ncm2/ncm2-bufword'
+Plug 'ncm2/ncm2-tmux'
+Plug 'ncm2/ncm2-path'
 
 call plug#end()            " required
 filetype plugin indent on
@@ -146,23 +146,6 @@ function! MyMode()
         \ &ft == 'vimshell' ? 'VimShell' :
         \ winwidth(0) > 60 ? lightline#mode() : ''
 endfunction
-
-augroup NeoformatAutoFormat
-    autocmd!
-    autocmd FileType javascript setlocal formatprg=prettier\
-          \--stdin\
-          \--print-width\ 80\
-          \--single-quote\
-          \--no-semi
-    autocmd FileType javascript.jsx setlocal formatprg=prettier\
-          \--stdin\
-          \--print-width\ 80\
-          \--no-semi
-    autocmd BufWritePre *.js undojoin | Neoformat
-    autocmd BufWritePre *.jsx undojoin | Neoformat
-augroup END
-let g:neoformat_only_msg_on_error = 1
-
 
 let g:rainbow_active = 1
 
@@ -241,7 +224,7 @@ map <silent> <leader>4 :diffget 4<CR>
 
 "Git bindings
 nnoremap <silent> <leader>gs :Gstatus<CR>
-nnoremap <silent> <leader>gd :Gdiff<CR>
+nnoremap <silent> <leader>gd :Gvdiff <CR>
 nnoremap <silent> <leader>gc :Gcommit<CR>
 nnoremap <silent> <leader>gb :Gblame<CR>
 nnoremap <silent> <leader>gl :Glog<CR>
@@ -298,62 +281,15 @@ let g:vim_markdown_conceal = 0
 let g:elm_format_autosave = 1
 let g:elm_make_output_file = "./dist/elm.js"
 let g:elm_make_show_warnings = 0
-let g:neomake_javascript_enabled_makers = ['eslint']
-let g:neomake_jsx_enabled_makers = ['eslint']
-let g:neomake_ruby_enabled_makers  = ['rubocop', 'mri']
-let g:neomake_slim_enabled_makers  = ['slimlint']
-let g:neomake_javascript_eslint_exe = $PWD .'/node_modules/.bin/eslint'
 
-"Deoplete
-let g:deoplete#enable_at_startup = 1
-let g:deoplete#enable_ignore_case = 1
-let g:deoplete#enable_smart_case = 1
-let g:deoplete#enable_camel_case = 1
-let g:deoplete#enable_refresh_always = 1
-let g:deoplete#file#enable_buffer_path = 1
-let g:deoplete#max_abbr_width = 0
-let g:deoplete#max_menu_width = 0
-let g:deoplete#sources#tss#javascript_support = 1
-let g:deoplete#sources#ternjs#filetypes = [
-      \ 'jsx',
-      \ 'javascript.jsx',
-      \ ]
-let g:deoplete#sources#ternjs#types = 1
-let g:deoplete#sources = {}
-let g:deoplete#sources.markdown = ['buffer', 'look']
-let g:deoplete#ignore_sources = {}
-let g:deoplete#ignore_sources.ruby = ['look']
-if !exists('g:deoplete#omni#functions')
-  let g:deoplete#omni#functions = {}
-  let g:deoplete#omni#functions.ruby = 'rubycomplete#Complete'
-  let g:deoplete#omni#functions.css = 'csscomplete#CompleteCSS'
-  let g:deoplete#omni#functions.html = 'htmlcomplete#CompleteTags'
-  let g:deoplete#omni#functions.ruby = 'rubycomplete#Complete'
-  let g:deoplete#omni#functions.eruby = 'rubycomplete#Complete'
-  let g:deoplete#omni#functions.javascript = 'jspc#omni'
-  let g:deoplete#omni#functions.jsx = 'jspc#omni'
-  if exists('g:plugs["tern_for_vim"]')
-    let g:tern_request_timeout = 1
-    let g:tern_request_timeout = 6000
-    let g:tern#command = ["tern"]
-    let g:tern#arguments = ["--persistent"]
-    let g:tern_show_argument_hints = 'on_hold'
-    let g:tern_show_signature_in_pum = 1
-    let g:deoplete#omni#functions.javascript = ['tern#Complete','jspc#omni']
-    let g:deoplete#omni#functions.jsx = ['tern#Complete','jspc#omni']
-  endif
-endif
-" let g:deoplete#omni#input_patterns = get(g:,'deoplete#omni#input_patterns',{})
-call deoplete#custom#source('_', 'matchers', ['matcher_full_fuzzy'])
-autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
+" let node_prefix = system('nodenv prefix')
+" let g:node_host_prog = $node_prefix.'/lib/node_modules/neovim/bin/cli.js'
 
-imap <C-k> <Plug>(neosnippet_expand_or_jump)
-smap <C-k> <Plug>(neosnippet_expand_or_jump)
-xmap <C-k> <Plug>(neosnippet_expand_target)
+" enable ncm2 for all buffers
+autocmd BufEnter * call ncm2#enable_for_buffer()
 
-let g:neosnippet#enable_snipmate_compatibility = 1
-let g:neosnippet#snippets_directory='~/.vim/plugged/vim-snippets/snippets'
-
+" :help Ncm2PopupOpen for more information
+set completeopt=noinsert,menuone,noselect
 if has('conceal')
   set conceallevel=2 concealcursor=niv
 endif
@@ -376,13 +312,14 @@ call denite#custom#var('grep', 'recursive_opts', [])
 call denite#custom#var('grep', 'pattern_opt', ['--regexp'])
 call denite#custom#var('grep', 'separator', ['--'])
 call denite#custom#var('grep', 'final_opts', [])
+call denite#custom#map('insert', 'jj', '<denite:enter_mode:normal>')
 call denite#custom#map('insert', '<Esc>', '<denite:enter_mode:normal>',
       \'noremap')
 call denite#custom#map('normal', '<Esc>', '<NOP>',
       \'noremap')
 call denite#custom#map('insert', '<C-v>', '<denite:do_action:vsplit>',
       \'noremap')
-call denite#custom#map('normal', '<C-v>', '<denite:do_action:vsplit>',
+call denite#custom#map('normal', 'v', '<denite:do_action:vsplit>',
       \'noremap')
 call denite#custom#map('normal', 'dw', '<denite:delete_word_after_caret>',
       \'noremap')
@@ -394,8 +331,6 @@ nnoremap <leader>/ :<C-u>Denite grep:. -mode=normal<CR>
 nnoremap <leader># :<C-u>DeniteCursorWord grep:. -mode=normal<CR>
 
 hi link deniteMatchedChar Special
-
-autocmd! BufWritePost * Neomake
 
 " hide/close terminal
 nnoremap <silent> ,tc :call neoterm#close()<cr>
@@ -417,19 +352,70 @@ set hidden
 let g:LanguageClient_serverCommands = {
     \ 'rust': ['rustup', 'run', 'stable', 'rls'],
     \ 'javascript': ['javascript-typescript-stdio'],
-    \ 'javascript.jsx': ['javascript-typescript-stdio'],
+    \ 'javascript.jsx': ['tcp://127.0.0.1:2089'],
+    \ 'ruby': ['solargraph', 'stdio'],
     \ 'reason': ['ocaml-language-server', '--stdio'],
-    \ 'ocaml': ['ocaml-language-server', '--stdio'],
+    \ 'ocaml': ['ocaml-language-server', '--stdio']
     \ }
 
 nnoremap <silent> lch :call LanguageClient_textDocument_hover()<CR>
 nnoremap <silent> lcd :call LanguageClient_textDocument_definition()<CR>
 nnoremap <silent> lcr :call LanguageClient_textDocument_rename()<CR>
 
+let g:ale_fix_on_save = 1
+let g:ale_ruby_rubocop_executable = 'bundle'
+
+let g:ale_linters = {
+\   'javascript': ['eslint'],
+\   'typescript': ['eslint', 'tsserver'],
+\  }
+
+let g:ale_linter_aliases = {
+\  'typescript.tsx': 'typescript',
+\  'typescriptreact': 'typescript',
+\  }
+
+let g:ale_fixers = {
+\   'javascript': ['eslint', 'prettier'],
+\   'typescript': ['eslint'],
+\   'typescriptreact': ['eslint'],
+\   }
+
+let g:ale_sign_error = '✖'
+" hi ALEErrorSign guifg=#DF8C8C
+let g:ale_sign_warning = '⚠'
+" hi ALEWarningSign guifg=#F2C38F
+
 if has('nvim')
   set termguicolors
-  let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
 endif
+
+autocmd FileType defx call s:defx_my_settings()
+function! s:defx_my_settings() abort
+  " Define mappings
+  nnoremap <silent><buffer><expr> <CR>
+        \ defx#do_action('open')
+  nnoremap <silent><buffer><expr> K
+        \ defx#do_action('new_directory')
+  nnoremap <silent><buffer><expr> N
+        \ defx#do_action('new_file')
+  nnoremap <silent><buffer><expr> d
+        \ defx#do_action('remove')
+  nnoremap <silent><buffer><expr> r
+        \ defx#do_action('rename')
+  nnoremap <silent><buffer><expr> h
+        \ defx#do_action('cd', ['..'])
+  nnoremap <silent><buffer><expr> ~
+        \ defx#do_action('cd')
+  nnoremap <silent><buffer><expr> <Space>
+        \ defx#do_action('toggle_select') . 'j'
+  nnoremap <silent><buffer><expr> j
+        \ line('.') == line('$') ? 'gg' : 'j'
+  nnoremap <silent><buffer><expr> k
+        \ line('.') == 1 ? 'G' : 'k'
+  nnoremap <silent><buffer><expr> <C-l>
+        \ defx#do_action('redraw')
+endfunction
 
 function! s:RevealInFinder()
   if filereadable(expand("%"))

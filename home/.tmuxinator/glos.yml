@@ -6,3 +6,4 @@ project_root: ~/src/glos
 windows:
   - logs: xtail log
   - editor: nv
+on_project_exit: overmind kill & bin/spring stop

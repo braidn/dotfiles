@@ -173,7 +173,7 @@
             ],
             "name": "int",
             "one_to_many_mappings": {},
-            "selected": true,
+            "selected": false,
             "simple_modifications": [],
             "standalone_keys": {},
             "virtual_hid_keyboard": {
@@ -359,7 +359,7 @@
                 }
             ],
             "name": "ext",
-            "selected": false,
+            "selected": true,
             "simple_modifications": [],
             "virtual_hid_keyboard": {
                 "caps_lock_delay_milliseconds": 0,

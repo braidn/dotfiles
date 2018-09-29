@@ -26,6 +26,7 @@ ai = add --interactive
 changes = diff --name-status -r
 st = status -sb
 ct = commit -v
+cta = commit --amend
 ctm = commit -m
 br = branch
 co = checkout
