@@ -26,11 +26,8 @@ brew "redis"
 brew "postgresql"
 brew "python3"
 brew "xtail"
-brew "chromedriver"
-brew "gpg-agent"
 brew "httpie"
 brew "yarn"
-brew "phantomjs"
 brew "pinentry-mac"
 
 
