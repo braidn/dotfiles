@@ -30,6 +30,7 @@ brew "xtail"
 brew "httpie"
 brew "yarn"
 brew "pinentry-mac"
+brew "global"
 
 
 brew "libyaml" # should come after openssl
