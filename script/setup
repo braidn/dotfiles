@@ -51,3 +51,7 @@ rm -rf "$DOTFILES"
 
 sudo mkdir -p /opt/rubies
 sudo chown ${USER}:staff /opt/rubies
+
+# Install KR
+
+curl https://krypt.co/kr | sh
