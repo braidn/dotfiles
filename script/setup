@@ -46,3 +46,8 @@ cd "$HOME"
 
 # Keep Homesick dir but remove dotfiles dir
 rm -rf "$DOTFILES"
+
+# Rubies Directory
+
+sudo mkdir -p /opt/rubies
+sudo chown ${USER}:staff /opt/rubies
