@@ -49,8 +49,9 @@ rm -rf "$DOTFILES"
 
 # Rubies Directory
 
-sudo mkdir -p /opt/rubies
+sudo mkdir -p /opt/{rubies,nodenv}
 sudo chown ${USER}:staff /opt/rubies
+sudo chown ${USER}:staff /opt/nodenv
 
 # Install KR
 
