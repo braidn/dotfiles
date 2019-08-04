@@ -1,5 +1,5 @@
-name: monitor
+name: monit
 root: ~/
 
 windows:
-  - process: htop
+  - process: gotop

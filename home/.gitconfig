@@ -87,3 +87,10 @@ prompt = false
 [push]
   default = simple
 
+[user]
+	name = Braden Douglass
+	email = braden.douglass@gmail.com
+[github]
+	user = braidn
+[credential]
+	helper = osxkeychain

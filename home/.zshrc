@@ -6,14 +6,17 @@ antigen bundle git
 antigen bundle vi-mode
 antigen bundle rupa/z
 antigen bundle gem
-antigen bundle chruby
 antigen bundle tmuxinator
 antigen bundle zsh-users/zsh-syntax-highlighting
 antigen bundle zdharma/history-search-multi-word
 antigen bundle colored-man-pages
+antigen bundle mafredri/zsh-async
+antigen bundle sindresorhus/pure
 
-antigen theme geometry-zsh/geometry
 antigen apply
+
+PURE_GIT_PULL=0
+zstyle :prompt:pure:prompt:success color white
 
 export VISUAL='nvim -f'
 export EDITOR='nvim -f'
@@ -34,8 +37,6 @@ export PATH="/usr/local/bin:$PATH"
 PS1="$PS1"'$([ -n "$TMUX"  ] && tmux setenv TMUXPWD_$(tmux display -p "#D" | tr -d %) "$PWD")'
 eval "$(fasd --init auto)"
 
-#Blrg
-alias publish="dcr web bundle exec jgd"
 #Bundler
 alias be="bundle exec"
 alias bu="bundle update"
@@ -43,8 +44,6 @@ alias bi="bundle install"
 alias bip="bundle install --path=.bundle"
 alias bis="bundle install --binstubs"
 #Yarn
-alias yga='yarn global add --global-folder=`nodenv prefix`'
-alias ygr='yarn global remove --global-folder=`nodenv prefix`'
 #System
 alias flushcache="sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder;"
 alias g="git"
@@ -66,7 +65,7 @@ alias avim="NVIM_LISTEN_ADDRESS=/tmp/neovim/neovim nvim"
 alias jsc="/System/Library/Frameworks/JavaScriptCore.framework/Versions/Current/Resources/jsc"
 alias kcli="'/Library/Application Support/org.pqrs/Karabiner-Elements/bin/karabiner_cli'"
 alias tagit="ctags -R -f ./.git/tags ."
-alias ltunnel="/opt/nodenv/shims/lt"
+alias lse="exa --long --header --git -a --group-directories-first"
 #Tmux
 alias tkil="tmux kill-session -t"
 alias tnw="tmux new-window -n"
@@ -81,18 +80,18 @@ alias dcr="docker-compose run --rm"
 alias dcb="docker-compose build"
 alias dcs="docker-compose stop"
 alias dcu="docker-compose up"
-alias drm="docker ps -a | grep -v 'busybox' | awk 'NR > 1{print $1}' | xargs docker rm > /dev/null 2>&1"
-alias dstop="docker ps -a | grep -v 'busybox' | awk 'NR > 1{print $1}' | xargs docker stop > /dev/null 2>&1"
+alias drm="docker system prune -f"
+alias dsa="docker ps -a | awk 'NR > 1{print $1}' | xargs docker stop > /dev/null 2>&1"
 alias dpsa="docker ps -a"
 alias images="docker images"
 #Language Specific Docker
+##JS
+alias yarnit="yarn build"
+alias jrepl="npx -p jay-repl jay"
 ##Ruby
 alias de="dcr web bundle exec"
 ##Elm
 alias elm='docker run -it --rm -v "$(pwd):/code" -w "/code" -e "HOME=/tmp" -u $UID:$GID -p 8000:8000 codesimple/elm:0.18'
-##Crystal
-# alias crystal='docker run -it --rm -v "$(pwd):/code" -w "/code" -p 3000:3000 --entrypoint crystal crystallang/crystal'
-# alias shards='docker run -it --rm -v "$(pwd):/code" -w "/code" --entrypoint shards crystallang/crystal'
 ##Rust
 alias cargod='docker run --rm --user "$(id -u)":"$(id -g)" -v "$PWD":/usr/src/myapp -w /usr/src/myapp -e USER="old-gregg" rust:1.21 cargo'
 alias rustc='docker run --rm --user "$(id -u)":"$(id -g)" -v "$PWD":/usr/src/myapp -w /usr/src/myapp rust:1.21 rustc'
@@ -103,16 +102,6 @@ alias swagger-edit='docker run -ti --rm --volume="$(pwd)":/swagger -p 8080:8080 
 alias glosup='http --check-status HEAD https://www.glossier.com'
 alias itgup='http --check-status HEAD https://intothegloss.com'
 alias ptrnup='http --check-status HEAD https://www.pttrns.com'
-
-#Chruby
-source /usr/local/opt/chruby/share/chruby/chruby.sh
-source /usr/local/share/chruby/auto.sh
-chruby 2.3.1
-RUBIES=(/opt/rubies/*)
-export RUBIES
-#Nodenv
-export NODENV_ROOT=/opt/nodenv
-
 #Functions
 
 # Helper for shell prompts and the like
@@ -124,8 +113,6 @@ current-ruby() {
   fi
 }
 
-if which nodenv > /dev/null; then eval "$(nodenv init -)"; fi
-
 fancy-ctrl-z () {
     fg
     zle redisplay
@@ -136,13 +123,13 @@ bindkey -M viins 'jj' vi-cmd-mode
 bindkey -v
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow -g "!{.git,node_modules,/ops/node_modules}/*"'
+export FZF_DEFAULT_OPTS='--bind J:down,K:up --ansi '
+export NNN_OPENER='nvim'
+export NNN_NOTE='/Users/braidn/src/wiki'
+
 [[ -s "$HOME/.qfc/bin/qfc.sh" ]] && source "$HOME/.qfc/bin/qfc.sh"
 [[ -s $HOME/.tmuxinator/scripts/tmuxinator ]] && source $HOME/.tmuxinator/scripts/tmuxinator
-
-source ~/.config/zsh-autoenv/autoenv.zsh
-
-# added by travis gem
-[ -f /Users/braidn/.travis/travis.sh ] && source /Users/braidn/.travis/travis.sh
 
 # tabtab source for serverless package
 # uninstall by removing these lines or running `tabtab uninstall serverless`
@@ -150,3 +137,9 @@ source ~/.config/zsh-autoenv/autoenv.zsh
 # tabtab source for sls package
 # uninstall by removing these lines or running `tabtab uninstall sls`
 [[ -f /Users/braidn/src/play/typescript/serverless-ts/node_modules/tabtab/.completions/sls.zsh ]] && . /Users/braidn/src/play/typescript/serverless-ts/node_modules/tabtab/.completions/sls.zsh
+fpath+=${ZDOTDIR:-~}/.zsh_functions
+
+eval "$(direnv hook zsh)"
+export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+[[ -s "$HOME/.asdf/asdf.sh" ]] && source "$HOME/.asdf/asdf.sh"
+[[ -s "$HOME/.asdf/completions/asdf.bash" ]] && source "$HOME/.asdf/completions/asdf.bash"

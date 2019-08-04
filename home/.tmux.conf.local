@@ -1,4 +1,5 @@
 is_vim='echo "#{pane_current_command}" | grep -iqE "(^|\/)g?(view|n?vim?)(diff)?$"'
+
 set -g -a terminal-overrides ',*:Ss=\E[%p1%d q:Se=\E[2 q'
 bind-key N previous-window
 bind -n C-h if-shell "$is_vim" "send-keys C-h" "select-pane -L"
@@ -7,19 +8,188 @@ bind -n C-k if-shell "$is_vim" "send-keys C-k" "select-pane -U"
 bind -n C-l if-shell "$is_vim" "send-keys C-l" "select-pane -R"
 bind -n C-\ if-shell "$is_vim" "send-keys C-\\" "select-pane -l"
 
+# helps in faster key repetition
+set -sg escape-time 0
+
+# Make the current window the first window
+bind T swap-window -t 1
+
+# source .tmux.conf file
+bind r source-file ~/.tmux.conf \; display "Configuration Reloaded!"
+
+# vertical split
+bind | split-window -h
+
+# horizontal split
+bind - split-window -v
+
+# monitor activities in other windows
+# setw -g monitor-activity on
+# set -g visual-activity on
+
+# set zsh as default shell
+set -g default-command /bin/zsh
+set -g default-shell /bin/zsh
+
+# recording  program output to a log
+bind P pipe-pane -o "cat >>~/#W.log" \; display "Toggled logging to ~/#W.log"
+
+# don't allow tmux to rename the window based on commands running
+set-window-option -g allow-rename off
+#
+set -g lock-after-time 300
+set -g lock-command "cmatrix -s"
+
 set -g default-terminal "screen-256color"
+if '[[ "$COLORTERM" == "truecolor" ]]' 'set-option -ga terminal-overrides ",xterm-256color:Tc"' ''
 set -g base-index 1
 set -g pane-base-index 1
 set -g renumber-windows 1
 
+# fix delay on ESC in neovim
+set -sg escape-time 0
+
 set-option -g status-position top
-
 set-option -g repeat-time 0
+set-option -g mouse on
 
+# loud or quiet?
+set-option -g visual-activity off
+set-option -g visual-bell off
+set-option -g visual-silence off
+set-window-option -g monitor-activity off
+set-option -g bell-action none
+
+## COLORSCHEME: nord
+#+----------------+
+#+ Plugin Support +
+#+----------------+
+#+--- tmux-prefix-highlight ---+
+set -g @prefix_highlight_fg black
+set -g @prefix_highlight_bg brightcyan
+
+#+---------+
+#+ Options +
+#+---------+
+set -g status-interval 1
+set -g status on
+
+#+--------+
+#+ Status +
+#+--------+
+#+--- Layout ---+
+set -g status-justify left
+
+#+--- Colors ---+
+set -g status-bg black
+set -g status-fg white
+set -g status-attr none
+
+#+-------+
+#+ Panes +
+#+-------+
+set -g pane-border-bg black
+set -g pane-border-fg black
+set -g pane-active-border-bg black
+set -g pane-active-border-fg brightblack
+set -g display-panes-colour black
+set -g display-panes-active-colour brightblack
+
+#+------------+
+#+ Clock Mode +
+#+------------+
+setw -g clock-mode-colour cyan
+
+#+----------+
+#+ Messages +
+#+---------+
+set -g message-fg cyan
+set -g message-bg brightblack
+set -g message-command-fg cyan
+set -g message-command-bg brightblack
+
+#+--------+
+#+ Status +
+#+--------+
+#+--- Bars ---+
+
+set-option -g status-left "#[fg=black, bg=blue,bold] #{battery_percentage} #[fg=blue, bg=black, nobold, noitalics, nounderscore]"
+set-option -g status-right "#[fg=blue, bg=black, bold, nounderscore, noitalics]#[fg=black,bg=blue,bold] #($TMUX_PLUGIN_MANAGER_PATH/tmux-mem-cpu-load/tmux-mem-cpu-load --interval 2 --graph-lines 5)"
+# set -g status-left "#[fg=black,bg=blue,bold] #S #[fg=blue,bg=black,nobold,noitalics,nounderscore]"
+# set -g status-right "#{prefix_highlight}#[fg=brightblack,bg=black,nobold,noitalics,nounderscore]#[fg=white,bg=brightblack] %Y-%m-%d #[fg=white,bg=brightblack,nobold,noitalics,nounderscore]#[fg=white,bg=brightblack] %H:%M #[fg=cyan,bg=brightblack,nobold,noitalics,nounderscore]#[fg=black,bg=cyan,bold] #H "
+
+#+--- Windows ---+
+set -g window-status-format "#[fg=black,bg=brightblack,nobold,noitalics,nounderscore] #[fg=white,bg=brightblack]#I #[fg=white,bg=brightblack,nobold,noitalics,nounderscore] #[fg=white,bg=brightblack]#W #F #[fg=brightblack,bg=black,nobold,noitalics,nounderscore]"
+set -g window-status-current-format "#[fg=black,bg=cyan,nobold,noitalics,nounderscore] #[fg=black,bg=cyan]#I #[fg=black,bg=cyan,nobold,noitalics,nounderscore] #[fg=black,bg=cyan]#W #F #[fg=cyan,bg=black,nobold,noitalics,nounderscore]"
+set -g window-status-separator ""
+set -g status-left-length 80
+set -g status-right-length 80
+
+# ## COLORSCHEME: gruvbox dark
+# set-option -g status "on"
+
+# # default statusbar colors
+# set-option -g status-bg colour237 #bg1
+# set-option -g status-fg colour223 #fg1
+
+# # default window title colors
+# set-window-option -g window-status-bg colour214 #yellow
+# set-window-option -g window-status-fg colour237 #bg1
+
+# set-window-option -g window-status-activity-bg colour237 #bg1
+# set-window-option -g window-status-activity-fg colour248 #fg3
+
+# # active window title colors
+# set-window-option -g window-status-current-bg default
+# set-window-option -g window-status-current-fg colour237 #bg1
+
+# # pane border
+# set-option -g pane-active-border-fg colour250 #fg2
+# set-option -g pane-border-fg colour237 #bg1
+
+# # message infos
+# set-option -g message-bg colour239 #bg2
+# set-option -g message-fg colour223 #fg1
+
+
+# # writting commands inactive
+# set-option -g message-command-bg colour239 #fg3
+# set-option -g message-command-fg colour223 #bg1
+
+# set-window-option -g mode-fg colour239 #fg3
+# set-window-option -g mode-bg colour223 #bg1
+
+# # pane number display
+# set-option -g display-panes-active-colour colour250 #fg2
+# set-option -g display-panes-colour colour237 #bg1
+
+# # clock
+# set-window-option -g clock-mode-colour colour109 #blue
+
+# # bell
+# set-window-option -g window-status-bell-style fg=colour235,bg=colour167 #bg, red
+
+
+# ## Theme settings mixed with colors (unfortunately, but there is no cleaner way)
+# set-option -g status-attr "none"
+# set-option -g status-justify "left"
+# set-option -g status-left-attr "none"
+# set-option -g status-left-length "80"
+# set-option -g status-right-attr "none"
+# set-option -g status-right-length "80"
+# set-window-option -g window-status-activity-attr "none"
+# set-window-option -g window-status-attr "none"
+# set-window-option -g window-status-separator ""
+
+
+# set-option -g status-left "#[fg=colour248, bg=colour241] #{battery_percentage} #S #[fg=colour241, bg=colour237, nobold, noitalics, nounderscore]"
+# set-option -g status-right "#[fg=colour239, bg=colour237, nobold, nounderscore, noitalics]#[fg=colour246,bg=colour239] #($TMUX_PLUGIN_MANAGER_PATH/tmux-mem-cpu-load/tmux-mem-cpu-load --interval 2 --graph-lines 5)"
+
+# set-window-option -g window-status-current-format "#[fg=colour239, bg=colour248, :nobold, noitalics, nounderscore]#[fg=colour239, bg=colour214] #I #[fg=colour239, bg=colour214, bold] #W #[fg=colour214, bg=colour237, nobold, noitalics, nounderscore]"
+# set-window-option -g window-status-format "#[fg=colour237,bg=colour239,noitalics]#[fg=colour223,bg=colour239] #I #[fg=colour223, bg=colour239] #W #[fg=colour239, bg=colour237, noitalics]"
 
 # List of plugins
 set -g @tpm_plugins '                \
-    caiogondim/maglev                \
     tmux-plugins/tpm                 \
     tmux-plugins/tmux-sensible       \
     tmux-plugins/tmux-resurrect      \
@@ -29,7 +199,8 @@ set -g @tpm_plugins '                \
     tmux-plugins/tmux-copycat        \
     tmux-plugins/tmux-open           \
     tmux-plugins/tmux-battery        \
-    tmux-plugins/tmux-cpu            \
+    nhdaly/tmux-better-mouse-mode    \
+    thewtex/tmux-mem-cpu-load        \
 '
 
 # Initialize TMUX plugin manager
