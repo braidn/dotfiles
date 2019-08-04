@@ -54,3 +54,11 @@ defaults write com.apple.dock pinning -string start \
 && defaults write com.apple.dock autohide-delay -float 100 \
 && defaults write com.apple.dock autohide-time-modifier -float 100 \
 && killall Dock
+
+# Add Support for Needed Languages
+
+asdf plugin-add crystal
+asdf plugin-add elixir
+asdf plugin-add erlang
+asdf plugin-add nodejs
+asdf plugin-add ruby
