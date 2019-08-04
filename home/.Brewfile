@@ -27,6 +27,9 @@ brew "heroku"
 brew "readline"
 brew "redis"
 brew "python3"
+brew "xtail"
+brew "chromedriver"
+brew "gpg-agent"
 brew "httpie"
 brew "pinentry-mac"
 brew "postgresql"
@@ -35,7 +38,7 @@ brew "memcached"
 brew "overmind"
 brew "telnet"
 brew "wget"
-bre "asdf"
+brew "asdf"
 
 
 brew "libyaml" # should come after openssl
