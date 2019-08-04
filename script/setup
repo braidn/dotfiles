@@ -62,3 +62,7 @@ asdf plugin-add elixir
 asdf plugin-add erlang
 asdf plugin-add nodejs
 asdf plugin-add ruby
+
+# Add Yarn support
+
+curl -o- -L https://yarnpkg.com/install.sh | bash
