@@ -1,6 +1,7 @@
 cask_args appdir: '/Applications'
 tap "neovim/neovim"
 tap "caskroom/versions"
+tap "homebrew/cask-fonts"
 
 brew "git"
 brew "antigen"
@@ -55,7 +56,6 @@ cask "tableplus"
 cask "sidestep"
 cask "skim"
 cask "iina"
-cask "tunnelbear"
 cask "marked"
 cask "beamer"
 cask "cloudapp"
@@ -69,6 +69,7 @@ cask "karabiner-elements"
 cask "alfred"
 cask "keybase"
 cask "riot"
+cask "kitty"
 
 cask "chromium"
 cask "firefox-developer-edition"
