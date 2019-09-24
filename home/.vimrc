@@ -66,6 +66,8 @@ Plug 'neoclide/coc.nvim', {'do': { -> coc#util#install()}}
 Plug 'othree/jspc.vim'
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
+Plug 'skywind3000/asyncrun.vim'
+Plug 'rizzatti/dash.vim'
 
 call plug#end()            " required
 filetype plugin indent on
@@ -229,13 +231,15 @@ map <silent> <leader>3 :diffget 3<CR>
 map <silent> <leader>4 :diffget 4<CR>
 
 "Git bindings
-nnoremap <silent> <leader>gs :Gstatus<CR>
+nnoremap <silent> <leader>gs :G <CR>
 nnoremap <silent> <leader>gd :Gvdiff <CR>
-nnoremap <silent> <leader>gc :Gcommit<CR>
-nnoremap <silent> <leader>gb :Gblame<CR>
-nnoremap <silent> <leader>gl :Glog<CR>
-nnoremap <silent> <leader>gp :Git push<CR>
-nnoremap <silent> <leader>gw :Gwrite!<CR>
+nnoremap <silent> <leader>gc :Gcommit <CR>
+nnoremap <silent> <leader>gb :Gblame <CR>
+nnoremap <silent> <leader>gl :Glog <CR>
+nnoremap <silent> <leader>gp :Git push <CR>
+nnoremap <silent> <leader>gw :Gwrite! <CR>
+
+command! -bang -nargs=* -complete=file Make AsyncRun -program=make @ <args>
 
 "Indent Lines
 hi Conceal ctermfg=red ctermbg=NONE
@@ -250,7 +254,7 @@ function! DockerTransform(cmd) abort
 endfunction
 
 let g:test#custom_transformations = {'docker': function('DockerTransform')}
-let g:test#strategy = 'vtr'
+let g:test#strategy = 'asyncrun'
 
 "Switch
 nnoremap - :Switch<cr>
@@ -328,13 +332,14 @@ nnoremap <leader>p :Files<cr>
 nnoremap <leader>s :Buffers<Cr>
 nnoremap <leader>/ :Rg<Cr>
 
-" Tmux
-let g:tmux_navigator_no_mappings = 1
-nnoremap <silent> <c-h> :TmuxNavigateLeft<cr>
-nnoremap <silent> <c-j> :TmuxNavigateDown<cr>
-nnoremap <silent> <c-k> :TmuxNavigateUp<cr>
-nnoremap <silent> <c-l> :TmuxNavigateRight<cr>
-nmap <silent> ,vk :VtrKillRunner<CR>
+" " Tmux
+" let g:tmux_navigator_no_mappings = 1
+" nnoremap <silent> <c-h> :TmuxNavigateLeft<cr>
+" nnoremap <silent> <c-j> :TmuxNavigateDown<cr>
+" nnoremap <silent> <c-k> :TmuxNavigateUp<cr>
+" nnoremap <silent> <c-l> :TmuxNavigateRight<cr>
+" nmap <silent> ,vk :VtrKillRunner<CR>
+
 set hidden
 let g:ale_fix_on_save = 1
 let g:ale_ruby_rubocop_executable = 'bundle'
@@ -348,6 +353,7 @@ let g:ale_linters = {
 \  }
 
 let g:ale_linter_aliases = {
+\  'javascript.jsx': 'javascript',
 \  'typescript.tsx': 'typescript',
 \  'typescriptreact': 'typescript',
 \  'svelte': ['css', 'javascript']
@@ -355,6 +361,7 @@ let g:ale_linter_aliases = {
 
 let g:ale_fixers = {
 \   'javascript': ['eslint', 'prettier'],
+\   'javascript.jsx': ['eslint', 'prettier'],
 \   'typescript': ['eslint', 'prettier'],
 \   'typescriptreact': ['eslint'],
 \   'reason': ['refmt'],

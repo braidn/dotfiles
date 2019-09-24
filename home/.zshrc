@@ -8,7 +8,6 @@ antigen bundle rupa/z
 antigen bundle gem
 antigen bundle tmuxinator
 antigen bundle zsh-users/zsh-syntax-highlighting
-antigen bundle zdharma/history-search-multi-word
 antigen bundle colored-man-pages
 antigen bundle mafredri/zsh-async
 antigen bundle sindresorhus/pure
@@ -16,6 +15,7 @@ antigen bundle sindresorhus/pure
 antigen apply
 
 PURE_GIT_PULL=0
+HISTFILE=~/.zsh_history
 zstyle :prompt:pure:prompt:success color white
 
 export VISUAL='nvim -f'
@@ -66,6 +66,9 @@ alias jsc="/System/Library/Frameworks/JavaScriptCore.framework/Versions/Current/
 alias kcli="'/Library/Application Support/org.pqrs/Karabiner-Elements/bin/karabiner_cli'"
 alias tagit="ctags -R -f ./.git/tags ."
 alias lse="exa --long --header --git -a --group-directories-first"
+alias powah="pmset -g batt"
+alias icat="kitty +kitten icat"
+alias omsd="overmind start -D --procfile Procfile.dev"
 #Tmux
 alias tkil="tmux kill-session -t"
 alias tnw="tmux new-window -n"
@@ -122,6 +125,14 @@ bindkey '^X' fancy-ctrl-z
 bindkey -M viins 'jj' vi-cmd-mode
 bindkey -v
 
+function fzf-history() {
+  BUFFER=$(history -n -r 1 | fzf --no-sort +m --query "$LBUFFER" --prompt="History > ")
+  CURSOR=$#BUFFER
+  zle clear-screen
+}
+zle -N fzf-history
+bindkey '^r' fzf-history
+
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow -g "!{.git,node_modules,/ops/node_modules}/*"'
 export FZF_DEFAULT_OPTS='--bind J:down,K:up --ansi '
@@ -130,16 +141,8 @@ export NNN_NOTE='/Users/braidn/src/wiki'
 
 [[ -s "$HOME/.qfc/bin/qfc.sh" ]] && source "$HOME/.qfc/bin/qfc.sh"
 [[ -s $HOME/.tmuxinator/scripts/tmuxinator ]] && source $HOME/.tmuxinator/scripts/tmuxinator
-
-# tabtab source for serverless package
-# uninstall by removing these lines or running `tabtab uninstall serverless`
-[[ -f /Users/braidn/src/play/typescript/serverless-ts/node_modules/tabtab/.completions/serverless.zsh ]] && . /Users/braidn/src/play/typescript/serverless-ts/node_modules/tabtab/.completions/serverless.zsh
-# tabtab source for sls package
-# uninstall by removing these lines or running `tabtab uninstall sls`
-[[ -f /Users/braidn/src/play/typescript/serverless-ts/node_modules/tabtab/.completions/sls.zsh ]] && . /Users/braidn/src/play/typescript/serverless-ts/node_modules/tabtab/.completions/sls.zsh
-fpath+=${ZDOTDIR:-~}/.zsh_functions
-
 eval "$(direnv hook zsh)"
 export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
 [[ -s "$HOME/.asdf/asdf.sh" ]] && source "$HOME/.asdf/asdf.sh"
 [[ -s "$HOME/.asdf/completions/asdf.bash" ]] && source "$HOME/.asdf/completions/asdf.bash"
+
