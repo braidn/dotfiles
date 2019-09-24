@@ -1,7 +1,0 @@
-# ~/.tmuxinator/scratch.yml
-# you can make as many tabs as you wish...
-
-project_name: code
-project_root: ~/src
-windows:
-  - root: #drop in root

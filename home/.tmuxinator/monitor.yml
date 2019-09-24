@@ -1,5 +1,0 @@
-name: monit
-root: ~/
-
-windows:
-  - process: gotop

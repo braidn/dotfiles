@@ -1,8 +1,0 @@
-# ~/.tmuxinator/scratch.yml
-# you can make as many tabs as you wish...
-
-project_name: gpos
-project_root: ~/src/gpos
-windows:
-  - server: xtail log
-  - editor: nv

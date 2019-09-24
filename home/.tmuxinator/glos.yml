@@ -1,9 +1,0 @@
-# ~/.tmuxinator/scratch.yml
-# you can make as many tabs as you wish...
-
-project_name: glos
-project_root: ~/src/glos
-windows:
-  - logs: xtail log
-  - editor: nv
-on_project_exit: overmind kill & bin/spring stop

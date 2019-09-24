@@ -1,8 +1,0 @@
-# ~/.tmuxinator/scratch.yml
-# you can make as many tabs as you wish...
-
-project_name: ptrn
-project_root: ~/src/pttrns-v4
-windows:
-  - editor: nv
-on_project_exit: docker-compose stop & npm stop > /dev/null
