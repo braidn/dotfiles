@@ -1,0 +1,23 @@
+title Runner
+cd ~/src
+launch zsh
+
+new_tab Editor
+title Editor
+cd ~/src
+launch zsh
+
+new_tab Moniter
+title Moniter
+cd ~/
+launch /usr/local/bin/gotop
+
+new_tab Wiki
+title Wiki
+cd ~/src/wiki
+launch zsh
+
+new_tab Play
+title Play
+cd ~/src/play
+launch zsh
