@@ -68,6 +68,7 @@ alias tagit="ctags -R -f ./.git/tags ."
 alias lse="exa --long --header --git -a --group-directories-first"
 alias powah="pmset -g batt"
 alias icat="kitty +kitten icat"
+alias stitle="kitty @ set-tab-title"
 alias omsd="overmind start -D --procfile Procfile.dev"
 #Tmux
 alias tkil="tmux kill-session -t"
