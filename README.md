@@ -1,21 +1,23 @@
 ### Dot Files Me Baby
 
-Not the most beautiful package of dotfiles but none the less a spartan,
-almost minamalist shot in the arm. Let it _grow_
+Collection of sweet sweet dotfiles for idempotently bootstrapping
+a brand new laptop using [Strap][strap].
+May Boxen rest in pieces...
 
-Also  built for Techpickles [Homesick][1] gem.
+Also  built for Techpickles [Homesick][hs] gem.
 
-### Requirements From Previous Computer
+### Maybe Some Unlikely Tools Used
 
-1. Rsync information from the local gitconfig over to new computer
+1. [Kitty][kty] over [Tmux][tmux]
+1. [fnm][fnm] over Nodenv
+1. [Xtail][xtl] over tail
+1. [Bat][bat] over cat
 
-### Reqirements
 
-1. [Tmuxinator][4]
-1. [Maglev For Tmux][2]
-1. [Prezto Zsh][3]
-
-[1]: https://github.com/technicalpickles/homesick
-[2]: https://github.com/caiogondim/maglev
-[3]: https://github.com/sorin-ionescu/prezto
-[4]: https://github.com/aziz/tmuxinator
+[hs]: https://github.com/technicalpickles/homesick
+[strap]: https://github.com/mikemcquaid/strap
+[kty]: https://sw.kovidgoyal.net/kitty/index.html
+[tmux]: https://github.com/tmux/tmux/wiki
+[fnm]: https://github.com/Schniz/fnm
+[xtl]: https://github.com/xryanglab/xtail
+[bat]: https://github.com/sharkdp/bat
