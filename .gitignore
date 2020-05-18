@@ -1,4 +1,12 @@
+home/.DS_Store
 home/.earthquake/history
 home/.config/yarn
 home/.config/configstore
 home/.config/direnv
+home/.config/gatsby/
+home/.config/gh/
+home/.config/htop/
+home/.config/hub
+home/.config/karabiner/automatic_backups/
+home/.config/nnn/
+home/.config/nvim/

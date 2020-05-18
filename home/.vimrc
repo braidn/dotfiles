@@ -1,5 +1,4 @@
-"Setup for Plugin Manager
-""
+
 set nocompatible
 
 call plug#begin('~/.vim/plugged')
@@ -20,10 +19,11 @@ Plug 'tpope/vim-rails', { 'for': 'ruby' }
 Plug 'tpope/vim-surround'
 Plug 'machakann/vim-sandwich'
 Plug 'AndrewRadev/switch.vim'
-Plug 'tpope/vim-fugitive'
+" Plug 'tpope/vim-fugitive'
+Plug 'lambdalisue/gina.vim'
+Plug 'rhysd/git-messenger.vim'
 Plug 'tpope/vim-repeat'
 Plug 'janko-m/vim-test'
-Plug 'christoomey/vim-tmux-navigator'
 Plug 'b3niup/numbers.vim'
 Plug 'itchyny/lightline.vim'
 Plug 'mbbill/undotree'
@@ -34,40 +34,50 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': 'yes \| ./install'  }
 Plug '/usr/local/opt/fzf'
 Plug 'junegunn/fzf.vim'
 Plug 'tpope/vim-commentary'
-Plug 'tpope/vim-vinegar'
 Plug 'editorconfig/editorconfig-vim'
-Plug 'wellle/tmux-complete.vim'
 Plug 'luochen1990/rainbow'
 Plug 'itspriddle/vim-marked'
-Plug 'christoomey/vim-tmux-runner'
 Plug 'sheerun/vim-polyglot'
 Plug 'othree/jspc.vim'
-Plug 'airblade/vim-rooter'
 Plug 'honza/vim-snippets'
 Plug 'keith/swift.vim', { 'for': 'swift' }
 Plug 'kballard/vim-swift', { 'for': 'swift' }
 Plug 'dafufer/nvim-cm-swift-completer', { 'for': 'swift' }
 Plug 'burner/vim-svelte', { 'for': 'svelte' }
+Plug 'Shougo/neosnippet.vim'
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'Shougo/deoplete-lsp'
+Plug 'neovim/nvim-lsp'
+Plug 'tmsvg/pear-tree'
+Plug 'airblade/vim-rooter'
 
-
+" Plug 'neoclide/coc.nvim', {'do': { -> coc#util#install()}}
+Plug 'skywind3000/asynctasks.vim'
+Plug 'skywind3000/asyncrun.vim'
+Plug 'rizzatti/dash.vim'
+Plug 'Shougo/denite.nvim', { 'do': ':UpdateRemotePlugins' }
 
 ""Will you make the cut
-Plug 'malkomalko/projections.vim'
+Plug 'glacambre/firenvim', { 'do': { _ -> firenvim#install(0) } }
+Plug 'ryanoasis/vim-devicons'
+Plug 'norcalli/nvim-colorizer.lua'
+Plug 'elzr/vim-json', { 'for': 'json' }
 Plug 'rbong/vim-flog'
+Plug 'malkomalko/projections.vim'
 Plug 'mxw/vim-jsx'
 Plug 'xolox/vim-misc'
 Plug 'jparise/vim-graphql'
-Plug 'elmcast/elm-vim', { 'for': 'elm' }
 Plug 'reasonml-editor/vim-reason-plus'
-Plug 'w0rp/ale'
 Plug 'othree/csscomplete.vim'
 Plug 'othree/html5.vim'
-Plug 'neoclide/coc.nvim', {'do': { -> coc#util#install()}}
 Plug 'othree/jspc.vim'
+Plug 'metakirby5/codi.vim'
 Plug 'SirVer/ultisnips'
-Plug 'honza/vim-snippets'
-Plug 'skywind3000/asyncrun.vim'
-Plug 'rizzatti/dash.vim'
+" Plug 'autozimu/LanguageClient-neovim', {
+"    \ 'branch': 'next',
+"    \ 'do': 'bash install.sh',
+"    \ }
+
 
 call plug#end()            " required
 filetype plugin indent on
@@ -76,17 +86,16 @@ runtime macros/sandwich/keymap/surround.vim
 let g:lightline = {
       \ 'colorscheme': 'iceberg',
       \ 'active': {
-      \   'left': [ [ 'mode', 'paste', 'cocstatus'  ], [ 'gitstatus', 'filename'  ] ],
+      \   'left': [ [ 'mode', 'paste' ], [ 'gitstatus', 'filename'  ] ],
       \   'right': [ [ 'lineinfo'  ], ['percent'], [ 'fileformat', 'fileencoding', 'filetype'  ]  ]
       \ },
       \ 'component_function': {
-      \   'gitstatus': 'MyGitstatus',
+      \   'gitstatus': 'MyGitStatus',
       \   'filename': 'MyFilename',
       \   'fileformat': 'MyFileformat',
       \   'filetype': 'MyFiletype',
       \   'fileencoding': 'MyFileencoding',
       \   'mode': 'MyMode',
-      \   'cocstatus': 'coc#status',
       \ },
       \ 'subseparator': { 'left': '|', 'right': '|'  }
       \ }
@@ -107,17 +116,15 @@ function! MyFilename()
         \ ('' != MyModified() ? ' ' . MyModified() : '')
 endfunction
 
-function! MyGitstatus()
-  try
-    if expand('%:t') !~? 'Tagbar\|Gundo\|NERD' && &ft !~? 'vimfiler'
-      let mark = '' 
-      let _ = fugitive#head()
-      return strlen(_) ? mark._ : ''
-    endif
-  catch
-  endtry
-  return ''
-endfunction
+function MyGitStatus() abort
+	  let branch = gina#component#repo#branch()
+	  let status = gina#component#status#preset('fancy')
+	  return printf(
+	        \ '%s %s',
+	        \ branch,
+	        \ status,
+	        \)
+  endfunction
 
 function! MyFileformat()
   return winwidth(0) > 70 ? &fileformat : ''
@@ -157,10 +164,7 @@ set grepprg=rg\ --vimgrep
 
 "Color stuff
 syntax enable
-" let g:solarized_termtrans = 1
-" let g:gruvbox_termcolors=16
 set background=dark
-" colorscheme gruvbox
 colorscheme iceberg
 set clipboard=unnamed
 
@@ -197,15 +201,25 @@ set splitright
 set nowrap
 set ttimeoutlen=100
 set complete+=kspell
-let g:python3_host_prog = '/usr/local/bin/python3'
+set shell=/usr/local/bin/zsh
 let g:sneak#s_next = 1
+let g:rooter_patterns = ['.git/', '.vimroot', 'Rakefile', 'package.json', 'rome.json']
+
+" Refresh open buffer if changed outside of vim
+autocmd FocusGained,BufEnter,CursorHold,CursorHoldI *
+      \ if mode() !~ '\v(c|r.?|!|t)' && getcmdwintype() == '' | checktime | endif
+nnoremap <leader>r :checktime<cr>
 
 "Netrw
+let g:netrw_banner = 0
+let g:netrw_browse_split = 4
+let g:netrw_altv = 1
+let g:netrw_winsize = 25
 let g:netrw_liststyle=3
 let g:netrw_chgwin=2
-let g:netrw_winsize=22
 let g:netrw_bufsettings = 'noma nomod nu nobl nowrap ro'
 let g:netrw_localrmdir='rm -r'
+noremap <leader>pd :Vexplore <CR>
 
 "Yank into OS X, might require reattach-to-user clipboard"
 noremap <leader>y "*y
@@ -217,13 +231,9 @@ noremap <leader>P :set paste<CR>:put  *<CR>:set nopaste<CR>
 " Leader Mapping
 let mapleader = "\<Space>"
 
-nnoremap <Leader>rm :Rmodel
-nnoremap <Leader>rv :Rview
-nnoremap <Leader>rc :Rcontroller
 nnoremap <Leader>sl :set cc=80<CR>
 nnoremap <leader>tw :set textwidth=80<cr>
 nnoremap <leader>twd :let g:test#transformation = 'docker'<cr>
-nnoremap <leader>ft :Neoformat<cr>
 
 " Vim Diff
 map <silent> <leader>2 :diffget 2<CR>
@@ -231,30 +241,34 @@ map <silent> <leader>3 :diffget 3<CR>
 map <silent> <leader>4 :diffget 4<CR>
 
 "Git bindings
-nnoremap <silent> <leader>gs :G <CR>
-nnoremap <silent> <leader>gd :Gvdiff <CR>
-nnoremap <silent> <leader>gc :Gcommit <CR>
-nnoremap <silent> <leader>gb :Gblame <CR>
-nnoremap <silent> <leader>gl :Glog <CR>
-nnoremap <silent> <leader>gp :Git push <CR>
-nnoremap <silent> <leader>gw :Gwrite! <CR>
-
-command! -bang -nargs=* -complete=file Make AsyncRun -program=make @ <args>
+nnoremap <silent> <leader>gs :Gina status <CR>
+" nnoremap <silent> <leader>gd <Plug>(gina-diff-vsplit)
+nnoremap <silent> <leader>gc :Gina commit -v <CR>
+nnoremap <silent> <leader>gl :Gina log <CR>
+nnoremap <silent> <leader>gp :Gina push <CR>
+nnoremap <silent> <leader>gw :Gina write <CR>
+nnoremap <silent> <leader>gm :GitMessenger <CR>
 
 "Indent Lines
 hi Conceal ctermfg=red ctermbg=NONE
 
 tnoremap <Leader><ESC> <C-\><C-n>
+"
+"Tasks
+command! -bang -nargs=* -complete=file Make AsyncRun -program=make @ <args>
+nnoremap <Leader>atf :AsyncTask file-fix<cr>
+nnoremap <Leader>atr :AsyncTask file-run<cr>
+nnoremap <Leader>atl :AsyncTaskList<cr>
 
 " Testing
 nnoremap <Leader>tn :TestNearest<cr>
 nnoremap <Leader>tf :TestFile<cr>
 function! DockerTransform(cmd) abort
-  return 'dcr test '.a:cmd
+  return 'docker-compose run --rm test '.a:cmd
 endfunction
 
 let g:test#custom_transformations = {'docker': function('DockerTransform')}
-let g:test#strategy = 'asyncrun'
+let g:test#strategy = 'asyncrun_background'
 
 "Switch
 nnoremap - :Switch<cr>
@@ -279,112 +293,194 @@ autocmd Filetype gitcommit setlocal spell textwidth=72
 autocmd FileType markdown let b:dispatch = 'octodown %'
 autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
 
+let g:flog_default_arguments = { 'max_count': 1000 }
+
 let g:vim_markdown_folding_disabled = 1
 let g:vim_markdown_conceal = 0
-let g:elm_format_autosave = 1
-let g:elm_make_output_file = "./dist/elm.js"
-let g:elm_make_show_warnings = 0
-let g:rooter_patterns = ['Rakefile', '.git/', '.envrc']
 if has('conceal')
   set conceallevel=2 concealcursor=niv
 endif
 
 "JS
 let g:jsx_ext_required = 1
+let g:vim_json_syntax_conceal = 0
 
-"Conquer Of Completion
+" Deoplete/Snippets Resurrection
+let g:python3_host_prog = '/usr/local/bin/python3'
+let g:deoplete#enable_at_startup = 1
+let g:neosnippet#disable_runtime_snippets = {
+        \   '_' : 1,
+        \ }
+let g:neosnippet#enable_snipmate_compatibility = 1
+let g:neosnippet#snippets_directory='~/.vim/plugged/vim-snippets/snippets/'
 
-let g:coc_global_extensions = [ 'coc-tsserver', 'coc-pairs', 'coc-ultisnips', 'coc-json', 'coc-solargraph', 'coc-lists', 'coc-elixir' ]
+autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
 
-set cmdheight=2
-set updatetime=300
-set shortmess+=c
-set signcolumn=yes
+" Lang Server
+lua require'nvim_lsp'.solargraph.setup{}
+lua require'nvim_lsp'.tsserver.setup{}
+lua require'nvim_lsp'.ocamlls.setup{}
+lua require'nvim_lsp'.jsonls.setup{}
 
-nmap <silent> <leader>lp <Plug>(coc-diagnostic-prev)
-nmap <silent> <leader>ln <Plug>(coc-diagnostic-next)
+nnoremap <silent> ,dc <cmd> lua vim.lsp.buf.declaration()<CR>
+nnoremap <silent> ,df <cmd> lua vim.lsp.buf.definition()<CR>
+nnoremap <silent> ,td <cmd> lua vim.lsp.buf.type_definition()<CR>
+nnoremap <silent> ,h  <cmd> lua vim.lsp.buf.hover()<CR>
+nnoremap <silent> ,i  <cmd> lua vim.lsp.buf.implementation()<CR>
+nnoremap <silent> ,r  <cmd> lua vim.lsp.buf.references()<CR>
+nnoremap <silent> ,s  <cmd> lua vim.lsp.buf.signature_help()<CR>
 
-nmap <silent> <leader>ld <Plug>(coc-definition)
-nmap <silent> <leader>lt <Plug>(coc-type-definition)
-nmap <silent> <leader>li <Plug>(coc-implementation)
-nmap <silent> <leader>lf <Plug>(coc-references)
+" === Denite setup ==="
+try
+" Use ripgrep for searching current directory for files
+" By default, ripgrep will respect rules in .gitignore
+"   --files: Print each file that would be searched (but don't search)
+"   --glob:  Include or exclues files for searching that match the given glob
+"            (aka ignore .git files)
+"
+call denite#custom#var('file/rec', 'command', ['rg', '--files', '--glob', '!.git'])
 
-nmap <leader>lr <Plug>(coc-rename)
-nnoremap <silent> K :call <SID>show_documentation()<CR>
+" Use ripgrep in place of "grep"
+call denite#custom#var('grep', 'command', ['rg'])
 
-function! s:show_documentation()
-  if &filetype == 'vim'
-    execute 'h '.expand('<cword>')
-  else
-    call CocAction('doHover')
-  endif
+" Custom options for ripgrep
+"   --vimgrep:  Show results with every match on it's own line
+"   --hidden:   Search hidden directories and files
+"   --heading:  Show the file name above clusters of matches from each file
+"   --S:        Search case insensitively if the pattern is all lowercase
+call denite#custom#var('grep', 'default_opts', ['--hidden', '--vimgrep', '--heading', '-S'])
+
+" Recommended defaults for ripgrep via Denite docs
+call denite#custom#var('grep', 'recursive_opts', [])
+call denite#custom#var('grep', 'pattern_opt', ['--regexp'])
+call denite#custom#var('grep', 'separator', ['--'])
+call denite#custom#var('grep', 'final_opts', [])
+
+" Remove date from buffer list
+call denite#custom#var('buffer', 'date_format', '')
+
+" Custom options for Denite
+"   auto_resize             - Auto resize the Denite window height automatically.
+"   prompt                  - Customize denite prompt
+"   direction               - Specify Denite window direction as directly below current pane
+"   winminheight            - Specify min height for Denite window
+"   highlight_mode_insert   - Specify h1-CursorLine in insert mode
+"   prompt_highlight        - Specify color of prompt
+"   highlight_matched_char  - Matched characters highlight
+"   highlight_matched_range - matched range highlight
+let s:denite_options = {'default' : {
+\ 'split': 'floating',
+\ 'start_filter': 1,
+\ 'auto_resize': 1,
+\ 'source_names': 'short',
+\ 'prompt': 'λ ',
+\ 'highlight_matched_char': 'QuickFixLine',
+\ 'highlight_matched_range': 'Visual',
+\ 'highlight_window_background': 'Visual',
+\ 'highlight_filter_background': 'DiffAdd',
+\ 'winrow': 1,
+\ 'vertical_preview': 1
+\ }}
+
+" Loop through denite options and enable them
+function! s:profile(opts) abort
+  for l:fname in keys(a:opts)
+    for l:dopt in keys(a:opts[l:fname])
+      call denite#custom#option(l:fname, l:dopt, a:opts[l:fname][l:dopt])
+    endfor
+  endfor
 endfunction
 
-autocmd CursorHold * silent call CocActionAsync('highlight')
+call s:profile(s:denite_options)
+catch
+  echo 'Denite not installed. It should work after running :PlugInstall'
+endtry
+"
+" === Denite shorcuts === "
+"   ;         - Browser currently open buffers
+"   <leader>t - Browse list of files in current directory
+"   <leader>g - Search current directory for occurences of given term and close window if no results
+"   <leader>j - Search current directory for occurences of word under cursor
+nnoremap <leader>p :Denite file/rec<CR>
+nnoremap <leader>b :Denite buffer<CR>
+nnoremap <leader>/ :<C-u>Denite grep:. -no-empty<CR>
+nnoremap <leader># :<C-u>DeniteCursorWord grep:.<CR>
 
-imap <C-l> <Plug>(coc-snippets-expand)
-imap <C-j> <Plug>(coc-snippets-expand-jump)
-vmap <C-j> <Plug>(coc-snippets-select)
-let g:coc_snippet_next = '<c-j>'
-let g:coc_snippet_prev = '<c-k>'
+" Define mappings while in 'filter' mode
+"   <C-o>         - Switch to normal mode inside of search results
+"   <Esc>         - Exit denite window in any mode
+"   <CR>          - Open currently selected file in any mode
+"   <C-t>         - Open currently selected file in a new tab
+"   <C-v>         - Open currently selected file a vertical split
+"   <C-h>         - Open currently selected file in a horizontal split
+autocmd FileType denite-filter call s:denite_filter_my_settings()
+function! s:denite_filter_my_settings() abort
+  imap <silent><buffer> <C-o>
+  \ <Plug>(denite_filter_quit)
+  inoremap <silent><buffer><expr> <Esc>
+  \ denite#do_map('quit')
+  nnoremap <silent><buffer><expr> <Esc>
+  \ denite#do_map('quit')
+  inoremap <silent><buffer><expr> <CR>
+  \ denite#do_map('do_action')
+  inoremap <silent><buffer><expr> <C-t>
+  \ denite#do_map('do_action', 'tabopen')
+  inoremap <silent><buffer><expr> <C-v>
+  \ denite#do_map('do_action', 'vsplit')
+  inoremap <silent><buffer><expr> <C-h>
+  \ denite#do_map('do_action', 'split')
+endfunction
 
-nnoremap <leader>p :Files<cr>
-nnoremap <leader>s :Buffers<Cr>
-nnoremap <leader>/ :Rg<Cr>
-
-" " Tmux
-" let g:tmux_navigator_no_mappings = 1
-" nnoremap <silent> <c-h> :TmuxNavigateLeft<cr>
-" nnoremap <silent> <c-j> :TmuxNavigateDown<cr>
-" nnoremap <silent> <c-k> :TmuxNavigateUp<cr>
-" nnoremap <silent> <c-l> :TmuxNavigateRight<cr>
-" nmap <silent> ,vk :VtrKillRunner<CR>
+" Define mappings while in denite window
+"   <CR>        - Opens currently selected file
+"   q or <Esc>  - Quit Denite window
+"   d           - Delete currenly selected file
+"   p           - Preview currently selected file
+"   <C-o> or i  - Switch to insert mode inside of filter prompt
+"   <C-t>       - Open currently selected file in a new tab
+"   <C-v>       - Open currently selected file a vertical split
+"   <C-h>       - Open currently selected file in a horizontal split
+autocmd FileType denite call s:denite_my_settings()
+function! s:denite_my_settings() abort
+  nnoremap <silent><buffer><expr> <CR>
+  \ denite#do_map('do_action')
+  nnoremap <silent><buffer><expr> q
+  \ denite#do_map('quit')
+  nnoremap <silent><buffer><expr> <Esc>
+  \ denite#do_map('quit')
+  nnoremap <silent><buffer><expr> d
+  \ denite#do_map('do_action', 'delete')
+  nnoremap <silent><buffer><expr> p
+  \ denite#do_map('do_action', 'preview')
+  nnoremap <silent><buffer><expr> i
+  \ denite#do_map('open_filter_buffer')
+  nnoremap <silent><buffer><expr> <C-o>
+  \ denite#do_map('open_filter_buffer')
+  nnoremap <silent><buffer><expr> <C-t>
+  \ denite#do_map('do_action', 'tabopen')
+  nnoremap <silent><buffer><expr> <C-v>
+  \ denite#do_map('do_action', 'vsplit')
+  nnoremap <silent><buffer><expr> <C-h>
+  \ denite#do_map('do_action', 'split')
+endfunction
 
 set hidden
-let g:ale_fix_on_save = 1
-let g:ale_ruby_rubocop_executable = 'bundle'
-
-let g:ale_linters = {
-\   'javascript': ['eslint'],
-\   'typescript': ['eslint', 'typescript'],
-\   'reason': ['ocaml-language-server'],
-\   'graphql': ['gqlint'],
-\   'svelte': ['stylelint', 'eslint']
-\  }
-
-let g:ale_linter_aliases = {
-\  'javascript.jsx': 'javascript',
-\  'typescript.tsx': 'typescript',
-\  'typescriptreact': 'typescript',
-\  'svelte': ['css', 'javascript']
-\  }
-
-let g:ale_fixers = {
-\   'javascript': ['eslint', 'prettier'],
-\   'javascript.jsx': ['eslint', 'prettier'],
-\   'typescript': ['eslint', 'prettier'],
-\   'typescriptreact': ['eslint'],
-\   'reason': ['refmt'],
-\   }
-
-let g:ale_sign_error = '✖'
-" hi ALEErrorSign guifg=#DF8C8C
-let g:ale_sign_warning = '⚠'
-" hi ALEWarningSign guifg=#F2C38F
+let g:asyncrun_open = 6
 
 if has('nvim')
   set termguicolors
 endif
 
-function! s:RevealInFinder()
-  if filereadable(expand("%"))
-    let l:command = "open -R %"
-  elseif getftype(expand("%:p:h")) == "dir"
-    let l:command = "open %:p:h"
-  else
-    let l:command = "open ."
-  endif
-  execute ":silent! !" . l:command
- " For terminal Vim not to look messed up.
- redraw!
-endfunction command! Reveal call <SID>RevealInFinder()
+match Todo /\s\+$/
+
+if exists('g:started_by_firenvim')
+    " general options
+    set wrap linebreak nolist textwidth=0 wrapmargin=0
+    set laststatus=0 nonumber noruler noshowcmd
+
+    augroup firenvim
+        autocmd!
+        autocmd BufEnter *.txt setlocal filetype=markdown.pandoc
+    augroup END
+endif
+

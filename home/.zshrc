@@ -18,21 +18,19 @@ PURE_GIT_PULL=0
 HISTFILE=~/.zsh_history
 zstyle :prompt:pure:prompt:success color white
 
+
+export AWS_SDK_LOAD_CONFIG='true'
 export VISUAL='nvim -f'
 export EDITOR='nvim -f'
 export GOPATH=$HOME/src/play/go
+export ASDF_DIR=/usr/local/opt/asdf
 
-# export CC="/usr/bin/gcc-4.2"
-# perl warnings
 export LC_CTYPE=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
-# export DISABLE_SPRING=1
-export SSL_CERT_FILE=/usr/local/etc/openssl/cert.pem
 export GPG_TTY=$(tty)
 export SSH_AUTH_SOCK=${HOME}/.gnupg/S.gpg-agent.ssh
 export CLICOLOR=1
 export HOMEBREW_NO_AUTO_UPDATE=1
-export PKG_CONFIG_PATH=/usr/local/opt/openssl/lib/pkgconfig
 export PATH="/usr/local/bin:$PATH"
 PS1="$PS1"'$([ -n "$TMUX"  ] && tmux setenv TMUXPWD_$(tmux display -p "#D" | tr -d %) "$PWD")'
 eval "$(fasd --init auto)"
@@ -56,29 +54,27 @@ alias ll="ls -lahG"
 alias lp="ls -p"
 alias lm="ls -la | more"
 alias dt="ditto"
-alias ctr="ctags -R -f ./.git/tags ."
-alias agrr="ag --ignore-dir log --ignore-dir tmp --ignore tags --ignore-dir node_modules --ignore-dir _build"
 alias jg="jobs"
-alias br="hub browse"
+alias br="gh pr view"
 alias rr="ranger"
 alias avim="NVIM_LISTEN_ADDRESS=/tmp/neovim/neovim nvim"
 alias jsc="/System/Library/Frameworks/JavaScriptCore.framework/Versions/Current/Resources/jsc"
 alias kcli="'/Library/Application Support/org.pqrs/Karabiner-Elements/bin/karabiner_cli'"
 alias tagit="ctags -R -f ./.git/tags ."
-alias lse="exa --long --header --git -a --group-directories-first"
+alias le="exa --long --header --git -a --group-directories-first"
 alias powah="pmset -g batt"
 alias icat="kitty +kitten icat"
 alias stitle="kitty @ set-tab-title"
 alias omsd="overmind start -D --procfile Procfile.dev"
-#Tmux
-alias tkil="tmux kill-session -t"
-alias tnw="tmux new-window -n"
-alias tls="tmux ls"
-alias tat="tmux at -d -t"
-alias mux="tmuxinator"
+#Services
+alias bs="brew services"
+alias bsglossa="brew services start postgresql && brew services start redis"
+alias bsglosso="brew services stop postgresql && brew services stop redis"
 #Rails
 alias rserv="bundle exec rails s"
 alias rc="bundle exec rails c"
+#Ruby
+alias gemwipe='gem uninstall -aIx'
 #Docker
 alias dcr="docker-compose run --rm"
 alias dcb="docker-compose build"
@@ -88,10 +84,12 @@ alias drm="docker system prune -f"
 alias dsa="docker ps -a | awk 'NR > 1{print $1}' | xargs docker stop > /dev/null 2>&1"
 alias dpsa="docker ps -a"
 alias images="docker images"
+alias k="kubectl"
 #Language Specific Docker
 ##JS
 alias yarnit="yarn build"
 alias jrepl="npx -p jay-repl jay"
+alias y="yarn"
 ##Ruby
 alias de="dcr web bundle exec"
 ##Elm
@@ -134,6 +132,12 @@ function fzf-history() {
 zle -N fzf-history
 bindkey '^r' fzf-history
 
+unalias z 2> /dev/null
+z() {
+  [ $# -gt 0 ] && _z "$*" && return
+  cd "$(_z -l 2>&1 | fzf --height 40% --nth 2.. --reverse --inline-info +s --tac --query "${*##-* }" | sed 's/^[0-9,.]* *//')"
+}
+
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow -g "!{.git,node_modules,/ops/node_modules}/*"'
 export FZF_DEFAULT_OPTS='--bind J:down,K:up --ansi '
@@ -141,9 +145,8 @@ export NNN_OPENER='nvim'
 export NNN_NOTE='/Users/braidn/src/wiki'
 
 [[ -s "$HOME/.qfc/bin/qfc.sh" ]] && source "$HOME/.qfc/bin/qfc.sh"
-[[ -s $HOME/.tmuxinator/scripts/tmuxinator ]] && source $HOME/.tmuxinator/scripts/tmuxinator
 eval "$(direnv hook zsh)"
+eval "`fnm env --multi`"
 export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
 [[ -s "$HOME/.asdf/asdf.sh" ]] && source "$HOME/.asdf/asdf.sh"
 [[ -s "$HOME/.asdf/completions/asdf.bash" ]] && source "$HOME/.asdf/completions/asdf.bash"
-

@@ -94,3 +94,5 @@ prompt = false
 	user = braidn
 [credential]
 	helper = osxkeychain
+[gpg]
+	program = gpg
