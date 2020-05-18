@@ -5,8 +5,8 @@ SRCDIR="$HOME/src"
 DOTFILES="$HOME/.dotfiles"
 HOMESICK="$HOME/.homesick"
 CONFIGDIR="$HOME/.config"
-TMUXDIR="$HOME/.tmux"
 PREZTODIR="$HOME/.zprezto"
+ASDFDIR="$HOME/.asdf"
 
 # SRC Files for projects
 if [[ ! -d "$SRCDIR" ]]; then
@@ -17,11 +17,6 @@ fi
 if [[ ! -d "$CONFIGDIR" ]]; then
   curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs \
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-fi
-
-# Tmux plugin manager
-if [[ ! -d "$TMUXDIR/plugins" ]]; then
-  git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 fi
 
 # Change shell to zsh
@@ -55,13 +50,28 @@ defaults write com.apple.dock pinning -string start \
 && defaults write com.apple.dock autohide-time-modifier -float 100 \
 && killall Dock
 
+# Install ASDF
+
+if [[ ! -d "$ASDFDIR" ]]; then
+  git clone https://github.com/asdf-vm/asdf.git ~/.asdf
+  cd ~/.asdf
+  git checkout "$(git describe --abbrev=0 --tags)"
+
+  cd "$HOME"
+fi
+
 # Add Support for Needed Languages
 
-asdf plugin-add crystal
-asdf plugin-add elixir
-asdf plugin-add erlang
-asdf plugin-add nodejs
-asdf plugin-add ruby
+if [[ "$ASDFDIR" ]]; then
+  asdf plugin-add crystal
+  asdf plugin-add elixir
+  asdf plugin-add erlang
+  asdf plugin-add ruby
+fi
+
+# Install FNM for Node Support
+
+curl -fsSL https://github.com/Schniz/fnm/raw/master/.ci/install.sh | bash
 
 # Add Yarn support
 
@@ -74,8 +84,8 @@ curl https://krypt.co/kr | sh
 # Install Vim Pluggin Manger
 
 curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
-    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
-# Install TPM
+# Install Kitty Terminal Emulator
 
-git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin
