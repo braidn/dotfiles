@@ -8,6 +8,7 @@ antigen bundle rupa/z
 antigen bundle gem
 antigen bundle tmuxinator
 antigen bundle zsh-users/zsh-syntax-highlighting
+antigen bundle zsh-users/zsh-completions
 antigen bundle colored-man-pages
 antigen bundle mafredri/zsh-async
 antigen bundle sindresorhus/pure
@@ -18,13 +19,9 @@ PURE_GIT_PULL=0
 HISTFILE=~/.zsh_history
 zstyle :prompt:pure:prompt:success color white
 
-
 export AWS_SDK_LOAD_CONFIG='true'
 export VISUAL='nvim -f'
 export EDITOR='nvim -f'
-export GOPATH=$HOME/src/play/go
-export ASDF_DIR=/usr/local/opt/asdf
-
 export LC_CTYPE=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 export GPG_TTY=$(tty)
@@ -35,13 +32,17 @@ export PATH="/usr/local/bin:$PATH"
 PS1="$PS1"'$([ -n "$TMUX"  ] && tmux setenv TMUXPWD_$(tmux display -p "#D" | tr -d %) "$PWD")'
 eval "$(fasd --init auto)"
 
-#Bundler
+#Ruby
+alias gemwipe='gem uninstall -aIx'
 alias be="bundle exec"
 alias bu="bundle update"
 alias bi="bundle install"
 alias bip="bundle install --path=.bundle"
 alias bis="bundle install --binstubs"
-#Yarn
+##JS
+alias yarnit="yarn build"
+alias jrepl="npx -p jay-repl jay"
+alias y="yarn"
 #System
 alias flushcache="sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder;"
 alias g="git"
@@ -66,15 +67,10 @@ alias powah="pmset -g batt"
 alias icat="kitty +kitten icat"
 alias stitle="kitty @ set-tab-title"
 alias omsd="overmind start -D --procfile Procfile.dev"
+alias batl="bat --paging=never -l log"
 #Services
 alias bs="brew services"
-alias bsglossa="brew services start postgresql && brew services start redis"
-alias bsglosso="brew services stop postgresql && brew services stop redis"
-#Rails
-alias rserv="bundle exec rails s"
-alias rc="bundle exec rails c"
 #Ruby
-alias gemwipe='gem uninstall -aIx'
 #Docker
 alias dcr="docker-compose run --rm"
 alias dcb="docker-compose build"
@@ -85,25 +81,11 @@ alias dsa="docker ps -a | awk 'NR > 1{print $1}' | xargs docker stop > /dev/null
 alias dpsa="docker ps -a"
 alias images="docker images"
 alias k="kubectl"
-#Language Specific Docker
-##JS
-alias yarnit="yarn build"
-alias jrepl="npx -p jay-repl jay"
-alias y="yarn"
-##Ruby
 alias de="dcr web bundle exec"
-##Elm
-alias elm='docker run -it --rm -v "$(pwd):/code" -w "/code" -e "HOME=/tmp" -u $UID:$GID -p 8000:8000 codesimple/elm:0.18'
 ##Rust
 alias cargod='docker run --rm --user "$(id -u)":"$(id -g)" -v "$PWD":/usr/src/myapp -w /usr/src/myapp -e USER="old-gregg" rust:1.21 cargo'
 alias rustc='docker run --rm --user "$(id -u)":"$(id -g)" -v "$PWD":/usr/src/myapp -w /usr/src/myapp rust:1.21 rustc'
 alias rustr='docker run --rm --user "$(id -u)":"$(id -g)" -v "$PWD":/usr/src/myapp -w /usr/src/myapp rust:1.21'
-#Swagger
-alias swagger-edit='docker run -ti --rm --volume="$(pwd)":/swagger -p 8080:8080 zixia/swagger-edit'
-#HTTP
-alias glosup='http --check-status HEAD https://www.glossier.com'
-alias itgup='http --check-status HEAD https://intothegloss.com'
-alias ptrnup='http --check-status HEAD https://www.pttrns.com'
 #Functions
 
 # Helper for shell prompts and the like
@@ -141,12 +123,16 @@ z() {
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow -g "!{.git,node_modules,/ops/node_modules}/*"'
 export FZF_DEFAULT_OPTS='--bind J:down,K:up --ansi '
+
 export NNN_OPENER='nvim'
-export NNN_NOTE='/Users/braidn/src/wiki'
 
 [[ -s "$HOME/.qfc/bin/qfc.sh" ]] && source "$HOME/.qfc/bin/qfc.sh"
 eval "$(direnv hook zsh)"
 eval "`fnm env --multi`"
 export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
-[[ -s "$HOME/.asdf/asdf.sh" ]] && source "$HOME/.asdf/asdf.sh"
-[[ -s "$HOME/.asdf/completions/asdf.bash" ]] && source "$HOME/.asdf/completions/asdf.bash"
+source /usr/local/opt/chruby/share/chruby/chruby.sh
+source /usr/local/opt/chruby/share/chruby/auto.sh
+kitty + complete setup zsh | source /dev/stdin
+
+# added by travis gem
+[ ! -s /Users/braidn/.travis/travis.sh ] || source /Users/braidn/.travis/travis.sh
