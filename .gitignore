@@ -10,3 +10,9 @@ home/.config/hub
 home/.config/karabiner/automatic_backups/
 home/.config/nnn/
 home/.config/nvim/
+home/.config/jellyfin/
+home/.config/bat/
+home/.config/rome/
+home/.config/fish/*
+!home/.config/fish/config.fish
+!home/.config/fish/fishfile
