@@ -5,7 +5,6 @@ SRCDIR="$HOME/src"
 DOTFILES="$HOME/.dotfiles"
 HOMESICK="$HOME/.homesick"
 CONFIGDIR="$HOME/.config"
-PREZTODIR="$HOME/.zprezto"
 ASDFDIR="$HOME/.asdf"
 
 # SRC Files for projects
@@ -13,20 +12,10 @@ if [[ ! -d "$SRCDIR" ]]; then
   mkdir "$SRCDIR"
 fi
 
-# Config Dir for NeoVim
-if [[ ! -d "$CONFIGDIR" ]]; then
-  curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs \
-    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-fi
-
-# Change shell to zsh
-if [[ ! -d "$PREZTODIR" ]]; then
-  zsh && git clone --recursive https://github.com/sorin-ionescu/prezto.git "${ZDOTDIR:-$HOME}/.zprezto"
-  setopt EXTENDED_GLOB
-  for rcfile in "${ZDOTDIR:-$HOME}"/.zprezto/runcoms/^README.md; do
-    ln -s "$rcfile" "${ZDOTDIR:-$HOME}/.${rcfile:t}"
-  done
-  chsh -s /bin/zsh
+# Change shell to fish with fisher plugin manager
+  curl -sL https://git.io/fisher | source && fisher install jorgebucaran/fisher
+  echo “/usr/local/bin/fish” | sudo tee -a /etc/shells
+  chsh -s /usr/local/bin/fish
 fi
 
 # Build Dotfiles
@@ -51,7 +40,6 @@ defaults write com.apple.dock pinning -string start \
 && killall Dock
 
 # Install ASDF
-
 if [[ ! -d "$ASDFDIR" ]]; then
   git clone https://github.com/asdf-vm/asdf.git ~/.asdf
   cd ~/.asdf
@@ -61,31 +49,15 @@ if [[ ! -d "$ASDFDIR" ]]; then
 fi
 
 # Add Support for Needed Languages
-
 if [[ "$ASDFDIR" ]]; then
-  asdf plugin-add crystal
-  asdf plugin-add elixir
-  asdf plugin-add erlang
   asdf plugin-add ruby
+  asdf plugin-add nodejs
+
+  bash -c '${ASDF_DATA_DIR:=$HOME/.asdf}/plugins/nodejs/bin/import-release-team-keyring'
 fi
 
-# Install FNM for Node Support
-
-curl -fsSL https://github.com/Schniz/fnm/raw/master/.ci/install.sh | bash
-
 # Add Yarn support
-
 curl -o- -L https://yarnpkg.com/install.sh | bash
 
-# Install KR
-
-curl https://krypt.co/kr | sh
-
-# Install Vim Pluggin Manger
-
-curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
-  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-
-# Install Kitty Terminal Emulator
-
-curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin
+# Install NeoVim package manager
+git clone https://github.com/k-takata/minpac.git ~/.config/nvim/pack/minpac/opt/minpac
