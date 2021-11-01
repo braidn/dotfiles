@@ -29,6 +29,7 @@ ct = commit -v
 cta = commit --amend
 ctm = commit -m
 br = branch
+cbr = rev-parse --abbrev-ref HEAD
 co = checkout
 cot = checkout -t
 cob = checkout -b
@@ -57,7 +58,19 @@ whitespace=fix,tab-in-indent,trailing-space,cr-at-eol
 editor = "nvim"
 autocrlf = input
 safecrlf = warn
-	pager = diff-so-fancy | less --tabs=4 -RFX
+
+[pager]
+  diff = delta
+  log = delta
+  reflog = delta
+  show = delta
+
+[delta]
+  plus-style = "syntax #012800"
+  minus-style = "syntax #340001"
+  syntax-theme = Monokai Extended
+  navigate = true
+  line-numbers = true
 
 [include]
   path = ~/.gitconfig.local
@@ -73,6 +86,9 @@ tool = vimdiff
 
 [difftool]
 prompt = false
+
+[interactive]
+  diffFilter = delta --color-only
 
 [diff "gpg"]
   textconv = dotgpg unsafe_cat
@@ -97,3 +113,5 @@ prompt = false
 	helper = osxkeychain
 [gpg]
 	program = gpg
+[init]
+	defaultBranch = main
