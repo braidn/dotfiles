@@ -1,0 +1,164 @@
+{
+    ;; !  | means mandatory -   modifier(s) alone when pressend change behavior
+    ;; #  | means optional  -   modifiers are optional (but atleast one necessary)
+
+    ;; :!Ca is keycode :a and prefix a with !C
+
+    ;; C  | left_command
+    ;; T  | left_control
+    ;; O  | left_option
+    ;; S  | left_shift
+    ;; F  | fn
+
+    ;; W  | right_control
+    ;; E  | right_option
+    ;; R  | right_shift
+
+    ;; ## | optional any (this has no effect when used on the RHS; only LHS)
+    ;; !! | command + control + optional + shift (hyper)
+
+    ;; to understand better how modifiers work in karabiner
+    ;; karabiner definition of mandatory and optional
+    ;; https://karabiner-elements.pqrs.org/docs/json/complex-modifications-manipulator-definition/from/modifiers/
+
+
+    ;; need to prefix C T O S F with ! or #
+    ;;
+    ;; code for all this:
+    ;; https://github.com/yqrashawn/GokuRakuJoudo/blob/b9b334a187379f9bc8182ad59e2cca2a1789e9c0/src/karabiner_configurator/keys.clj#L68
+
+
+:profiles {
+    :default {  :default true ;; Needs to be renamed ot 'Default' when finished.
+                :sim     100    ;; simultaneous_threshold_milliseconds (def: 50)
+                                ;; keys need to be pressed within this threshold to be considered simultaneous
+                :delay   500    ;; to_delayed_action_delay_milliseconds (def: 500)
+                                ;; basically it means time after which the key press is count delayed
+                :alone   1000    ;; to_if_alone_timeout_milliseconds (def: 1000)
+                                ;; hold for 995s and single tap registered; hold for 1005s and seen as modifier
+                :held    1000   ;; to_if_held_down_threshold_milliseconds (def: 500)
+                                ;; key is fired twice when 500 ms is elapsed (otherwise seen as a hold command)
+             }
+} ;; profiles
+
+;; Define different kinds of keyboards
+:devices {
+    :aple [{:vendor_id 1452, :product_id 635}]
+    :rf87 [{:vendor_id 2131}] ;; Realforce (Norbaforce)
+    :bhkb [{:vendor_id 18504, :product_id 1 }] ;; Black HHKB
+    :whkb [{:vendor_id 65261, :product_id 4611 }] ;; White HHKB
+    :nova [{:vendor_id 9494 }] ;; Novatouch (Norbatouch)
+    :m60a [{:vendor_id 21057, :product_id 1546 }] ;; Rama M60a
+    :hdox [{:vendor_id 16715, :product_id 1 }] ;; Hot Dox
+
+    :tkl [   ;; None Programatical Tenkeyless
+        {:vendor_id 2131}
+        {:vendor_id 9494}
+    ]
+
+    :kybs [  ;; Default for all keyboards
+        {:vendor_id 1452}
+        {:vendor_id 2131}
+        {:vendor_id 1241}
+        {:vendor_id 1118}
+        {:vendor_id 65261}
+        {:vendor_id 10730}
+        {:vendor_id 16715}
+        {:vendor_id 21057}
+    ]
+
+    :nprg [
+           {:vendor_id 2131}
+           {:vendor_id 1452 }
+           {:vendor_id 635 }
+           {:vendor_id 9494}
+    ]
+} ;; devices
+
+;; layers are basically "hyper" keys
+;; press this in combination with something else and depending on your rule, make things happen
+:layers {
+    :launch-mode {:key :tab}
+} ;; layers
+
+;; simlayers are basically "hyper" keys
+;; layers works too, but only recommended for non-typing keys like . or tab
+;; to use more regular typing keys, use simlayers
+:simlayers {
+  :d-mode {:key :d}
+} ;; simlayers
+
+;; main contains multiple manipulators
+:main [
+
+    ;; each manipulator has a description and multiple rules
+
+    ;;{:des "..."                               ;; -> description
+    ;; :rules[
+    ;;          [<from>  <to>  <conditions>]    ;; -> rule 1
+    ;;          [<from>  <to>  <conditions>]    ;; -> rule 2
+    ;; ]}
+
+    ;; rule [:period ["period-mode" 1] nil {:afterup ["period-mode" 0] :alone :period}]
+    ;;       |_____| |_______________| |_| |_________________________________________|
+    ;;        <from>    <to>      <conditions>         <other options>
+    ;;
+    ;; karabiner docs: ;; https://pqrs.org/osx/karabiner/json.html#complex_modifications-manipulator-definition
+    ;; <other options> includs ~to_if_alone~, ~to_if_held_down~,~to_after_key_up~, ~to_delayed_action~ and ~parameters~.
+    ;;
+
+    ;; (custom variables) & modifiers -> Advanced
+    ;; https://github.com/yqrashawn/GokuRakuJoudo/blob/master/examples.org#custom-variable
+
+    ;; ----------------------------------
+    ;; Hardware keyboard mappings
+    ;; ----------------------------------
+
+    {:des "TKL Simple Manipulations"
+     :rules [:tkl
+             [:help :insert]
+             [:keypad_num_lock :f14]
+             [:left_command :left_option]
+             [:left_option :left_command]
+             [:right_command :right_option]
+             [:right_option :right_command]
+             ]}
+
+    {:des "Internal Simple Manipulations"
+     :rules[:nprg
+            [:##caps_lock :left_control nil {:alone :escape}]
+      ]}
+
+    {:des "Steve Losh shifts"
+     :rules [:nprg
+          [:left_shift [:left_shift] nil {:alone :!S9}]
+          [:right_shift [:right_shift] nil {:alone :!S0}]
+      ]
+    }
+
+    {:des "Quick bracket/braces sequences"
+        :rules [:nprg
+
+          ;; () - through caps lock
+          [:k :!S9   :d-mode]
+          [:l :!S0   :d-mode]
+          ;; {} - through caps lock
+          [:j :!Sopen_bracket   :d-mode]
+          [:semicolon :!Sclose_bracket  :d-mode]
+          ;; [] - through caps lock
+          [:s :open_bracket     :d-mode]
+          [:f :close_bracket    :d-mode]
+    ]}
+
+    ;; ----------------------------------
+    ;; Key mappings
+    ;; ----------------------------------
+    {:des "Handy misc"
+     :rules [
+          ;; easier key launches
+          [[:f :j] :!Qspacebar] ;; alfred
+      ]
+     }
+] ;; main list
+
+}
