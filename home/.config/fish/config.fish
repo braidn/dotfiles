@@ -18,7 +18,7 @@ set -Ux LC_ALL "en_US.UTF-8"
 set -Ux CLICOLOR 1
 set -Ux HOMEBREW_NO_AUTO_UPDATE 1
 set -Ux NNN_OPENER "nvim -f"
-set -Ux GH_TOKEN 485c5674dc161858b00765de681bf772dcc03531
+set -Ux GH_TOKEN 
 set -Ux AWS_CONFIGURE_SSO_DEFAULT_SSO_START_URL https://awsgloss.awsapps.com/start
 set -Ux AWS_CONFIGURE_SSO_DEFAULT_SSO_REGION us-east-1
 set -Ux AWS_DEFAULT_REGION us-east-1
