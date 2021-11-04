@@ -9,7 +9,6 @@ home/.config/htop/
 home/.config/hub
 home/.config/karabiner/
 home/.config/nnn/
-home/.config/nvim/
 home/.config/jellyfin/
 home/.config/bat/
 home/.config/rome/
@@ -21,6 +20,8 @@ home/.config/containers/
 home/.config/broot/
 home/.config/fish/*
 home/.config/kitty/*
+home/.config/nvim/*
+!home/.config/nvim/lua/
 !home/.config/kitty/kitty.conf
 !home/.config/fish/config.fish
 !home/.config/fish/fishfile
