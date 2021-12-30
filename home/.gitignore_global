@@ -3,3 +3,5 @@ tags.lock
 tags.temp
 .bundle/
 .tern-port
+.tool-versions
+.tasks

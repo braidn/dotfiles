@@ -53,17 +53,17 @@ lgl = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %
 stash-all = stash save --include-untracked
 
 [core]
-excludesfile = /Users/braidn/.gitignore_global
-whitespace=fix,tab-in-indent,trailing-space,cr-at-eol
-editor = "nvim"
-autocrlf = input
-safecrlf = warn
+	excludesfile = /Users/braidn/.gitignore_global
+  whitespace=fix,tab-in-indent,trailing-space,cr-at-eol
+  editor = "nvim"
+  autocrlf = input
+  safecrlf = warn
 
 [pager]
-  diff = delta
-  log = delta
-  reflog = delta
-  show = delta
+  diff = "delta"
+  log = "delta"
+  reflog = "delta"
+  show = "delta"
 
 [delta]
   plus-style = "syntax #012800"
@@ -71,6 +71,7 @@ safecrlf = warn
   syntax-theme = Monokai Extended
   navigate = true
   line-numbers = true
+	side-by-side = true
 
 [include]
   path = ~/.gitconfig.local

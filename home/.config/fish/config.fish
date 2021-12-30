@@ -18,11 +18,12 @@ set -Ux LC_ALL "en_US.UTF-8"
 set -Ux CLICOLOR 1
 set -Ux HOMEBREW_NO_AUTO_UPDATE 1
 set -Ux NNN_OPENER "nvim -f"
-set -Ux GH_TOKEN 
 set -Ux AWS_CONFIGURE_SSO_DEFAULT_SSO_START_URL https://awsgloss.awsapps.com/start
 set -Ux AWS_CONFIGURE_SSO_DEFAULT_SSO_REGION us-east-1
 set -Ux AWS_DEFAULT_REGION us-east-1
 set -Ux AWS_PROFILE dev-rw
+set -Ux KITTY_LISTEN_ON "unix:/tmp/mykitty"
+set -U fish_user_paths /opt/homebrew/bin/ $fish_user_paths
 
 
 # Set up useful aliases
@@ -178,3 +179,6 @@ set fzf_fd_opts --hidden --exclude=.git
 #   aws sts get-caller-identity &> /dev/null || aws sso login || set -e AWS_PROFILE && aws-configure-sso-profile --profile $argv[1]
 #   eval aws-export-credentials --env-export
 # end
+
+# Created by `pipx` on 2021-11-10 18:54:22
+set PATH $PATH /Users/braidn/.local/bin

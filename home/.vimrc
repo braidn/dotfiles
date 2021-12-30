@@ -4,29 +4,20 @@ endif
 
 set encoding=utf-8
 scriptencoding utf-8
-set shell=/bin/bash
 set rtp+=/usr/local/opt/fzf
 filetype plugin indent on
-runtime macros/sandwich/keymap/surround.vim
 
 let g:rainbow_active = 1
-
-if executable('ag')
-  set grepprg=rg
-  set grepformat=%f:%l:%c%m
-endif
-
 set grepprg=rg\ --vimgrep
 
 "Color stuff
 syntax enable
 set background=dark
-let g:nvcode_termcolors=256
+" let g:nvcode_termcolors=256
 " colorscheme iceberg
 " colorscheme zephyr
 " colorscheme tokyonight
 set clipboard=unnamed
-" set re=0 " YATS config
 
 " Random personal settings
 set smartindent
@@ -61,20 +52,17 @@ set splitright
 set nowrap
 set ttimeoutlen=100
 set complete+=kspell
-set shell=/usr/local/bin/zsh
+set shell=/bin/zsh
+set guifont=CaskaydiaCove\ Nerd\ Font:13
 let g:sneak#s_next = 1
 let g:rooter_patterns = ['.git/', '.vimroot', 'Rakefile', 'package.json', 'rome.json']
 "
 " Leader Mapping
 let mapleader = "\<Space>"
-nnoremap <Leader>sl :set cc=80<CR>
-nnoremap <leader>tw :set textwidth=80<cr>
 "Preserve indentations from pasteboard
 noremap <leader>P :set paste<CR>:put  *<CR>:set nopaste<CR>
 
 " Refresh open buffer if changed outside of vim
-autocmd FocusGained,CursorHold,CursorHoldI *
-      \ if mode() !~ '\v(c|r.?|!|t)' && getcmdwintype() == '' | checktime | endif
 nnoremap <leader>r :checktime<cr>
 
 "Netrw
@@ -91,7 +79,7 @@ let g:netrw_localrmdir='rm -r'
 lua require('init')
 
 " File Tree
-nnoremap <silent> <leader>e :NnnExplorer<CR>
+nnoremap <silent> <leader>e :Explore<CR>
 
 "Yank into OS X, might require reattach-to-user clipboard"
 noremap <leader>y "*y
@@ -105,9 +93,6 @@ map <silent> <leader>4 :diffget 4<CR>
 "Git bindings
 nnoremap <silent> <leader>gs :Neogit kind=split <CR>
 nnoremap <silent> <leader>gm :GitMessenger <CR>
-
-"Indent Lines
-hi Conceal ctermfg=red ctermbg=NONE
 
 tnoremap <Leader><ESC> <C-\><C-n>
 
@@ -148,9 +133,6 @@ vnoremap : ;
 nnoremap gp `[v`]
 
 " FT Specific
-au BufRead,BufNewFile jquery.*.js set ft=javascript syntax=jquery
-au BufRead,BufNewFile *.rabl set ft=ruby
-au BufRead,BufNewFile schema.js set ft=graphql
 
 autocmd Filetype gitcommit setlocal spell textwidth=72
 autocmd Filetype gina-commit setlocal spell textwidth=72
@@ -170,12 +152,10 @@ let g:jsx_ext_required = 1
 let g:vim_json_syntax_conceal = 0
 
 " Deoplete/Snippets Resurrection
-let g:python3_host_prog = '/usr/local/bin/python3'
-" let g:deoplete#enable_at_startup = 1
+let g:python3_host_prog = '/opt/homebrew/bin//python3'
 autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
 
 set completeopt=menuone,noinsert,noselect
-
 
 " Avoid showing message extra message when using completion
 set shortmess+=c
@@ -185,19 +165,11 @@ inoremap <silent> <C-k> <cmd>lua require'luasnip'.jump(-1) <CR>
 
 let g:numbers_exclude = ['fzf', 'terminal', 'floaterm', 'NvimTree', 'Telescope', 'nnn']
 
-set hidden
 let g:asyncrun_open = 6
 match Todo /\s\+$/
-
-if has('nvim')
-  set termguicolors
-endif
 
 command! PackerInstall packadd packer.nvim | lua require('plugins').install()
 command! PackerUpdate packadd packer.nvim | lua require('plugins').update()
 command! PackerSync packadd packer.nvim | lua require('plugins').sync()
 command! PackerClean packadd packer.nvim | lua require('plugins').clean()
 command! PackerCompile packadd packer.nvim | lua require('plugins').compile()
-command! DenoLSPStart lua require('lspconfig').denols.autostart()
-command! TypeScriptLSPStart lua require('lspconfig').tsserver.autostart()
-command! RubyLSPStart lua require('lspconfig').solargraph.autostart()
