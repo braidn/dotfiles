@@ -43,6 +43,7 @@ require('packer').startup({
     use({ 'TimUntersberger/neogit', requires = 'nvim-lua/plenary.nvim' })
     use('rhysd/git-messenger.vim')
     use 'voldikss/vim-floaterm'
+    use('machakann/vim-sandwich')
     -- Themes
     --
     use('folke/tokyonight.nvim')
