@@ -11,7 +11,7 @@ local M = {}
 
 vim.g.mapleader = ' '
 map('n', '<Leader>gs', ':Neogit kind=split<CR>', opt)
-map('n', '<Leader>n3', ':FloatermNew xplr<CR>', opt)
+map('n', '<Leader>n3', ':Broot<CR>', opt)
 map('n', '<leader>ya', ':%y+<CR>', opt) 
 map('n', '<leader>yl', '"+yy', opt)
 

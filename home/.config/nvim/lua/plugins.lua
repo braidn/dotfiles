@@ -42,8 +42,8 @@ require('packer').startup({
     use('lukas-reineke/indent-blankline.nvim')
     use({ 'TimUntersberger/neogit', requires = 'nvim-lua/plenary.nvim' })
     use('rhysd/git-messenger.vim')
-    use 'voldikss/vim-floaterm'
     use('machakann/vim-sandwich')
+    use('is0n/fm-nvim')
     -- Themes
     --
     use('folke/tokyonight.nvim')
