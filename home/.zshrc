@@ -9,7 +9,7 @@ export GPG_TTY=$(tty)
 export SSH_AUTH_SOCK=${HOME}/.gnupg/S.gpg-agent.ssh
 export CLICOLOR=1
 export HOMEBREW_NO_AUTO_UPDATE=1
-export PATH="/usr/local/bin:$PATH"
+export PATH="/opt/homebrew/bin:$PATH"
 
 #Ruby
 alias gemwipe='gem uninstall -aIx'
