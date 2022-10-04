@@ -10,6 +10,11 @@ home/.config/hub
 home/.config/karabiner/
 home/.config/nnn/
 home/.config/jellyfin/
+home/.config/gh-dash/
+home/.config/github-copilot/
+home/.config/medusa/
+home/.config/nixpkgs/
+home/.config/stripe/
 home/.config/bat/
 home/.config/rome/
 home/.config/vifm/
