@@ -1,8 +1,10 @@
 HISTFILE=~/.zsh_history
+ZSH_DISABLE_COMPFIX=true
 
 export AWS_SDK_LOAD_CONFIG='true'
-export VISUAL='nvim -f'
-export EDITOR='nvim -f'
+export VISUAL='hx'
+export EDITOR='hx'
+export GIT_EDITOR='hx'
 export LC_CTYPE=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 export GPG_TTY=$(tty)
@@ -66,7 +68,6 @@ export NNN_OPENER='nvim'
 [[ -s "$HOME/.qfc/bin/qfc.sh" ]] && source "$HOME/.qfc/bin/qfc.sh"
 eval "$(direnv hook zsh)"
 eval "$(fasd --init auto)"
-source /Users/braidn/.config/broot/launcher/bash/br
 
 # ASDF Stuff
 . $HOME/.asdf/asdf.sh
@@ -79,4 +80,12 @@ if type brew &>/dev/null; then
   autoload -Uz compinit
   compinit
 fi
-eval "$(starship init zsh)"
+fpath=($fpath "/Users/braidn/.zfunctions")
+
+if [[ $TERM_PROGRAM != "WarpTerminal" ]]; then
+# Set typewritten ZSH as a prompt
+autoload -U promptinit; promptinit
+prompt typewritten
+fi
+path+=('/Users/braidn/.rd/bin')
+export NIX_PATH=$HOME/.nix-defexpr/channels:/nix/var/nix/profiles/per-user/root/channels${NIX_PATH:+:$NIX_PATH}
