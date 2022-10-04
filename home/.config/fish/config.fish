@@ -18,12 +18,13 @@ set -Ux LC_ALL "en_US.UTF-8"
 set -Ux CLICOLOR 1
 set -Ux HOMEBREW_NO_AUTO_UPDATE 1
 set -Ux NNN_OPENER "nvim -f"
-set -Ux AWS_CONFIGURE_SSO_DEFAULT_SSO_START_URL https://awsgloss.awsapps.com/start
-set -Ux AWS_CONFIGURE_SSO_DEFAULT_SSO_REGION us-east-1
-set -Ux AWS_DEFAULT_REGION us-east-1
-set -Ux AWS_PROFILE dev-rw
+set -Ux AWS_PROFILE mine
 set -Ux KITTY_LISTEN_ON "unix:/tmp/mykitty"
+set -Ux RUBY_CONFIGURE_OPTS "--with-openssl-dir=/opt/homebrew/opt/openssl@1.1"
+set -Ux FLYCTL_INSTALL "/Users/braidn/.fly"
 set -U fish_user_paths /opt/homebrew/bin/ $fish_user_paths
+set -U fish_user_paths ~/.rd/bin $fish_user_paths
+set -U fish_user_paths "$FLYCTL_INSTALL/bin" $fish_user_paths
 
 
 # Set up useful aliases
@@ -50,16 +51,11 @@ alias stitle="kitty @ set-tab-title"
 alias omsd="overmind start -D --procfile Procfile.dev"
 alias batl="bat --paging=never -l log"
 alias postcmd="history -S; history -M"
-#Docker
-alias dcr="docker-compose run --rm"
-alias dcb="docker-compose build"
-alias dcs="docker-compose stop"
-alias dcu="docker-compose up"
-alias drm="docker system prune -f"
-alias dsa="docker ps -a | awk 'NR > 1{print $1}' | xargs docker stop > /dev/null 2>&1"
-alias dpsa="docker ps -a"
-alias images="docker images"
-alias de="docker-compose run --rm web bundle exec"
+#Containers
+alias drm="nerdctl system prune -f"
+alias dsa="nerdctl ps -a | awk 'NR > 1{print $1}' | xargs docker stop > /dev/null 2>&1"
+alias dpsa="nerdctl ps -a"
+alias images="nerdctl images"
 alias k="kubectl"
 ##JS
 alias yarnit="yarn build"
@@ -83,20 +79,22 @@ source ~/.asdf/asdf.fish
 zoxide init fish | source
 starship init fish | source
 eval (direnv hook fish)
-# ==================================================================
-# # TokyoNight Color Palette
-# ==================================================================
 
-set -l foreground c0caf5
-set -l selection 364A82
-set -l comment 565f89
-set -l red f7768e
-set -l orange ff9e64
-set -l yellow e0af68
-set -l green 9ece6a
-set -l purple 9d7cd8
-set -l cyan 7dcfff
-set -l pink bb9af7
+# ==================================================================
+# Nightfox Color Palette
+# Style: terrafox
+# Upstream: https://github.com/edeneast/nightfox.nvim/raw/main/extra/carbonfox/nightfox_fish.fish
+# ==================================================================
+set -l foreground e6eaea
+set -l selection 293e40
+set -l comment 6d7f8b
+set -l red e85c51
+set -l orange ff8349
+set -l yellow fda47f
+set -l green 7aa4a1
+set -l purple ad5c7c
+set -l cyan a1cdd8
+set -l pink cb7985
 
 # Syntax Highlighting Colors
 set -g fish_color_normal $foreground
@@ -119,6 +117,42 @@ set -g fish_pager_color_progress $comment
 set -g fish_pager_color_prefix $cyan
 set -g fish_pager_color_completion $foreground
 set -g fish_pager_color_description $comment
+# ==================================================================
+# # TokyoNight Color Palette
+# ==================================================================
+
+# set -l foreground c0caf5
+# set -l selection 364A82
+# set -l comment 565f89
+# set -l red f7768e
+# set -l orange ff9e64
+# set -l yellow e0af68
+# set -l green 9ece6a
+# set -l purple 9d7cd8
+# set -l cyan 7dcfff
+# set -l pink bb9af7
+
+# Syntax Highlighting Colors
+# set -g fish_color_normal $foreground
+# set -g fish_color_command $cyan
+# set -g fish_color_keyword $pink
+# set -g fish_color_quote $yellow
+# set -g fish_color_redirection $foreground
+# set -g fish_color_end $orange
+# set -g fish_color_error $red
+# set -g fish_color_param $purple
+# set -g fish_color_comment $comment
+# set -g fish_color_selection --background=$selection
+# set -g fish_color_search_match --background=$selection
+# set -g fish_color_operator $green
+# set -g fish_color_escape $pink
+# set -g fish_color_autosuggestion $comment
+
+# Completion Pager Colors
+# set -g fish_pager_color_progress $comment
+# set -g fish_pager_color_prefix $cyan
+# set -g fish_pager_color_completion $foreground
+# set -g fish_pager_color_description $comment
 
 
 # ==================================================================
@@ -182,3 +216,5 @@ set fzf_fd_opts --hidden --exclude=.git
 
 # Created by `pipx` on 2021-11-10 18:54:22
 set PATH $PATH /Users/braidn/.local/bin
+# For Rancher Desktop executables
+set PATH $PATH /Users/braidn/.rg/bin

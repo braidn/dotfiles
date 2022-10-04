@@ -45,7 +45,6 @@ g.netrw_liststyle=3
 g.netrw_chgwin=2
 g.netrw_bufsettings = 'noma nomod nu nobl nowrap ro'
 g.netrw_localrmdir='rm -r'
-
-cmd[[colorscheme kanagawa]]
+g.python3_host_prog='/opt/homebrew/bin//python3'
 
 -- # vim foldmethod=marker

@@ -11,9 +11,7 @@ local M = {}
 
 vim.g.mapleader = ' '
 map('n', '<Leader>gs', ':Neogit kind=split<CR>', opt)
-map('n', '<Leader>n3', ':Broot<CR>', opt)
-map('n', '<leader>ya', ':%y+<CR>', opt) 
-map('n', '<leader>yl', '"+yy', opt)
+map("i", "jj", "<ESC>", opt)
 
 local cmp = require('cmp')
 M.cmp_mappings = {
@@ -30,27 +28,25 @@ M.cmp_mappings = {
 }
 
 -- map("n", "<Leader>ff", [[<Cmd>lua require('telescope.builtin').find_files(require('telescope.themes').get_dropdown({}))<CR>]], opt)
--- map("n", "<Leader>fb", [[<Cmd>lua require('telescope.builtin').buffers(require('telescope.themes').get_dropdown({}))<CR>]], opt)
--- map("n", "<Leader>gf", [[<Cmd>lua require('telescope.builtin').git_files(require('telescope.themes').get_dropdown({}))<CR>]], opt)
--- map("n", "<Leader>fa", [[<Cmd>lua require('telescope.builtin').live_grep(require('telescope.themes').get_dropdown({}))<CR>]], opt)
--- map("n", "<Leader>fq", [[<Cmd>lua require('telescope.builtin').quickfix(require('telescope.themes').get_dropdown({}))<CR>]], opt)
--- map("n", "<Leader>ca", [[<Cmd>lua require('telescope.builtin').lsp_code_actions(require('telescope.themes').get_cursor({}))<CR>]], opt)
--- map("n", "<Leader><Leader>", [[<Cmd>lua require('telescope.builtin').command_history(require('telescope.themes').get_dropdown({}))<CR>]], opt)
+map("n", "<Leader>pf", [[<Cmd>lua require('telescope.builtin').find_files(require('telescope.themes').get_dropdown({}))<CR>]], opt)
+map("n", "<Leader>pg", [[<Cmd>lua require('telescope.builtin').git_files(require('telescope.themes').get_dropdown({}))<CR>]], opt)
+map("n", "<Leader>fb", [[<Cmd>lua require('telescope.builtin').buffers(require('telescope.themes').get_dropdown({}))<CR>]], opt)
+map("n", "<Leader>fa", [[<Cmd>lua require('telescope.builtin').live_grep(require('telescope.themes').get_dropdown({}))<CR>]], opt)
+map("n", "<Leader>fq", [[<Cmd>lua require('telescope.builtin').quickfix(require('telescope.themes').get_dropdown({}))<CR>]], opt)
+map("n", "<Leader>ca", [[<Cmd>lua require('telescope.builtin').lsp_code_actions(require('telescope.themes').get_cursor({}))<CR>]], opt)
+map("n", "<Leader>fm", [[<Cmd>:Telescope harpoon marks<CR>]], opt)
+map("n", "<Leader>am", [[<Cmd>lua require("harpoon.mark").add_file()<CR>]], opt)
+map("n", "<Leader><Leader>", [[<Cmd>lua require('telescope.builtin').command_history(require('telescope.themes').get_dropdown({}))<CR>]], opt)
 
-map("n", "<Leader>ff", [[<cmd>lua require('fzf-lua').files()<CR>]], opt)
-map("n", "<Leader>fb", [[<cmd>lua require('fzf-lua').buffers()<CR>]], opt)
-map("n", "<Leader>gf", [[<cmd>lua require('fzf-lua').git_files()<CR>]], opt)
-map("n", "<Leader>fa", [[<cmd>lua require('fzf-lua').live_grep()<CR>]], opt)
-map("n", "<Leader>fq", [[<cmd>lua require('fzf-lua').quickfix()<CR>]], opt)
-map("n", "<Leader>ca", [[<cmd>lua require('fzf-lua').lsp_code_actions()<CR>]], opt)
-map("n", "<Leader><Leader>", [[<cmd>lua require('fzf-lua').command_history()<CR>]], opt)
+-- map("n", "<Leader>ff", [[<cmd>lua require('fzf-lua').files()<CR>]], opt)
+-- map("n", "<Leader>fb", [[<cmd>lua require('fzf-lua').buffers()<CR>]], opt)
+-- map("n", "<Leader>gf", [[<cmd>lua require('fzf-lua').git_files()<CR>]], opt)
+-- map("n", "<Leader>fa", [[<cmd>lua require('fzf-lua').live_grep()<CR>]], opt)
+-- map("n", "<Leader>fq", [[<cmd>lua require('fzf-lua').quickfix()<CR>]], opt)
+-- map("n", "<Leader>ca", [[<cmd>lua require('fzf-lua').lsp_code_actions()<CR>]], opt)
+-- map("n", "<Leader><Leader>", [[<cmd>lua require('fzf-lua').command_history()<CR>]], opt)
 
-map('n', '<leader>aH', ':HopWord<CR>', opt)
-map('n', '<leader>ah', ':HopLine<CR>', opt)
-
-map("n", ";", ":", opt)
-map("v", ":", ";", opt)
-map("n", "gp", "`[v`]", opt)
-map("i", "jj", "<ESC>", opt)
+-- map("n", ";", ":", opt)
+-- map("v", ":", ";", opt)
 
 return M
