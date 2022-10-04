@@ -25,7 +25,8 @@ aa = add --all
 ai = add --interactive
 changes = diff --name-status -r
 st = status -sb
-ct = commit -v
+ct = commit
+ctl = commit -v
 cta = commit --amend
 ctm = commit -m
 br = branch
@@ -116,3 +117,9 @@ prompt = false
 	program = gpg
 [init]
 	defaultBranch = main
+[credential "https://github.com"]
+	helper = 
+	helper = !/opt/homebrew/bin/gh auth git-credential
+[credential "https://gist.github.com"]
+	helper = 
+	helper = !/opt/homebrew/bin/gh auth git-credential
