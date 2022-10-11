@@ -25,6 +25,8 @@ set -Ux FLYCTL_INSTALL "/Users/braidn/.fly"
 set -U fish_user_paths /opt/homebrew/bin/ $fish_user_paths
 set -U fish_user_paths ~/.rd/bin $fish_user_paths
 set -U fish_user_paths "$FLYCTL_INSTALL/bin" $fish_user_paths
+set -Ux PYENV_ROOT $HOME/.pyenv
+set -U fish_user_paths $PYENV_ROOT/bin $fish_user_paths
 
 
 # Set up useful aliases
@@ -52,9 +54,10 @@ alias omsd="overmind start -D --procfile Procfile.dev"
 alias batl="bat --paging=never -l log"
 alias postcmd="history -S; history -M"
 #Containers
-alias drm="nerdctl system prune -f"
-alias dsa="nerdctl ps -a | awk 'NR > 1{print $1}' | xargs docker stop > /dev/null 2>&1"
-alias dpsa="nerdctl ps -a"
+alias con="nerdctl"
+alias crm="nerdctl system prune -f"
+alias csa="nerdctl ps -a | awk 'NR > 1{print $1}' | xargs docker stop > /dev/null 2>&1"
+alias cpsa="nerdctl ps -a"
 alias images="nerdctl images"
 alias k="kubectl"
 ##JS

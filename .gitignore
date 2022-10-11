@@ -32,3 +32,4 @@ home/.config/nvim/*
 !home/.config/fish/config.fish
 !home/.config/fish/fishfile
 !home/.config/fish/themes/
+!home/.config/fish/fish_plugins
