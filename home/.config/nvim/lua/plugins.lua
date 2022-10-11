@@ -63,16 +63,28 @@ require('packer').startup({
       requires = {'kyazdani42/nvim-web-devicons'}
     })
     use('ThePrimeagen/harpoon')
-    -- use('github/copilot.vim')
+    use {
+      "AckslD/nvim-neoclip.lua",
+      requires = {
+        {'nvim-telescope/telescope.nvim'},
+      },
+      config = function()
+        require('neoclip').setup()
+      end,
+    }
     -- Themes
     --
     use('folke/tokyonight.nvim')
     use({ "EdenEast/nightfox.nvim", branch = "main" })
     use('sainnhe/everforest')
-    use({
+    use {
       "catppuccin/nvim",
-      as = "catppuccin"
-    })
+      as = "catppuccin",
+      config = function()
+        vim.g.catppuccin_flavour = "macchiato" -- latte, frappe, macchiato, mocha
+        require("catppuccin").setup()
+      end
+    }
     use "rebelot/kanagawa.nvim"
 
   end,

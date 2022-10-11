@@ -31,3 +31,4 @@ home/.config/nvim/*
 !home/.config/kitty/kitty.conf
 !home/.config/fish/config.fish
 !home/.config/fish/fishfile
+!home/.config/fish/themes/
