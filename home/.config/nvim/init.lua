@@ -7,7 +7,7 @@ require('config.plugins')
 require('lsp')
 
 -- Set Current Theme
-vim.cmd[[colorscheme terafox]]
+vim.cmd[[colorscheme catppuccin]]
 
 -- Set Icons
 local icons = require "nvim-nonicons"

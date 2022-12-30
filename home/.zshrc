@@ -83,9 +83,8 @@ fi
 fpath=($fpath "/Users/braidn/.zfunctions")
 
 if [[ $TERM_PROGRAM != "WarpTerminal" ]]; then
-# Set typewritten ZSH as a prompt
-autoload -U promptinit; promptinit
-prompt typewritten
+  eval "$(starship init zsh)"
 fi
 path+=('/Users/braidn/.rd/bin')
 export NIX_PATH=$HOME/.nix-defexpr/channels:/nix/var/nix/profiles/per-user/root/channels${NIX_PATH:+:$NIX_PATH}
+fpath=($fpath "/Users/braden.douglass/.zfunctions")

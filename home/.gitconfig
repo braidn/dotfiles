@@ -38,6 +38,7 @@ mg = merge
 df = diff
 ds = diff --staged
 wd = diff --color-words
+cd = diff --name-only --diff-filter=U --relative
 irb = rebase --interactive
 cp = cherry-pick -s
 rh = reset --hard
@@ -127,4 +128,4 @@ prompt = false
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
 	process = git-lfs filter-process
-	required = true
+  required = true

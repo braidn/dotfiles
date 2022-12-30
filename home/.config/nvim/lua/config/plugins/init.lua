@@ -2,8 +2,15 @@ require("nvim-web-devicons").setup{ default = true }
 local icons = require "nvim-nonicons"
 icons.get("file")
 local lspconfig = require("lspconfig")
-local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
+require('neoclip').setup({
+  history = 100,
+  enable_macro_history = true
+})
 require("telescope").load_extension('harpoon')
+require('telescope').load_extension('neoclip')
+require('telescope').load_extension('macroscope')
+require('leap').add_default_mappings()
 lspconfig.tsserver.setup{
   on_attach = function(client, bufnr)
     -- disable tsserver formatting if you plan on formatting via null-ls
@@ -59,7 +66,7 @@ lspconfig.tsserver.setup{
 lspconfig.solargraph.setup{
   capabilities = capabilities
 }
-lspconfig.sorbet.setup{
+lspconfig.syntax_tree.setup{
   capabilities = capabilities
 }
 lspconfig.jsonls.setup{
@@ -224,7 +231,7 @@ local on_attach = function(client, bufnr)
 
   vim.api.nvim_create_user_command("LspFormat",
     function()
-      vim.lsp.buf.formatting()
+      vim.lsp.buf.format({ async = true })
     end
     , { bang = true, desc = 'Language Server Formatting' })
   vim.cmd("command! LspDef lua vim.lsp.buf.definition()")
@@ -270,8 +277,10 @@ local null_ls = require("null-ls")
 local sources = {
   null_ls.builtins.diagnostics.shellcheck,
   null_ls.builtins.formatting.rustfmt,
+  null_ls.builtins.diagnostics.haml_lint,
+  null_ls.builtins.diagnostics.standardrb,
   null_ls.builtins.formatting.prettierd.with({
-    filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact", "vue", "css", "scss", "less", "html", "json", "yaml", "markdown", "graphql", "ruby" }
+    filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact", "vue", "css", "scss", "less", "html", "json", "yaml", "markdown", "graphql" }
   })
 }
 null_ls.setup({ sources = sources, on_attach = on_attach, debug = true })
@@ -280,9 +289,6 @@ require('nvim-autopairs').setup({
 })
 local cmp_autopairs = require('nvim-autopairs.completion.cmp')
 cmp.event:on( 'confirm_done', cmp_autopairs.on_confirm_done())
-
--- Diffview
-local cb = require'diffview.config'.diffview_callback
 
 local neogit = require("neogit")
 neogit.setup{
@@ -325,27 +331,6 @@ local that_line = require("everybody-wants-that-line")
 that_line.setup({
   buffer_number_symbol_count = 5,
   separator = "│",
-})
-
-require("nvim-tree").setup({
-  sort_by = "case_sensitive",
-  git = {
-    enable = false,
-  },
-  view = {
-    adaptive_size = true,
-    mappings = {
-      list = {
-        { key = "u", action = "dir_up" },
-      },
-    },
-  },
-  renderer = {
-    group_empty = true,
-  },
-  filters = {
-    dotfiles = true,
-  },
 })
 
 local actions = require("diffview.actions")
@@ -479,3 +464,8 @@ require('litee.lib').setup({
   }
 })
 require('litee.gh').setup()
+require'netrw'.setup{
+  icons = {},
+  use_devicons = true,
+  mappings = {}
+}

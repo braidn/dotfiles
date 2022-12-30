@@ -45,6 +45,7 @@ g.netrw_liststyle=3
 g.netrw_chgwin=2
 g.netrw_bufsettings = 'noma nomod nu nobl nowrap ro'
 g.netrw_localrmdir='rm -r'
-g.python3_host_prog='/opt/homebrew/bin//python3'
+g.python3_host_prog='~/.pyenv/shims/python3'
+g.loaded_perl_provider = 0
 
 -- # vim foldmethod=marker

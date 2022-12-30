@@ -16,6 +16,7 @@ require('packer').startup({
         { "ray-x/cmp-treesitter" }
       },
     })
+    use('prichrd/netrw.nvim')
     use('rafamadriz/friendly-snippets')
     use('L3MON4D3/LuaSnip')
     use({"petertriho/cmp-git", requires = "nvim-lua/plenary.nvim"})
@@ -27,13 +28,6 @@ require('packer').startup({
     use {
       'nvim-telescope/telescope.nvim',
       requires = { {'nvim-lua/plenary.nvim'} }
-    }
-    use {
-      'kyazdani42/nvim-tree.lua',
-      requires = {
-        'kyazdani42/nvim-web-devicons',
-      },
-      tag = 'nightly'
     }
     use('windwp/nvim-autopairs')
     use('terrortylor/nvim-comment')
@@ -67,11 +61,9 @@ require('packer').startup({
       "AckslD/nvim-neoclip.lua",
       requires = {
         {'nvim-telescope/telescope.nvim'},
-      },
-      config = function()
-        require('neoclip').setup()
-      end,
+      }
     }
+    use('ggandor/leap.nvim')
     -- Themes
     --
     use('folke/tokyonight.nvim')
