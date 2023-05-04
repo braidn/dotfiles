@@ -26,7 +26,7 @@ ai = add --interactive
 changes = diff --name-status -r
 st = status -sb
 ct = commit
-ctl = commit -v
+ctv = commit -v
 cta = commit --amend
 ctm = commit -m
 br = branch
@@ -55,7 +55,7 @@ lgl = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %
 stash-all = stash save --include-untracked
 
 [core]
-	excludesfile = /Users/braidn/.gitignore_global
+  excludesfile = /Users/braidn/.gitignore_global
   whitespace=fix,tab-in-indent,trailing-space,cr-at-eol
   editor = "nvim"
   autocrlf = input
@@ -73,7 +73,7 @@ stash-all = stash save --include-untracked
   syntax-theme = Monokai Extended
   navigate = true
   line-numbers = true
-	side-by-side = true
+  side-by-side = true
 
 [include]
   path = ~/.gitconfig.local

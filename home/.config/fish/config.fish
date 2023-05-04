@@ -16,6 +16,7 @@ set -Ux AWS_SDK_LOAD_CONFIG true
 set -Ux LC_CTYPE "en_US.UTF-8"
 set -Ux LC_ALL "en_US.UTF-8"
 set -Ux CLICOLOR 1
+set -Ux BAT_THEME "TwoDark"
 set -Ux HOMEBREW_NO_AUTO_UPDATE 1
 set -Ux NNN_OPENER "nvim -f"
 set -Ux AWS_PROFILE mine

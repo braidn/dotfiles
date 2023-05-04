@@ -12,53 +12,21 @@ export SSH_AUTH_SOCK=${HOME}/.gnupg/S.gpg-agent.ssh
 export CLICOLOR=1
 export HOMEBREW_NO_AUTO_UPDATE=1
 export PATH="/opt/homebrew/bin:$PATH"
+path+=('/Users/braden.douglass/.rd/bin')
 
-#Ruby
-alias gemwipe='gem uninstall -aIx'
-alias be="bundle exec"
-alias bu="bundle update"
-alias bi="bundle install"
-##JS
-alias yarnit="yarn build"
-alias jrepl="npx -p jay-repl jay"
-alias y="yarn"
-#System
-alias flushcache="sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder;"
-alias g="git"
-alias v="nvim"
-alias nv="nvim"
-alias o.="open ."
-alias cl="clear"
+# Aliases
+alias batl='bat --paging=never -l log'
+alias be='bundle exec'
+alias bi='bundle install'
+alias bu='bundle update'
 alias cwd='pwd | pbcopy'
-alias ll="ls -lahG"
-alias lp="ls -p"
-alias lm="ls -la | more"
-alias dt="ditto"
-alias jg="jobs"
-alias br="gh pr view"
-alias rr="ranger"
-alias avim="NVIM_LISTEN_ADDRESS=/tmp/neovim/neovim nvim"
-alias jsc="/System/Library/Frameworks/JavaScriptCore.framework/Versions/Current/Resources/jsc"
-alias kcli="'/Library/Application Support/org.pqrs/Karabiner-Elements/bin/karabiner_cli'"
-alias tagit="ctags -R -f ./.git/tags ."
-alias le="exa --long --header --git -a --group-directories-first"
-alias powah="pmset -g batt"
-alias icat="kitty +kitten icat"
-alias stitle="kitty @ set-tab-title"
-alias omsd="overmind start -D --procfile Procfile.dev"
-alias batl="bat --paging=never -l log"
-#Docker
-alias dcr="docker-compose run --rm"
-alias dcb="docker-compose build"
-alias dcs="docker-compose stop"
-alias dcu="docker-compose up"
-alias drm="docker system prune -f"
-alias dsa="docker ps -a | awk 'NR > 1{print $1}' | xargs docker stop > /dev/null 2>&1"
-alias dpsa="docker ps -a"
-alias images="docker images"
-alias k="kubectl"
-alias de="dcr web bundle exec"
-#Functions
+alias g='git'
+alias jg='jobs'
+alias ll='ls -lahG'
+alias lm='ls -la | more'
+alias lp='ls -p'
+alias nv='nvim'
+alias yarnit='yarn build'
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow -g "!{.git,node_modules,/ops/node_modules}/*"'
@@ -80,11 +48,12 @@ if type brew &>/dev/null; then
   autoload -Uz compinit
   compinit
 fi
-fpath=($fpath "/Users/braidn/.zfunctions")
 
 if [[ $TERM_PROGRAM != "WarpTerminal" ]]; then
-  eval "$(starship init zsh)"
+  fpath+=$HOME/.zsh/typewritten
+  autoload -U promptinit; promptinit
+  prompt typewritten
 fi
-path+=('/Users/braidn/.rd/bin')
-export NIX_PATH=$HOME/.nix-defexpr/channels:/nix/var/nix/profiles/per-user/root/channels${NIX_PATH:+:$NIX_PATH}
+
 fpath=($fpath "/Users/braden.douglass/.zfunctions")
+source /Users/braden.douglass/.config/op/plugins.sh

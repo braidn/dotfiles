@@ -1,4 +1,3 @@
-require("nvim-web-devicons").setup{ default = true }
 local icons = require "nvim-nonicons"
 icons.get("file")
 local lspconfig = require("lspconfig")
@@ -63,36 +62,7 @@ lspconfig.tsserver.setup{
   end,
   capabilities = capabilities
 }
-lspconfig.solargraph.setup{
-  capabilities = capabilities
-}
-lspconfig.syntax_tree.setup{
-  capabilities = capabilities
-}
-lspconfig.jsonls.setup{
-  capabilities = capabilities
-}
-lspconfig.terraformls.setup{
-  capabilities = capabilities
-}
-lspconfig.scry.setup{
-  capabilities = capabilities
-}
-lspconfig.html.setup{
-  capabilities = capabilities
-}
-lspconfig.rls.setup{
-  capabilities = capabilities
-}
-lspconfig.denols.setup{autostart = false, capabilities = capabilities}
-lspconfig.rescriptls.setup{
-  capabilities = capabilities,
-  cmd = {
-    'node',
-    '/Users/braidn/.local/share/nvim/site/pack/packer/start/vim-rescript/server/out/server.js',
-    '--stdio'
-  }
-}
+
 
 require("luasnip")
 require("luasnip/loaders/from_vscode").lazy_load()
@@ -213,75 +183,18 @@ cmp.setup.cmdline(':', {
     })
 })
 
-local buf_map = function(bufnr, mode, lhs, rhs, opts)
-  vim.api.nvim_buf_set_keymap(bufnr, mode, lhs, rhs, opts or {
-    silent = true,
-  })
-end
-
-local on_attach = function(client, bufnr)
-  local function buf_set_keymap(...)
-    vim.api.nvim_buf_set_keymap(bufnr, ...)
-  end
-  local function buf_set_option(...)
-    vim.api.nvim_buf_set_option(bufnr, ...)
-  end
-
-  buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
-
-  vim.api.nvim_create_user_command("LspFormat",
-    function()
-      vim.lsp.buf.format({ async = true })
-    end
-    , { bang = true, desc = 'Language Server Formatting' })
-  vim.cmd("command! LspDef lua vim.lsp.buf.definition()")
-  vim.cmd("command! LspCodeAction lua vim.lsp.buf.code_action()")
-  vim.cmd("command! LspHover lua vim.lsp.buf.hover()")
-  vim.cmd("command! LspRename lua vim.lsp.buf.rename()")
-  vim.cmd("command! LspRefs lua vim.lsp.buf.references()")
-  vim.cmd("command! LspTypeDef lua vim.lsp.buf.type_definition()")
-  vim.cmd("command! LspImplementation lua vim.lsp.buf.implementation()")
-  vim.cmd("command! LspDiagPrev lua vim.diagnostic.goto_prev()")
-  vim.cmd("command! LspDiagNext lua vim.diagnostic.goto_next()")
-  vim.cmd("command! LspDiagList lua vim.diagnostic.setqflist()")
-  vim.cmd("command! LspSignatureHelp lua vim.lsp.buf.signature_help()")
-
-  local opts = { noremap = true, silent = true }
-
-  buf_map(bufnr, "n", ",de", ":LspDef<CR>")
-  buf_map(bufnr, "n", ",fm", ":LspFormat<CR>")
-  buf_map(bufnr, "n", ",rn", ":LspRename<CR>")
-  buf_map(bufnr, "n", ",td", ":LspTypeDef<CR>")
-  buf_map(bufnr, "n", ",h", ":LspHover<CR>")
-  buf_map(bufnr, "n", "g[", ":LspDiagPrev<CR>")
-  buf_map(bufnr, "n", "g]", ":LspDiagNext<CR>")
-  buf_map(bufnr, "n", "ga", ":LspCodeAction<CR>")
-  buf_map(bufnr, "n", ",di", ":LspDiagLine<CR>")
-  buf_map(bufnr, "i", "<C-x><C-x>", "<cmd> LspSignatureHelp<CR>")
-
-  if client.server_capabilities.document_highlight then
-    vim.api.nvim_exec(
-      [[
-    augroup lsp_document_highlight
-    autocmd! * <buffer>
-    autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
-    autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
-    augroup END
-    ]],
-      false
-    )
-  end
-end
-
+require('gitsigns').setup()
 local null_ls = require("null-ls")
 local sources = {
+  null_ls.builtins.code_actions.gitsigns,
   null_ls.builtins.diagnostics.shellcheck,
-  null_ls.builtins.formatting.rustfmt,
-  null_ls.builtins.diagnostics.haml_lint,
   null_ls.builtins.diagnostics.standardrb,
-  null_ls.builtins.formatting.prettierd.with({
-    filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact", "vue", "css", "scss", "less", "html", "json", "yaml", "markdown", "graphql" }
-  })
+  null_ls.builtins.formatting.standardrb,
+  null_ls.builtins.diagnostics.haml_lint.with({
+    env = {
+      RUBYOPT = "-W0",
+    }
+  }),
 }
 null_ls.setup({ sources = sources, on_attach = on_attach, debug = true })
 require('nvim-autopairs').setup({
@@ -290,16 +203,80 @@ require('nvim-autopairs').setup({
 local cmp_autopairs = require('nvim-autopairs.completion.cmp')
 cmp.event:on( 'confirm_done', cmp_autopairs.on_confirm_done())
 
-local neogit = require("neogit")
-neogit.setup{
-  disable_hint = true,
-  commit_popup = {
-    kind = "vsplit",
-  },
-  integrations = {
-    diffview = true
-  }
+lspconfig.solargraph.setup{
+  capabilities = capabilities,
+  on_attach = on_attach
 }
+lspconfig.syntax_tree.setup{
+  capabilities = capabilities,
+  on_attach = on_attach
+}
+lspconfig.ruby_ls.setup{
+  capabilities = capabilities,
+  on_attach = on_attach
+}
+lspconfig.jsonls.setup{
+  capabilities = capabilities,
+  on_attach = on_attach
+}
+lspconfig.terraformls.setup{
+  capabilities = capabilities,
+  on_attach = on_attach
+}
+lspconfig.html.setup{
+  capabilities = capabilities,
+  on_attach = on_attach
+}
+lspconfig.emmet_ls.setup{
+  capabilities = capabilities,
+  cmd = { 'ls_emmet', '--stdio' },
+  filetypes = {
+    'html',
+    'css',
+    'scss',
+    'javascriptreact',
+    'haml',
+    'sass',
+    'sss',
+  };
+}
+
+vim.keymap.set('n', '<space>e', vim.diagnostic.open_float)
+vim.keymap.set('n', '[d', vim.diagnostic.goto_prev)
+vim.keymap.set('n', ']d', vim.diagnostic.goto_next)
+vim.keymap.set('n', '<space>q', vim.diagnostic.setloclist)
+
+-- Use LspAttach autocommand to only map the following keys
+-- after the language server attaches to the current buffer
+vim.api.nvim_create_autocmd('LspAttach', {
+  group = vim.api.nvim_create_augroup('UserLspConfig', {}),
+  callback = function(ev)
+    -- Enable completion triggered by <c-x><c-o>
+    vim.bo[ev.buf].omnifunc = 'v:lua.vim.lsp.omnifunc'
+
+    -- Buffer local mappings.
+    -- See `:help vim.lsp.*` for documentation on any of the below functions
+    local opts = { buffer = ev.buf }
+    vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
+    vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
+    vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
+    vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
+    vim.keymap.set('n', 'si', vim.lsp.buf.signature_help, opts)
+    vim.keymap.set('n', '<space>wa', vim.lsp.buf.add_workspace_folder, opts)
+    vim.keymap.set('n', '<space>wr', vim.lsp.buf.remove_workspace_folder, opts)
+    vim.keymap.set('n', '<space>wl', function()
+      print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+    end, opts)
+    vim.keymap.set('n', 'td', vim.lsp.buf.type_definition, opts)
+    vim.keymap.set('n', 'rn', vim.lsp.buf.rename, opts)
+    vim.keymap.set('n', 'ca', vim.lsp.buf.code_action, opts)
+    vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
+    vim.keymap.set('n', 'ft', function()
+      vim.lsp.buf.format { async = true }
+    end, opts)
+  end,
+})
+
 require('colorizer').setup(nil, { names = false })
 require('nvim_comment').setup()
 require'nvim-treesitter.install'.compilers = { "clang" }
@@ -325,13 +302,6 @@ require"nvim-treesitter.configs".setup {
     enable = true
   }
 }
-
-local that_line = require("everybody-wants-that-line")
-
-that_line.setup({
-  buffer_number_symbol_count = 5,
-  separator = "│",
-})
 
 local actions = require("diffview.actions")
 require("diffview").setup({
@@ -360,12 +330,14 @@ require("diffview").setup({
   },
   file_history_panel = {
     log_options = {   -- See ':h diffview-config-log_options'
-      single_file = {
-        diff_merges = "combined",
-      },
-      multi_file = {
-        diff_merges = "first-parent",
-      },
+      git = {
+        single_file = {
+          diff_merges = "combined",
+        },
+        multi_file = {
+          diff_merges = "first-parent",
+        },
+      }
     },
     win_config = {    -- See ':h diffview-config-win_config'
       position = "bottom",
@@ -469,3 +441,8 @@ require'netrw'.setup{
   use_devicons = true,
   mappings = {}
 }
+local signs = { Error = "", Warn = "", Hint = "", Info = "" }
+for type, icon in pairs(signs) do
+    local hl = "DiagnosticSign" .. type
+    vim.fn.sign_define(hl, { text = icon, texthl= hl, numhl = hl })
+end

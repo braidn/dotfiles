@@ -21,6 +21,7 @@ o.tabstop = 2 			-- 4 tabstop
 o.shiftwidth = 2
 o.expandtab = true    	-- tabs -> spaces
 o.smartindent = true    -- nice indenting
+o.softtabstop = 2
 
 o.foldmethod = 'marker' 	-- set fold method to marker
 
@@ -33,8 +34,7 @@ opt.wrap = false -- Nowrap
 opt.splitbelow = true
 opt.splitright = true
 o.completeopt = 'menuone,noselect'
-
-opt.termguicolors = true
+o.termguicolors = true
 
 -- Netrw
 g.netrw_banner = 0
@@ -47,5 +47,23 @@ g.netrw_bufsettings = 'noma nomod nu nobl nowrap ro'
 g.netrw_localrmdir='rm -r'
 g.python3_host_prog='~/.pyenv/shims/python3'
 g.loaded_perl_provider = 0
+
+g.linefly_options = {
+  separator_symbol = "⎪",
+  progress_symbol = "↓",
+  active_tab_symbol = "▪",
+  git_branch_symbol = "",
+  error_symbol = "E",
+  warning_symbol = "W",
+  information_symbol = "I",
+  tabline = true,
+  winbar = false,
+  with_file_icon = true,
+  with_git_branch = true,
+  with_git_status = true,
+  with_diagnostic_status = true,
+  with_session_status = true,
+  with_indent_status = false,
+}
 
 -- # vim foldmethod=marker

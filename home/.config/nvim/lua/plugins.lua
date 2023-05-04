@@ -20,7 +20,7 @@ require('packer').startup({
     use('rafamadriz/friendly-snippets')
     use('L3MON4D3/LuaSnip')
     use({"petertriho/cmp-git", requires = "nvim-lua/plenary.nvim"})
-    use "strash/everybody-wants-that-line.nvim"
+    use 'bluz71/nvim-linefly'
     use { 'ibhagwan/fzf-lua',
       -- optional for icon support
       requires = { 'kyazdani42/nvim-web-devicons' }
@@ -64,11 +64,21 @@ require('packer').startup({
       }
     }
     use('ggandor/leap.nvim')
+    use { 'mihyaeru21/nvim-lspconfig-bundler', requires = 'neovim/nvim-lspconfig' }
+    use 'nvim-tree/nvim-web-devicons'
+    use 'weizheheng/ror.nvim'
     -- Themes
     --
-    use('folke/tokyonight.nvim')
-    use({ "EdenEast/nightfox.nvim", branch = "main" })
-    use('sainnhe/everforest')
+    use({
+      "neanias/everforest-nvim",
+      -- Optional; default configuration will be used if setup isn't called.
+      config = function()
+        require("everforest").setup()
+      end,
+    })
+    use "rebelot/kanagawa.nvim"
+    use 'shaunsingh/nord.nvim'
+    use 'JoosepAlviste/palenightfall.nvim'
     use {
       "catppuccin/nvim",
       as = "catppuccin",
@@ -77,7 +87,6 @@ require('packer').startup({
         require("catppuccin").setup()
       end
     }
-    use "rebelot/kanagawa.nvim"
 
   end,
   -- display packer dialouge in the center in a floating window

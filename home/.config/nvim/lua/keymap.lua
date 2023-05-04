@@ -10,7 +10,6 @@ local opt = {} --empty opt for maps with no extra options
 local M = {}
 
 vim.g.mapleader = ' '
-map('n', '<Leader>gs', ':Neogit kind=split<CR>', opt)
 map("i", "jj", "<ESC>", opt)
 
 local cmp = require('cmp')
@@ -31,12 +30,16 @@ M.cmp_mappings = {
 map("n", "<Leader>pf", [[<Cmd>lua require('telescope.builtin').find_files(require('telescope.themes').get_dropdown({}))<CR>]], opt)
 map("n", "<Leader>pg", [[<Cmd>lua require('telescope.builtin').git_files(require('telescope.themes').get_dropdown({}))<CR>]], opt)
 map("n", "<Leader>fb", [[<Cmd>lua require('telescope.builtin').buffers(require('telescope.themes').get_dropdown({}))<CR>]], opt)
-map("n", "<Leader>fa", [[<Cmd>lua require('telescope.builtin').live_grep(require('telescope.themes').get_dropdown({}))<CR>]], opt)
+map("n", "<Leader>fa", [[<Cmd>lua require('telescope.builtin').live_grep()<CR>]], opt)
 map("n", "<Leader>fq", [[<Cmd>lua require('telescope.builtin').quickfix(require('telescope.themes').get_dropdown({}))<CR>]], opt)
-map("n", "<Leader>ca", [[<Cmd>lua require('telescope.builtin').lsp_code_actions(require('telescope.themes').get_cursor({}))<CR>]], opt)
+map("n", "<Leader>fr", [[<Cmd>lua require('telescope.builtin').registers(require('telescope.themes').get_dropdown({}))<CR>]], opt)
+map("n", "<Leader>st", [[<Cmd>lua require('telescope.builtin').git_status(require('telescope.themes').get_dropdown({}))<CR>]], opt)
+map("n", "<Leader>ca", [[<Cmd>lua vim.lsp.buf.code_action()<CR>]], opt)
 map("n", "<Leader>fm", [[<Cmd>:Telescope harpoon marks<CR>]], opt)
 map("n", "<Leader>am", [[<Cmd>lua require("harpoon.mark").add_file()<CR>]], opt)
 map("n", "<Leader><Leader>", [[<Cmd>lua require('telescope.builtin').command_history(require('telescope.themes').get_dropdown({}))<CR>]], opt)
+map("n", "<Leader>gs", [[<Cmd>:DiffviewOpen -- :!config/database.yml<CR>]], opt)
+map("n", "<Leader>rc", ":lua require('ror.commands').list_commands()<CR>", opt)
 
 -- map("n", "<Leader>ff", [[<cmd>lua require('fzf-lua').files()<CR>]], opt)
 -- map("n", "<Leader>fb", [[<cmd>lua require('fzf-lua').buffers()<CR>]], opt)
