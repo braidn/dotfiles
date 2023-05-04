@@ -19,6 +19,9 @@ home/.config/bat/
 home/.config/rome/
 home/.config/vifm/
 home/.config/raycast/
+home/.config/op/
+home/.config/rubocop/
+home/.config/zed/
 home/.config/planetscale/
 home/.config/helix/
 home/.config/containers/
