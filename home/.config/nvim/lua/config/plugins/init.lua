@@ -1,140 +1,23 @@
-local icons = require "nvim-nonicons"
-icons.get("file")
 local lspconfig = require("lspconfig")
 local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
-require('neoclip').setup({
-  history = 100,
-  enable_macro_history = true
+require("copilot").setup({
+  suggestion = { enabled = false },
+  panel = { enabled = false },
 })
-require("telescope").load_extension('harpoon')
-require('telescope').load_extension('neoclip')
-require('telescope').load_extension('macroscope')
+require("copilot_cmp").setup()
+require('mini.surround').setup()
 require('leap').add_default_mappings()
-lspconfig.tsserver.setup{
-  on_attach = function(client, bufnr)
-    -- disable tsserver formatting if you plan on formatting via null-ls
-    client.server_capabilities.documentFormattingProvider = false
-    client.server_capabilities.documentRangeFormattingProvider = false
-
-    local ts_utils = require("nvim-lsp-ts-utils")
-
-    -- defaults
-    ts_utils.setup {
-      debug = false,
-      disable_commands = false,
-      enable_import_on_completion = false,
-
-      -- import all
-      import_all_timeout = 5000, -- ms
-      -- lower numbers indicate higher priority
-      import_all_priorities = {
-        same_file = 1, -- add to existing import statement
-        local_files = 2, -- git files or files with relative path markers
-        buffer_content = 3, -- loaded buffer content
-        buffers = 4, -- loaded buffer names
-      },
-      import_all_scan_buffers = 100,
-      import_all_select_source = false,
-
-      eslint_enable_code_actions = true,
-      eslint_enable_disable_comments = true,
-      eslint_bin = "eslint",
-      eslint_enable_diagnostics = false,
-      eslint_opts = {},
-
-      enable_formatting = false,
-      formatter = "prettierd",
-      formatter_opts = {},
-
-      update_imports_on_move = false,
-      require_confirmation_on_move = false,
-      watch_dir = nil,
-
-      filter_out_diagnostics_by_severity = {},
-      filter_out_diagnostics_by_code = {},
-
-      auto_inlay_hints = true,
-      inlay_hints_highlight = "Comment",
-    }
-
-    ts_utils.setup_client(client)
-
-  end,
-  capabilities = capabilities
-}
-
 
 require("luasnip")
 require("luasnip/loaders/from_vscode").lazy_load()
-
-vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
-  vim.lsp.diagnostic.on_publish_diagnostics, {
-    signs = true,
-    update_in_insert = false,
-  }
-)
+require("fzf-lua").setup({
+  defaults = { file_icons = "mini" },
+})
 
 vim.opt.list = true
 vim.opt.listchars:append("space:⋅")
-
-require("indent_blankline").setup {
-  space_char_blankline = " ",
-  indent_blankline_use_treesitter = true,
-  buftype_exclude = {"terminal"}
-}
-
--- require('lspkind').init({
---     -- DEPRECATED (use mode instead): enables text annotations
---     --
---     -- default: true
---     -- with_text = true,
---
---     -- defines how annotations are shown
---     -- default: symbol
---     -- options: 'text', 'text_symbol', 'symbol_text', 'symbol'
---     mode = 'text',
---
---     -- default symbol map
---     -- can be either 'default' (requires nerd-fonts font) or
---     -- 'codicons' for codicon preset (requires vscode-codicons font)
---     --
---     -- default: 'default'
---     preset = 'codicons',
---
---     -- override preset symbols
---     --
---     -- default: {}
---     symbol_map = {
---       Text = "",
---       Method = "",
---       Function = "",
---       Constructor = "",
---       Field = "ﰠ",
---       Variable = "",
---       Class = "ﴯ",
---       Interface = "",
---       Module = "",
---       Property = "ﰠ",
---       Unit = "塞",
---       Value = "",
---       Enum = "",
---       Keyword = "",
---       Snippet = "",
---       Color = "",
---       File = "",
---       Reference = "",
---       Folder = "",
---       EnumMember = "",
---       Constant = "",
---       Struct = "פּ",
---       Event = "",
---       Operator = "",
---       TypeParameter = ""
---     },
--- })
-
 local keymap = require("keymap")
-local lspkind = require('lspkind').init({ preset = 'codicons' })
+local lspkind = require('lspkind')
 -- Setup nvim-cmp.
 local cmp = require'cmp'
 cmp.setup({
@@ -142,6 +25,10 @@ cmp.setup({
     expand = function(args)
       require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
     end,
+  },
+  window = {
+    completion = cmp.config.window.bordered(),
+    documentation = cmp.config.window.bordered(),
   },
   mapping = cmp.mapping.preset.insert({
     ['<C-b>'] = cmp.mapping.scroll_docs(-4),
@@ -151,12 +38,29 @@ cmp.setup({
     ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
   }),
   sources = cmp.config.sources({
-    { name = 'nvim_lsp' },
-    { name = 'luasnip' },
-    { name = 'treesitter' },
-  }, {
-      { name = 'buffer' },
+    { name = "copilot", group_index = 2 },
+    { name = 'nvim_lsp', group_index = 2 },
+    { name = 'luasnip', group_index = 2 },
+    { name = 'treesitter', group_index = 2 },
+    { name = 'buffer', group_index = 2 },
+  }),
+  formatting = {
+    format = lspkind.cmp_format({
+      symbol_map = { Copilot = "" },
+      mode = 'symbol', -- show only symbol annotations
+      maxwidth = 50, -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
+                     -- can also be a function to dynamically calculate max width such as 
+                     -- maxwidth = function() return math.floor(0.45 * vim.o.columns) end,
+      ellipsis_char = '...', -- when popup menu exceed maxwidth, the truncated part would show ellipsis_char instead (must define maxwidth first)
+      show_labelDetails = true, -- show labelDetails in menu. Disabled by default
+
+      -- The function below will be called before any actual modifications from lspkind
+      -- so that you can provide more controls on popup customization. (See [#30](https://github.com/onsails/lspkind-nvim/pull/30))
+      before = function (entry, vim_item)
+        return vim_item
+      end
     })
+  }
 })
 
 cmp.setup.filetype('gitcommit', {
@@ -183,35 +87,87 @@ cmp.setup.cmdline(':', {
     })
 })
 
-require('gitsigns').setup()
-local null_ls = require("null-ls")
-local sources = {
-  null_ls.builtins.code_actions.gitsigns,
-  null_ls.builtins.diagnostics.shellcheck,
-  null_ls.builtins.diagnostics.standardrb,
-  null_ls.builtins.formatting.standardrb,
-  null_ls.builtins.diagnostics.haml_lint.with({
-    env = {
-      RUBYOPT = "-W0",
-    }
-  }),
-}
-null_ls.setup({ sources = sources, on_attach = on_attach, debug = true })
-require('nvim-autopairs').setup({
-  disable_filetype = { 'telescopeprompt', 'vim' },
-})
 local cmp_autopairs = require('nvim-autopairs.completion.cmp')
 cmp.event:on( 'confirm_done', cmp_autopairs.on_confirm_done())
 
-lspconfig.solargraph.setup{
-  capabilities = capabilities,
-  on_attach = on_attach
+require('gitsigns').setup {
+  on_attach = function(bufnr)
+    local gs = package.loaded.gitsigns
+
+    local function map(mode, l, r, opts)
+      opts = opts or {}
+      opts.buffer = bufnr
+      vim.keymap.set(mode, l, r, opts)
+    end
+
+    -- Navigation
+    map('n', ']c', function()
+      if vim.wo.diff then return ']c' end
+      vim.schedule(function() gs.next_hunk() end)
+      return '<Ignore>'
+    end, {expr=true})
+
+    map('n', '[c', function()
+      if vim.wo.diff then return '[c' end
+      vim.schedule(function() gs.prev_hunk() end)
+      return '<Ignore>'
+    end, {expr=true})
+
+    -- Actions
+    map('n', '<leader>hs', gs.stage_hunk)
+    map('n', '<leader>hr', gs.reset_hunk)
+    map('v', '<leader>hs', function() gs.stage_hunk {vim.fn.line('.'), vim.fn.line('v')} end)
+    map('v', '<leader>hr', function() gs.reset_hunk {vim.fn.line('.'), vim.fn.line('v')} end)
+    map('n', '<leader>hS', gs.stage_buffer)
+    map('n', '<leader>hu', gs.undo_stage_hunk)
+    map('n', '<leader>hR', gs.reset_buffer)
+    map('n', '<leader>hp', gs.preview_hunk)
+    map('n', '<leader>hb', function() gs.blame_line{full=true} end)
+    map('n', '<leader>tb', gs.toggle_current_line_blame)
+    map('n', '<leader>hd', gs.diffthis)
+    map('n', '<leader>hD', function() gs.diffthis('~') end)
+    map('n', '<leader>td', gs.toggle_deleted)
+
+    -- Text object
+    map({'o', 'x'}, 'ih', ':<C-U>Gitsigns select_hunk<CR>')
+  end
 }
+
+require('nvim-autopairs').setup({
+  disable_filetype = { 'telescopeprompt', 'vim' },
+})
+
+
+local configs = require 'lspconfig.configs'
+local on_attach = function(client, bufnr)
+  vim.api.nvim_buf_create_user_command(
+    bufnr,
+    "FormatModifications",
+    function()
+      local lsp_format_modifications = require"lsp-format-modifications"
+      lsp_format_modifications.format_modifications(client, bufnr)
+    end,
+    {}
+  )
+
+  vim.api.nvim_create_user_command("Format", function(args)
+    local range = nil
+    if args.count ~= -1 then
+      local end_line = vim.api.nvim_buf_get_lines(0, args.line2 - 1, args.line2, true)[1]
+      range = {
+        start = { args.line1, 0 },
+        ["end"] = { args.line2, end_line:len() },
+      }
+    end
+    require("conform").format({ async = true, lsp_fallback = true, range = range })
+  end, { range = true })
+end
+
 lspconfig.syntax_tree.setup{
   capabilities = capabilities,
   on_attach = on_attach
 }
-lspconfig.ruby_ls.setup{
+lspconfig.ruby_lsp.setup{
   capabilities = capabilities,
   on_attach = on_attach
 }
@@ -229,22 +185,8 @@ lspconfig.html.setup{
 }
 lspconfig.emmet_ls.setup{
   capabilities = capabilities,
-  cmd = { 'ls_emmet', '--stdio' },
-  filetypes = {
-    'html',
-    'css',
-    'scss',
-    'javascriptreact',
-    'haml',
-    'sass',
-    'sss',
-  };
+  on_attach = on_attach
 }
-
-vim.keymap.set('n', '<space>e', vim.diagnostic.open_float)
-vim.keymap.set('n', '[d', vim.diagnostic.goto_prev)
-vim.keymap.set('n', ']d', vim.diagnostic.goto_next)
-vim.keymap.set('n', '<space>q', vim.diagnostic.setloclist)
 
 -- Use LspAttach autocommand to only map the following keys
 -- after the language server attaches to the current buffer
@@ -277,10 +219,10 @@ vim.api.nvim_create_autocmd('LspAttach', {
   end,
 })
 
-require('colorizer').setup(nil, { names = false })
 require('nvim_comment').setup()
 require'nvim-treesitter.install'.compilers = { "clang" }
 require"nvim-treesitter.configs".setup {
+  ensure_installed = { "c", "lua", "vim", "vimdoc", "query" , "ruby", "javascript"},
   ignore_install = { "haskell, phpdoc" },
   highlight = {
     enable = true
@@ -304,11 +246,15 @@ require"nvim-treesitter.configs".setup {
 }
 
 local actions = require("diffview.actions")
+
 require("diffview").setup({
   diff_binaries = false,    -- Show diffs for binaries
   enhanced_diff_hl = false, -- See ':h diffview-config-enhanced_diff_hl'
   git_cmd = { "git" },      -- The git executable followed by default args.
-  use_icons = true,         -- Requires nvim-web-devicons
+  hg_cmd = { "hg" },        -- The hg executable followed by default args.
+  use_icons = false,         -- Requires nvim-web-devicons
+  show_help_hints = true,   -- Show hints for how to open the help panel
+  watch_index = true,       -- Update views and index buffers when the git index changes.
   icons = {                 -- Only applies when use_icons is true.
     folder_closed = "",
     folder_open = "",
@@ -316,6 +262,35 @@ require("diffview").setup({
   signs = {
     fold_closed = "",
     fold_open = "",
+    done = "✓",
+  },
+  view = {
+    -- Configure the layout and behavior of different types of views.
+    -- Available layouts:
+    --  'diff1_plain'
+    --    |'diff2_horizontal'
+    --    |'diff2_vertical'
+    --    |'diff3_horizontal'
+    --    |'diff3_vertical'
+    --    |'diff3_mixed'
+    --    |'diff4_mixed'
+    -- For more info, see ':h diffview-config-view.x.layout'.
+    default = {
+      -- Config for changed files, and staged files in diff views.
+      layout = "diff2_horizontal",
+      winbar_info = false,          -- See ':h diffview-config-view.x.winbar_info'
+    },
+    merge_tool = {
+      -- Config for conflicted files in diff views during a merge or rebase.
+      layout = "diff3_horizontal",
+      disable_diagnostics = true,   -- Temporarily disable diagnostics for conflict buffers while in the view.
+      winbar_info = true,           -- See ':h diffview-config-view.x.winbar_info'
+    },
+    file_history = {
+      -- Config for changed files in file history views.
+      layout = "diff2_horizontal",
+      winbar_info = false,          -- See ':h diffview-config-view.x.winbar_info'
+    },
   },
   file_panel = {
     listing_style = "tree",             -- One of 'list' or 'tree'
@@ -326,6 +301,7 @@ require("diffview").setup({
     win_config = {                      -- See ':h diffview-config-win_config'
       position = "left",
       width = 35,
+      win_opts = {}
     },
   },
   file_history_panel = {
@@ -337,15 +313,22 @@ require("diffview").setup({
         multi_file = {
           diff_merges = "first-parent",
         },
-      }
+      },
+      hg = {
+        single_file = {},
+        multi_file = {},
+      },
     },
     win_config = {    -- See ':h diffview-config-win_config'
       position = "bottom",
       height = 16,
+      win_opts = {}
     },
   },
   commit_log_panel = {
-    win_config = {},  -- See ':h diffview-config-win_config'
+    win_config = {   -- See ':h diffview-config-win_config'
+      win_opts = {},
+    }
   },
   default_args = {    -- Default args prepended to the arg-list for the listed commands
     DiffviewOpen = {},
@@ -357,90 +340,129 @@ require("diffview").setup({
     view = {
       -- The `view` bindings are active in the diff buffers, only when the current
       -- tabpage is a Diffview.
-      ["<tab>"]      = actions.select_next_entry, -- Open the diff for the next file
-      ["<s-tab>"]    = actions.select_prev_entry, -- Open the diff for the previous file
-      ["gf"]         = actions.goto_file,         -- Open the file in a new split in the previous tabpage
-      ["<C-w><C-f>"] = actions.goto_file_split,   -- Open the file in a new split
-      ["<C-w>gf"]    = actions.goto_file_tab,     -- Open the file in a new tabpage
-      ["<leader>e"]  = actions.focus_files,       -- Bring focus to the files panel
-      ["<leader>b"]  = actions.toggle_files,      -- Toggle the files panel.
+      { "n", "<tab>",       actions.select_next_entry,              { desc = "Open the diff for the next file" } },
+      { "n", "<s-tab>",     actions.select_prev_entry,              { desc = "Open the diff for the previous file" } },
+      { "n", "gf",          actions.goto_file_edit,                 { desc = "Open the file in the previous tabpage" } },
+      { "n", "<C-w><C-f>",  actions.goto_file_split,                { desc = "Open the file in a new split" } },
+      { "n", "<C-w>gf",     actions.goto_file_tab,                  { desc = "Open the file in a new tabpage" } },
+      { "n", "<leader>e",   actions.focus_files,                    { desc = "Bring focus to the file panel" } },
+      { "n", "<leader>b",   actions.toggle_files,                   { desc = "Toggle the file panel." } },
+      { "n", "g<C-x>",      actions.cycle_layout,                   { desc = "Cycle through available layouts." } },
+      { "n", "[x",          actions.prev_conflict,                  { desc = "In the merge-tool: jump to the previous conflict" } },
+      { "n", "]x",          actions.next_conflict,                  { desc = "In the merge-tool: jump to the next conflict" } },
+      { "n", "<leader>co",  actions.conflict_choose("ours"),        { desc = "Choose the OURS version of a conflict" } },
+      { "n", "<leader>ct",  actions.conflict_choose("theirs"),      { desc = "Choose the THEIRS version of a conflict" } },
+      { "n", "<leader>cb",  actions.conflict_choose("base"),        { desc = "Choose the BASE version of a conflict" } },
+      { "n", "<leader>ca",  actions.conflict_choose("all"),         { desc = "Choose all the versions of a conflict" } },
+      { "n", "dx",          actions.conflict_choose("none"),        { desc = "Delete the conflict region" } },
+      { "n", "<leader>cO",  actions.conflict_choose_all("ours"),    { desc = "Choose the OURS version of a conflict for the whole file" } },
+      { "n", "<leader>cT",  actions.conflict_choose_all("theirs"),  { desc = "Choose the THEIRS version of a conflict for the whole file" } },
+      { "n", "<leader>cB",  actions.conflict_choose_all("base"),    { desc = "Choose the BASE version of a conflict for the whole file" } },
+      { "n", "<leader>cA",  actions.conflict_choose_all("all"),     { desc = "Choose all the versions of a conflict for the whole file" } },
+      { "n", "dX",          actions.conflict_choose_all("none"),    { desc = "Delete the conflict region for the whole file" } },
+    },
+    diff1 = {
+      -- Mappings in single window diff layouts
+      { "n", "g?", actions.help({ "view", "diff1" }), { desc = "Open the help panel" } },
+    },
+    diff2 = {
+      -- Mappings in 2-way diff layouts
+      { "n", "g?", actions.help({ "view", "diff2" }), { desc = "Open the help panel" } },
+    },
+    diff3 = {
+      -- Mappings in 3-way diff layouts
+      { { "n", "x" }, "2do",  actions.diffget("ours"),            { desc = "Obtain the diff hunk from the OURS version of the file" } },
+      { { "n", "x" }, "3do",  actions.diffget("theirs"),          { desc = "Obtain the diff hunk from the THEIRS version of the file" } },
+      { "n",          "g?",   actions.help({ "view", "diff3" }),  { desc = "Open the help panel" } },
+    },
+    diff4 = {
+      -- Mappings in 4-way diff layouts
+      { { "n", "x" }, "1do",  actions.diffget("base"),            { desc = "Obtain the diff hunk from the BASE version of the file" } },
+      { { "n", "x" }, "2do",  actions.diffget("ours"),            { desc = "Obtain the diff hunk from the OURS version of the file" } },
+      { { "n", "x" }, "3do",  actions.diffget("theirs"),          { desc = "Obtain the diff hunk from the THEIRS version of the file" } },
+      { "n",          "g?",   actions.help({ "view", "diff4" }),  { desc = "Open the help panel" } },
     },
     file_panel = {
-      ["j"]             = actions.next_entry,         -- Bring the cursor to the next file entry
-      ["<down>"]        = actions.next_entry,
-      ["k"]             = actions.prev_entry,         -- Bring the cursor to the previous file entry.
-      ["<up>"]          = actions.prev_entry,
-      ["<cr>"]          = actions.select_entry,       -- Open the diff for the selected entry.
-      ["o"]             = actions.select_entry,
-      ["<2-LeftMouse>"] = actions.select_entry,
-      ["-"]             = actions.toggle_stage_entry, -- Stage / unstage the selected entry.
-      ["S"]             = actions.stage_all,          -- Stage all entries.
-      ["U"]             = actions.unstage_all,        -- Unstage all entries.
-      ["X"]             = actions.restore_entry,      -- Restore entry to the state on the left side.
-      ["R"]             = actions.refresh_files,      -- Update stats and entries in the file list.
-      ["L"]             = actions.open_commit_log,    -- Open the commit log panel.
-      ["<c-b>"]         = actions.scroll_view(-0.25), -- Scroll the view up
-      ["<c-f>"]         = actions.scroll_view(0.25),  -- Scroll the view down
-      ["<tab>"]         = actions.select_next_entry,
-      ["<s-tab>"]       = actions.select_prev_entry,
-      ["gf"]            = actions.goto_file,
-      ["<C-w><C-f>"]    = actions.goto_file_split,
-      ["<C-w>gf"]       = actions.goto_file_tab,
-      ["i"]             = actions.listing_style,        -- Toggle between 'list' and 'tree' views
-      ["f"]             = actions.toggle_flatten_dirs,  -- Flatten empty subdirectories in tree listing style.
-      ["<leader>e"]     = actions.focus_files,
-      ["<leader>b"]     = actions.toggle_files,
+      { "n", "j",              actions.next_entry,                     { desc = "Bring the cursor to the next file entry" } },
+      { "n", "<down>",         actions.next_entry,                     { desc = "Bring the cursor to the next file entry" } },
+      { "n", "k",              actions.prev_entry,                     { desc = "Bring the cursor to the previous file entry" } },
+      { "n", "<up>",           actions.prev_entry,                     { desc = "Bring the cursor to the previous file entry" } },
+      { "n", "<cr>",           actions.select_entry,                   { desc = "Open the diff for the selected entry" } },
+      { "n", "o",              actions.select_entry,                   { desc = "Open the diff for the selected entry" } },
+      { "n", "l",              actions.select_entry,                   { desc = "Open the diff for the selected entry" } },
+      { "n", "<2-LeftMouse>",  actions.select_entry,                   { desc = "Open the diff for the selected entry" } },
+      { "n", "-",              actions.toggle_stage_entry,             { desc = "Stage / unstage the selected entry" } },
+      { "n", "s",              actions.toggle_stage_entry,             { desc = "Stage / unstage the selected entry" } },
+      { "n", "S",              actions.stage_all,                      { desc = "Stage all entries" } },
+      { "n", "U",              actions.unstage_all,                    { desc = "Unstage all entries" } },
+      { "n", "X",              actions.restore_entry,                  { desc = "Restore entry to the state on the left side" } },
+      { "n", "L",              actions.open_commit_log,                { desc = "Open the commit log panel" } },
+      { "n", "zo",             actions.open_fold,                      { desc = "Expand fold" } },
+      { "n", "h",              actions.close_fold,                     { desc = "Collapse fold" } },
+      { "n", "zc",             actions.close_fold,                     { desc = "Collapse fold" } },
+      { "n", "za",             actions.toggle_fold,                    { desc = "Toggle fold" } },
+      { "n", "zR",             actions.open_all_folds,                 { desc = "Expand all folds" } },
+      { "n", "zM",             actions.close_all_folds,                { desc = "Collapse all folds" } },
+      { "n", "<c-b>",          actions.scroll_view(-0.25),             { desc = "Scroll the view up" } },
+      { "n", "<c-f>",          actions.scroll_view(0.25),              { desc = "Scroll the view down" } },
+      { "n", "<tab>",          actions.select_next_entry,              { desc = "Open the diff for the next file" } },
+      { "n", "<s-tab>",        actions.select_prev_entry,              { desc = "Open the diff for the previous file" } },
+      { "n", "gf",             actions.goto_file_edit,                 { desc = "Open the file in the previous tabpage" } },
+      { "n", "<C-w><C-f>",     actions.goto_file_split,                { desc = "Open the file in a new split" } },
+      { "n", "<C-w>gf",        actions.goto_file_tab,                  { desc = "Open the file in a new tabpage" } },
+      { "n", "i",              actions.listing_style,                  { desc = "Toggle between 'list' and 'tree' views" } },
+      { "n", "f",              actions.toggle_flatten_dirs,            { desc = "Flatten empty subdirectories in tree listing style" } },
+      { "n", "R",              actions.refresh_files,                  { desc = "Update stats and entries in the file list" } },
+      { "n", "<leader>e",      actions.focus_files,                    { desc = "Bring focus to the file panel" } },
+      { "n", "<leader>b",      actions.toggle_files,                   { desc = "Toggle the file panel" } },
+      { "n", "g<C-x>",         actions.cycle_layout,                   { desc = "Cycle available layouts" } },
+      { "n", "[x",             actions.prev_conflict,                  { desc = "Go to the previous conflict" } },
+      { "n", "]x",             actions.next_conflict,                  { desc = "Go to the next conflict" } },
+      { "n", "g?",             actions.help("file_panel"),             { desc = "Open the help panel" } },
+      { "n", "<leader>cO",     actions.conflict_choose_all("ours"),    { desc = "Choose the OURS version of a conflict for the whole file" } },
+      { "n", "<leader>cT",     actions.conflict_choose_all("theirs"),  { desc = "Choose the THEIRS version of a conflict for the whole file" } },
+      { "n", "<leader>cB",     actions.conflict_choose_all("base"),    { desc = "Choose the BASE version of a conflict for the whole file" } },
+      { "n", "<leader>cA",     actions.conflict_choose_all("all"),     { desc = "Choose all the versions of a conflict for the whole file" } },
+      { "n", "dX",             actions.conflict_choose_all("none"),    { desc = "Delete the conflict region for the whole file" } },
     },
     file_history_panel = {
-      ["g!"]            = actions.options,          -- Open the option panel
-      ["<C-A-d>"]       = actions.open_in_diffview, -- Open the entry under the cursor in a diffview
-      ["y"]             = actions.copy_hash,        -- Copy the commit hash of the entry under the cursor
-      ["L"]             = actions.open_commit_log,
-      ["zR"]            = actions.open_all_folds,
-      ["zM"]            = actions.close_all_folds,
-      ["j"]             = actions.next_entry,
-      ["<down>"]        = actions.next_entry,
-      ["k"]             = actions.prev_entry,
-      ["<up>"]          = actions.prev_entry,
-      ["<cr>"]          = actions.select_entry,
-      ["o"]             = actions.select_entry,
-      ["<2-LeftMouse>"] = actions.select_entry,
-      ["<c-b>"]         = actions.scroll_view(-0.25),
-      ["<c-f>"]         = actions.scroll_view(0.25),
-      ["<tab>"]         = actions.select_next_entry,
-      ["<s-tab>"]       = actions.select_prev_entry,
-      ["gf"]            = actions.goto_file,
-      ["<C-w><C-f>"]    = actions.goto_file_split,
-      ["<C-w>gf"]       = actions.goto_file_tab,
-      ["<leader>e"]     = actions.focus_files,
-      ["<leader>b"]     = actions.toggle_files,
+      { "n", "g!",            actions.options,                     { desc = "Open the option panel" } },
+      { "n", "<C-A-d>",       actions.open_in_diffview,            { desc = "Open the entry under the cursor in a diffview" } },
+      { "n", "y",             actions.copy_hash,                   { desc = "Copy the commit hash of the entry under the cursor" } },
+      { "n", "L",             actions.open_commit_log,             { desc = "Show commit details" } },
+      { "n", "zR",            actions.open_all_folds,              { desc = "Expand all folds" } },
+      { "n", "zM",            actions.close_all_folds,             { desc = "Collapse all folds" } },
+      { "n", "j",             actions.next_entry,                  { desc = "Bring the cursor to the next file entry" } },
+      { "n", "<down>",        actions.next_entry,                  { desc = "Bring the cursor to the next file entry" } },
+      { "n", "k",             actions.prev_entry,                  { desc = "Bring the cursor to the previous file entry." } },
+      { "n", "<up>",          actions.prev_entry,                  { desc = "Bring the cursor to the previous file entry." } },
+      { "n", "<cr>",          actions.select_entry,                { desc = "Open the diff for the selected entry." } },
+      { "n", "o",             actions.select_entry,                { desc = "Open the diff for the selected entry." } },
+      { "n", "<2-LeftMouse>", actions.select_entry,                { desc = "Open the diff for the selected entry." } },
+      { "n", "<c-b>",         actions.scroll_view(-0.25),          { desc = "Scroll the view up" } },
+      { "n", "<c-f>",         actions.scroll_view(0.25),           { desc = "Scroll the view down" } },
+      { "n", "<tab>",         actions.select_next_entry,           { desc = "Open the diff for the next file" } },
+      { "n", "<s-tab>",       actions.select_prev_entry,           { desc = "Open the diff for the previous file" } },
+      { "n", "gf",            actions.goto_file_edit,              { desc = "Open the file in the previous tabpage" } },
+      { "n", "<C-w><C-f>",    actions.goto_file_split,             { desc = "Open the file in a new split" } },
+      { "n", "<C-w>gf",       actions.goto_file_tab,               { desc = "Open the file in a new tabpage" } },
+      { "n", "<leader>e",     actions.focus_files,                 { desc = "Bring focus to the file panel" } },
+      { "n", "<leader>b",     actions.toggle_files,                { desc = "Toggle the file panel" } },
+      { "n", "g<C-x>",        actions.cycle_layout,                { desc = "Cycle available layouts" } },
+      { "n", "g?",            actions.help("file_history_panel"),  { desc = "Open the help panel" } },
     },
     option_panel = {
-      ["<tab>"] = actions.select_entry,
-      ["q"]     = actions.close,
+      { "n", "<tab>", actions.select_entry,          { desc = "Change the current option" } },
+      { "n", "q",     actions.close,                 { desc = "Close the panel" } },
+      { "n", "g?",    actions.help("option_panel"),  { desc = "Open the help panel" } },
+    },
+    help_panel = {
+      { "n", "q",     actions.close,  { desc = "Close help menu" } },
+      { "n", "<esc>", actions.close,  { desc = "Close help menu" } },
     },
   },
 })
 
-local fzf = require('fzf-lua')
-fzf.setup {
-  fzf_bin = 'sk',
-}
-require('litee.lib').setup({
-  tree = {
-    icon_set = "codicons"
-  },
-  panel = {
-    orientation = "left",
-    panel_size  = 30
-  }
-})
-require('litee.gh').setup()
-require'netrw'.setup{
-  icons = {},
-  use_devicons = true,
-  mappings = {}
-}
 local signs = { Error = "", Warn = "", Hint = "", Info = "" }
 for type, icon in pairs(signs) do
     local hl = "DiagnosticSign" .. type

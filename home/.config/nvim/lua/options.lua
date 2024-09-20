@@ -33,6 +33,7 @@ opt.wrap = false -- Nowrap
 -- new win split options
 opt.splitbelow = true
 opt.splitright = true
+opt.shell='tcsh'
 o.completeopt = 'menuone,noselect'
 o.termguicolors = true
 

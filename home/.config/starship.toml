@@ -1,0 +1,8 @@
+[git_branch]
+disabled = true
+[git_state]
+disabled = true
+[git_status]
+disabled = true
+[nodejs]
+disabled = true

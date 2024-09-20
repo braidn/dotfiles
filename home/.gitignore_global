@@ -8,3 +8,5 @@ tags.temp
 .envrc
 data/**/*.sql
 data/**/*.csv
+bundles/
+bundles

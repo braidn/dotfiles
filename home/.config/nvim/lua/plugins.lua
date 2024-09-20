@@ -4,9 +4,6 @@ require('packer').startup({
     use('neovim/nvim-lspconfig')
     use('onsails/lspkind-nvim')
     use({
-      'jose-elias-alvarez/nvim-lsp-ts-utils', requires = { 'jose-elias-alvarez/null-ls.nvim' }
-    })
-    use({
       'hrsh7th/nvim-cmp',
       requires = {
         { 'hrsh7th/cmp-nvim-lsp' },
@@ -16,57 +13,38 @@ require('packer').startup({
         { "ray-x/cmp-treesitter" }
       },
     })
-    use('prichrd/netrw.nvim')
     use('rafamadriz/friendly-snippets')
     use('L3MON4D3/LuaSnip')
-    use({"petertriho/cmp-git", requires = "nvim-lua/plenary.nvim"})
-    use 'bluz71/nvim-linefly'
-    use { 'ibhagwan/fzf-lua',
+    use('bluz71/nvim-linefly')
+    use({"joechrisellis/lsp-format-modifications.nvim", requires = "nvim-lua/plenary.nvim"})
+    use { "ibhagwan/fzf-lua",
       -- optional for icon support
-      requires = { 'kyazdani42/nvim-web-devicons' }
-    }
-    use {
-      'nvim-telescope/telescope.nvim',
-      requires = { {'nvim-lua/plenary.nvim'} }
+      requires = { "echasnovski/mini.icons" }
     }
     use('windwp/nvim-autopairs')
     use('terrortylor/nvim-comment')
-    use('ggandor/lightspeed.nvim')
     use({ 'lewis6991/gitsigns.nvim', requires = { 'nvim-lua/plenary.nvim' } })
     use({ 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' })
-    use('nkrkv/nvim-treesitter-rescript')
-    use('norcalli/nvim-colorizer.lua')
     use('sindrets/diffview.nvim')
-    use('skywind3000/asynctasks.vim')
-    use('skywind3000/asyncrun.vim')
-    use('janko-m/vim-test')
     use('lukas-reineke/indent-blankline.nvim')
-    use({ 'TimUntersberger/neogit', requires = 'nvim-lua/plenary.nvim' })
     use('rhysd/git-messenger.vim')
-    use('machakann/vim-sandwich')
-    use({
-      'mrjones2014/dash.nvim',
-      run = 'make install',
-    })
+    use { 'echasnovski/mini.surround', branch = 'stable' }
     use {'akinsho/git-conflict.nvim', config = function()
       require('git-conflict').setup()
     end}
-    use({'ldelossa/gh.nvim', requires = 'ldelossa/litee.nvim'})
-    use({
-      'yamatsum/nvim-nonicons',
-      requires = {'kyazdani42/nvim-web-devicons'}
-    })
-    use('ThePrimeagen/harpoon')
-    use {
-      "AckslD/nvim-neoclip.lua",
-      requires = {
-        {'nvim-telescope/telescope.nvim'},
-      }
-    }
     use('ggandor/leap.nvim')
-    use { 'mihyaeru21/nvim-lspconfig-bundler', requires = 'neovim/nvim-lspconfig' }
-    use 'nvim-tree/nvim-web-devicons'
-    use 'weizheheng/ror.nvim'
+    use({
+      "stevearc/conform.nvim",
+        config = function()
+          require("conform").setup({
+            formatters_by_ft = {
+              ruby = { "stree format" } }
+           })
+	   end,
+    })
+    use { "zbirenbaum/copilot.lua" }
+    use { "zbirenbaum/copilot-cmp" }
+    use { "nvim-treesitter/nvim-treesitter-context" }
     -- Themes
     --
     use({
@@ -76,9 +54,8 @@ require('packer').startup({
         require("everforest").setup()
       end,
     })
-    use "rebelot/kanagawa.nvim"
-    use 'shaunsingh/nord.nvim'
-    use 'JoosepAlviste/palenightfall.nvim'
+    use 'matsuuu/pinkmare'
+    use 'folke/tokyonight.nvim'
     use {
       "catppuccin/nvim",
       as = "catppuccin",
